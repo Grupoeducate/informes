@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANÁLISIS INSTITUCIONAL - Grupo Edúcate Colombia</title>
     
+    <!-- BRAND FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- LIBRERÍAS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -16,126 +19,122 @@
             theme: {
                 extend: {
                     colors: {
-                        educate: { 'dark': '#17334B', 'blue': '#11678B', 'teal': '#54BBAB', 'orange': '#F39325', 'red': '#B01829' }
+                        educate: {
+                            'dark': '#17334B',
+                            'blue': '#11678B',
+                            'teal': '#54BBAB',
+                            'orange': '#F39325',
+                            'red': '#B01829'
+                        }
                     },
-                    fontFamily: { barlow: ['Barlow Condensed', 'sans-serif'] }
+                    fontFamily: {
+                        barlow: ['Barlow Condensed', 'sans-serif']
+                    }
                 }
             }
         }
     </script>
+
     <style>
         body { font-family: 'Barlow Condensed', sans-serif; }
         .bg-gradient-educate { background: linear-gradient(135deg, #17334B 0%, #11678B 100%); }
+        @media print { .no-print { display: none; } }
     </style>
 </head>
-<body class="bg-slate-100 text-educate-dark">
+<body class="bg-slate-50 text-educate-dark">
 
     <!-- NAV RECTORAL -->
     <nav class="no-print bg-educate-dark text-white p-4 sticky top-0 z-50 border-b-4 border-educate-teal shadow-2xl">
-        <div class="container mx-auto flex justify-between items-center">
+        <div class="container mx-auto flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <img src="assets/img/Logo_grupo_educate.png" alt="Edúcate" class="h-10 bg-white p-1 rounded">
-                <div class="h-8 w-[1px] bg-white/20"></div>
+                <!-- Ruta del logo corregida -->
+                <img src="assets/img/Logo_grupo_educate.png" alt="Grupo Edúcate" class="h-10 bg-white p-1 rounded">
+                <div class="h-8 w-[1px] bg-white/20 hidden md:block"></div>
                 <h1 class="text-xl font-bold uppercase italic tracking-tighter">Módulo 1: <span class="text-educate-teal font-light">Análisis Institucional</span></h1>
             </div>
-            <div class="flex gap-4">
-                <select id="selectDANE" onchange="Inst.init()" class="bg-white/10 border border-white/20 rounded px-4 py-1.5 text-sm text-white outline-none">
+            
+            <div class="flex flex-wrap gap-3 items-center">
+                <select id="selectDANE" onchange="Inst.init()" class="bg-white/10 border border-white/20 rounded px-4 py-1.5 text-sm text-white outline-none focus:ring-2 focus:ring-educate-teal">
                     <option class="text-black" value="">Seleccione Institución...</option>
                 </select>
-                <a href="index.html" class="bg-educate-blue px-4 py-1.5 rounded text-sm font-bold uppercase hover:bg-educate-teal transition">Vista por Estudiantes</a>
-                <button onclick="Inst.exportar()" class="bg-educate-orange px-4 py-1.5 rounded text-sm font-bold uppercase">Exportar PDF</button>
+                <!-- Link corregido para volver a la raíz -->
+                <a href="../index.html" class="bg-educate-blue px-4 py-1.5 rounded text-sm font-bold uppercase hover:bg-educate-teal transition">Vista Estudiantes</a>
+                <button onclick="Inst.exportar()" class="bg-educate-orange px-4 py-1.5 rounded text-sm font-bold uppercase shadow-lg">Exportar PDF</button>
             </div>
         </div>
     </nav>
 
-    <main id="reporte-inst" class="container mx-auto p-6 lg:p-10 max-w-7xl">
+    <main id="reporte-inst" class="container mx-auto p-4 lg:p-10 max-w-7xl">
         
         <!-- HEADER INSTITUCIONAL -->
         <div class="bg-gradient-educate rounded-sm p-10 text-white shadow-2xl mb-10 relative overflow-hidden">
             <div class="relative z-10">
-                <h2 id="inst-nombre" class="text-6xl font-extrabold uppercase italic tracking-tighter leading-none">Cargando Institución...</h2>
-                <div class="flex gap-10 mt-6 text-educate-teal font-bold text-xl uppercase tracking-widest">
+                <h2 id="inst-nombre" class="text-5xl md:text-6xl font-extrabold uppercase italic tracking-tighter leading-none">Cargando Datos...</h2>
+                <div class="flex flex-wrap gap-6 md:gap-10 mt-6 text-educate-teal font-bold text-xl uppercase tracking-widest">
                     <p>DANE: <span id="inst-dane" class="text-white">--</span></p>
                     <p>MUNICIPIO: <span id="inst-muni" class="text-white">--</span></p>
                     <p>GRADOS EVALUADOS: <span id="inst-grados" class="text-white">--</span></p>
                 </div>
             </div>
-            <!-- Decoración geométrica -->
             <div class="absolute right-[-50px] top-[-50px] opacity-10 text-[300px] font-black italic select-none">EDÚCATE</div>
         </div>
 
-        <!-- DASHBOARD DE COMPARACIÓN GLOBAL -->
+        <!-- DASHBOARD COMPARATIVO -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-            <!-- Ranking de Grupos -->
+            <!-- Ranking -->
             <div class="lg:col-span-1 bg-white p-8 shadow-xl border-t-4 border-educate-orange">
-                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2">Ranking Interno de Grupos</h4>
+                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2 tracking-widest">Ranking Interno</h4>
                 <div id="ranking-list" class="space-y-4 text-2xl font-bold">
-                    <!-- Dinámico -->
+                    <p class="text-slate-300 text-sm italic">Esperando selección...</p>
                 </div>
             </div>
-            <!-- Gráfico de Progreso Institucional -->
+            <!-- Evolución Institucional -->
             <div class="lg:col-span-2 bg-white p-8 shadow-xl border-t-4 border-educate-teal">
-                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2 text-center text-sm">Progreso Global por Aplicación (Consolidado de Grupos)</h4>
+                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2 text-center text-xs tracking-widest text-slate-400">Progreso Comparativo por Aplicación</h4>
                 <canvas id="chartProgresoInst" height="150"></canvas>
             </div>
         </div>
 
-        <!-- MATRIZ DE DESEMPEÑO POR ÁREA (EL HEATMAP) -->
+        <!-- MATRIZ DE CALOR (POR DISEÑAR) -->
         <div class="bg-white shadow-2xl mb-10 border border-slate-200 overflow-hidden">
             <div class="bg-educate-dark p-4 text-white flex justify-between items-center">
-                <h4 class="font-black uppercase tracking-widest italic text-sm">Matriz de Fortalezas por Áreas y Grupos</h4>
-                <span class="text-[10px] opacity-60">Datos calculados de la última prueba aplicada</span>
+                <h4 class="font-black uppercase tracking-widest italic text-sm">Matriz de Desempeño por Áreas</h4>
+                <span class="text-[10px] opacity-60 uppercase font-bold text-educate-teal">Última Prueba Consolidada</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse">
                     <thead class="bg-slate-100 text-educate-dark text-xs font-black uppercase tracking-widest">
                         <tr id="header-matriz">
                             <th class="p-4 border-r">GRUPO</th>
-                            <!-- Dinámico -->
+                            <th class="p-4">MATEMÁTICAS</th>
+                            <th class="p-4">LECTURA</th>
+                            <th class="p-4">SOCIALES</th>
+                            <th class="p-4">NATURALES</th>
+                            <th class="p-4">INGLÉS</th>
                         </tr>
                     </thead>
-                    <tbody id="body-matriz" class="font-bold text-lg italic">
+                    <tbody id="body-matriz" class="font-bold text-lg italic divide-y">
                         <!-- Dinámico -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- DISTRIBUCIÓN DE NIVELES INSTITUCIONAL -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white p-8 shadow-xl">
-                <h4 class="font-black text-center mb-6 uppercase text-sm border-b pb-2 tracking-widest italic">Distribución Global de Niveles</h4>
-                <canvas id="chartNivelesInst"></canvas>
-            </div>
-            <div class="bg-educate-dark p-10 text-white flex flex-col justify-center">
-                <h3 class="text-4xl font-black text-educate-teal italic uppercase leading-none mb-4">Análisis del Rector</h3>
-                <p id="insight-rector" class="text-xl font-light leading-relaxed">
-                    Sincronizando datos institucionales para generar diagnóstico estratégico...
-                </p>
-                <div class="mt-8 pt-6 border-t border-white/10 flex gap-4">
-                    <div class="bg-educate-teal/20 p-4 rounded border border-educate-teal/50 w-1/2">
-                        <p class="text-[10px] uppercase font-bold text-educate-teal">Grupo Líder</p>
-                        <p id="top-group" class="text-2xl font-black italic">--</p>
-                    </div>
-                    <div class="bg-educate-red/20 p-4 rounded border border-educate-red/50 w-1/2">
-                        <p class="text-[10px] uppercase font-bold text-educate-red">Materia Crítica</p>
-                        <p id="low-subject" class="text-2xl font-black italic">--</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 
     <script>
         const Inst = {
             config: null,
-            instData: {}, // Agregado de todos los grupos
+            instData: {}, 
 
             async loadConfig() {
-                const res = await fetch('../config.json');
-                this.config = await res.json();
-                const sel = document.getElementById('selectDANE');
-                this.config.forEach(c => sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`);
+                try {
+                    // Ruta corregida para subir un nivel
+                    const res = await fetch('../config.json');
+                    this.config = await res.json();
+                    const sel = document.getElementById('selectDANE');
+                    this.config.forEach(c => sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`);
+                } catch (e) { console.error("Error cargando config.json", e); }
             },
 
             async init() {
@@ -148,29 +147,36 @@
                 document.getElementById('inst-muni').innerText = colegio.municipio;
                 document.getElementById('inst-grados').innerText = colegio.grupos.length;
 
-                await this.procesarDataInstitucional(colegio);
-                this.renderDashboard();
+                await this.procesarData(colegio);
+                this.renderDashboard(colegio.pruebas);
             },
 
-            async procesarDataInstitucional(colegio) {
-                this.instData = { grupos: {}, globalProgreso: [], areas: {} };
+            async procesarData(colegio) {
+                this.instData = { grupos: {} };
                 
                 for (let g of colegio.grupos) {
                     this.instData.grupos[g] = [];
                     for (let p of colegio.pruebas) {
+                        // Construcción de ruta corregida con guion medio "-"
+                        const csvPath = `../data/${colegio.dane}/${g}-${p}.csv`;
+                        
                         try {
-                            const res = await fetch(`data/${colegio.dane}/${g}-${p}.csv`);
-                            const rows = Papa.parse(await res.text(), { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
+                            const res = await fetch(csvPath);
+                            if (!res.ok) throw new Error();
+                            const csvText = await res.text();
+                            const rows = Papa.parse(csvText, { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
                             const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / rows.length;
                             this.instData.grupos[g].push(avg.toFixed(1));
-                        } catch (e) { this.instData.grupos[g].push(0); }
+                        } catch (e) { 
+                            this.instData.grupos[g].push(0); 
+                        }
                     }
                 }
             },
 
-            renderDashboard() {
+            renderDashboard(pruebas) {
                 this.renderRanking();
-                this.renderProgreso();
+                this.renderProgreso(pruebas);
                 this.renderMatriz();
             },
 
@@ -183,53 +189,66 @@
 
                 ranking.forEach((r, i) => {
                     list.innerHTML += `
-                        <div class="flex justify-between items-center p-3 ${i === 0 ? 'bg-educate-teal text-white shadow-lg scale-105' : 'bg-slate-50'} rounded transition-all">
-                            <span class="text-sm font-light italic">#${i + 1}</span>
-                            <span>GRUPO ${r.name}</span>
-                            <span class="text-3xl font-black">${r.score}</span>
+                        <div class="flex justify-between items-center p-4 ${i === 0 ? 'bg-educate-dark text-white shadow-2xl scale-105 border-l-8 border-educate-teal' : 'bg-slate-50 border-l-8 border-slate-200'} rounded-sm transition-all">
+                            <span class="text-xs font-light italic">POS #${i + 1}</span>
+                            <span class="uppercase tracking-tighter italic">GRUPO ${r.name}</span>
+                            <span class="text-4xl font-black">${r.score}</span>
                         </div>`;
                 });
-                document.getElementById('top-group').innerText = ranking[0].name;
             },
 
-            renderProgreso() {
+            renderProgreso(pruebas) {
                 const ctx = document.getElementById('chartProgresoInst').getContext('2d');
                 if (window.pCh) window.pCh.destroy();
+                
+                const colors = ['#17334B', '#F39325', '#54BBAB', '#11678B', '#B01829'];
+                
                 const datasets = Object.keys(this.instData.grupos).map((g, i) => ({
-                    label: `Grupo ${g}`,
+                    label: `Grado ${g}`,
                     data: this.instData.grupos[g],
-                    borderColor: i === 0 ? '#11678B' : (i === 1 ? '#F39325' : '#54BBAB'),
-                    fill: false, tension: 0.4, borderWidth: 4, pointRadius: 5
+                    borderColor: colors[i % colors.length],
+                    backgroundColor: 'transparent',
+                    borderWidth: 5,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#FFF'
                 }));
-                window.pCh = new Chart(ctx, { type: 'line', data: { labels: ['Kappa', 'Epsilon', 'Master'], datasets } });
+
+                window.pCh = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: pruebas, datasets },
+                    options: { 
+                        plugins: { legend: { position: 'bottom', labels: { font: { family: 'Barlow Condensed', size: 14, weight: 'bold' } } } },
+                        scales: { y: { beginAtZero: false, suggestedMin: 150 } }
+                    }
+                });
             },
 
             renderMatriz() {
-                // Esta función idealmente cargaría el promedio de cada materia por grupo de la última prueba
-                const header = document.getElementById('header-matriz');
-                const areas = ["Matemáticas", "Lectura", "Sociales", "Naturales", "Inglés"];
-                header.innerHTML = '<th class="p-4 border-r">GRUPO</th>' + areas.map(a => `<th class="p-4 uppercase">${a}</th>`).join('');
-                
                 const body = document.getElementById('body-matriz');
                 body.innerHTML = "";
                 Object.keys(this.instData.grupos).forEach(g => {
+                    // Datos de ejemplo para la matriz (deberían venir de los promedios reales por materia)
                     body.innerHTML += `
                         <tr class="border-b hover:bg-slate-50 transition">
-                            <td class="p-6 bg-slate-900 text-white text-sm">${g}</td>
-                            <td class="p-6 text-educate-blue italic">45.2</td>
-                            <td class="p-6 text-educate-orange">38.9</td>
-                            <td class="p-6 text-educate-teal">52.1</td>
-                            <td class="p-6 text-educate-blue">44.5</td>
-                            <td class="p-6 text-educate-red">29.8</td>
-                        </tr>
-                    `;
+                            <td class="p-6 bg-slate-900 text-white text-sm italic font-bold border-r">${g}</td>
+                            <td class="p-6 text-educate-blue">42.5</td>
+                            <td class="p-6 text-educate-orange">39.1</td>
+                            <td class="p-6 text-educate-teal">51.8</td>
+                            <td class="p-6 text-educate-blue">44.0</td>
+                            <td class="p-6 text-educate-red">31.2</td>
+                        </tr>`;
                 });
-                document.getElementById('low-subject').innerText = "INGLÉS";
             },
 
             exportar() {
                 const el = document.getElementById('reporte-inst');
-                html2pdf().set({ margin: 0.3, filename: 'Analisis_Institucional_Educate.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' } }).from(el).save();
+                html2pdf().set({ 
+                    margin: 0.2, 
+                    filename: 'Analisis_Institucional_Educate.pdf', 
+                    html2canvas: { scale: 2 }, 
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' } 
+                }).from(el).save();
             }
         };
 
