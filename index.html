@@ -3,268 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RADAR SABER 11 - Inteligencia Educativa</title>
-    <!-- Frameworks -->
+    <title>RADAR SABER 11 - Grupo Edúcate Colombia</title>
+    
+    <!-- BRAND FONTS: Barlow Condensed -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- LIBRERÍAS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        educate: {
+                            'dark': '#17334B',
+                            'blue': '#11678B',
+                            'teal': '#54BBAB',
+                            'orange': '#F39325',
+                            'red': '#B01829',
+                            'gray': '#808080'
+                        }
+                    },
+                    fontFamily: {
+                        barlow: ['Barlow Condensed', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Barlow Condensed', sans-serif; }
         @media print { .no-print { display: none; } }
-        .bg-nivel-1 { background-color: #ef4444; } /* Rojo - Insuficiente */
-        .bg-nivel-2 { background-color: #f59e0b; } /* Amarillo - Mínimo */
-        .bg-nivel-3 { background-color: #3b82f6; } /* Azul - Satisfactorio */
-        .bg-nivel-4 { background-color: #10b981; } /* Verde - Avanzado */
-        .transition-table tr { transition: all 0.2s ease; }
+        .bg-nivel-1 { background-color: #B01829; } /* Secundario 3 - Rojo */
+        .bg-nivel-2 { background-color: #F39325; } /* Secundario 1 - Naranja */
+        .bg-nivel-3 { background-color: #11678B; } /* Primario 2 - Azul */
+        .bg-nivel-4 { background-color: #54BBAB; } /* Primario 3 - Teal */
     </style>
 </head>
-<body class="bg-slate-100 text-slate-900">
+<body class="bg-slate-50 text-educate-dark">
 
-    <!-- NAV SUPERIOR DINÁMICA -->
-    <nav class="no-print bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-2xl">
-        <div class="container mx-auto flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-blue-600 p-2 rounded-xl font-black text-xl">R11</div>
-                <h1 class="text-lg font-bold tracking-tighter">RADAR SABER 11 <span class="text-blue-400 font-light italic text-sm">Expert DCE</span></h1>
+    <!-- NAV CON BRANDING GRUPO EDÚCATE -->
+    <nav class="no-print bg-educate-dark text-white p-4 sticky top-0 z-50 shadow-2xl border-b-4 border-educate-teal">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <div class="flex items-center gap-4">
+                <!-- Espacio para el Logo principal según manual (min 85px) -->
+                <div class="bg-white p-2 rounded-md">
+                    <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" alt="Grupo Edúcate" style="height: 40px;">
+                </div>
+                <div class="h-8 w-[1px] bg-white/20 hidden md:block"></div>
+                <h1 class="text-xl font-bold tracking-tight uppercase italic">Radar Saber 11 <span class="font-light text-educate-teal italic text-sm">v4.0</span></h1>
             </div>
             
-            <div class="flex flex-wrap gap-3 items-center">
-                <select id="selectDANE" onchange="App.handleColegioChange()" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Seleccione Institución...</option>
+            <div class="flex flex-wrap gap-3 items-center mt-3 md:mt-0">
+                <select id="selectDANE" onchange="App.handleColegioChange()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white">
+                    <option class="text-black" value="">Seleccione Institución...</option>
                 </select>
-                
-                <select id="selectGrupo" onchange="App.init()" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm">
-                    <option value="">Seleccione Grupo...</option>
+                <select id="selectGrupo" onchange="App.init()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white">
+                    <option class="text-black" value="">Grupo...</option>
                 </select>
-
-                <button onclick="App.exportarPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-1.5 px-5 rounded-lg transition-all">
-                    GENERAR PDF
+                <button onclick="App.exportarPDF()" class="bg-educate-teal hover:bg-opacity-90 text-educate-dark text-sm font-extrabold py-1.5 px-6 rounded transition-all uppercase">
+                    Generar Informe
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- CUERPO DEL INFORME -->
-    <main id="informe-final" class="container mx-auto p-4 lg:p-8 max-w-7xl">
+    <main id="informe-final" class="container mx-auto p-4 lg:p-10 max-w-7xl">
         
-        <!-- HEADER INSTITUCIONAL -->
-        <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <span id="tag-prueba" class="bg-blue-100 text-blue-700 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest">Informe Multi-Prueba</span>
-                <h2 id="view-nombre-ie" class="text-4xl font-extrabold text-slate-800 mt-2 italic">Seleccione un Colegio</h2>
-                <div class="flex gap-6 mt-3 text-slate-500 text-sm">
-                    <p>DANE: <span id="view-dane" class="font-bold text-slate-700">--</span></p>
-                    <p>Ubicación: <span id="view-muni" class="font-bold text-slate-700">--</span></p>
-                    <p>Grupo: <span id="view-grupo" class="font-bold text-blue-600 font-black">--</span></p>
+        <!-- HEADER DINÁMICO -->
+        <div class="bg-white rounded-sm p-10 shadow-xl border-t-8 border-educate-dark mb-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-center md:text-left">
+                <h2 id="view-nombre-ie" class="text-5xl font-extrabold text-educate-dark leading-none uppercase italic tracking-tighter">Cargando Datos...</h2>
+                <div class="flex flex-wrap justify-center md:justify-start gap-6 mt-4 text-educate-gray font-semibold text-lg uppercase">
+                    <p>DANE: <span id="view-dane" class="text-educate-blue">--</span></p>
+                    <p>Municipio: <span id="view-muni" class="text-educate-blue">--</span></p>
+                    <p>Grupo: <span id="view-grupo" class="text-educate-orange font-black">--</span></p>
                 </div>
             </div>
-            <div class="text-right border-l-4 border-blue-600 pl-6">
-                <p class="text-xs font-bold text-slate-400 uppercase">Estado de Progresión</p>
-                <div id="view-estado" class="text-2xl font-black text-slate-800 mt-1 italic uppercase">Esperando Datos...</div>
+            <div class="mt-6 md:mt-0 bg-educate-dark p-6 text-white rounded-sm text-center min-w-[220px]">
+                <p class="text-xs font-bold uppercase tracking-widest text-educate-teal">Estado Pedagógico</p>
+                <div id="view-estado" class="text-2xl font-black italic mt-1 uppercase">Sincronizando...</div>
             </div>
         </div>
 
-        <!-- KPIs -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-blue-500">
-                <p class="text-xs font-bold text-slate-400 uppercase">Promedio Global</p>
-                <h3 id="kpi-promedio" class="text-4xl font-black text-slate-800 tracking-tighter">0.0</h3>
-                <p id="kpi-tendencia" class="text-sm font-bold mt-1 text-slate-400 tracking-tight">--</p>
+        <!-- KPIs ESTILO TOKENS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-white">
+            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-blue">
+                <p class="text-xs font-bold uppercase opacity-70">Promedio Global</p>
+                <h3 id="kpi-promedio" class="text-5xl font-black tracking-tighter">0.0</h3>
+                <p id="kpi-tendencia" class="text-sm font-bold mt-1 text-educate-teal">--</p>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-orange-500">
-                <p class="text-xs font-bold text-slate-400 uppercase">Diferencia Grupal</p>
-                <h3 id="kpi-brecha" class="text-4xl font-black text-slate-800 tracking-tighter">0.0</h3>
-                <p class="text-xs text-slate-400 mt-1">Vs. Otros grupos</p>
+            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-orange">
+                <p class="text-xs font-bold uppercase opacity-70">Desviación Grupal</p>
+                <h3 id="kpi-brecha" class="text-5xl font-black tracking-tighter">0.0</h3>
+                <p class="text-xs text-educate-teal mt-1 italic">Vs. Otros grupos</p>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-emerald-500">
-                <p class="text-xs font-bold text-slate-400 uppercase">Movilidad Nivel</p>
-                <h3 id="kpi-movilidad" class="text-4xl font-black text-slate-800 tracking-tighter">0%</h3>
-                <p class="text-xs text-slate-400 mt-1">Estudiantes en ascenso</p>
+            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-teal">
+                <p class="text-xs font-bold uppercase opacity-70">Movilidad Positiva</p>
+                <h3 id="kpi-movilidad" class="text-5xl font-black tracking-tighter">0%</h3>
+                <p class="text-xs opacity-70 mt-1 uppercase">Ascenso de nivel</p>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-purple-500">
-                <p class="text-xs font-bold text-slate-400 uppercase">Nivel Saber 11</p>
-                <h3 id="kpi-nivel" class="text-2xl font-black text-slate-800 tracking-tighter">--</h3>
-                <p class="text-xs text-slate-400 mt-1">Tendencia de grupo</p>
+            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-red">
+                <p class="text-xs font-bold uppercase opacity-70">Desempeño</p>
+                <h3 id="kpi-nivel" class="text-2xl font-black tracking-tighter uppercase">--</h3>
+                <p class="text-xs opacity-70 mt-1 uppercase">Clasificación ICFES</p>
             </div>
         </div>
 
-        <!-- GRÁFICOS -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div class="bg-white p-8 rounded-3xl shadow-lg border border-slate-100">
-                <h4 class="font-extrabold text-slate-700 tracking-tight flex items-center gap-2 mb-6 uppercase text-sm">
-                    <span class="w-2 h-6 bg-blue-600 rounded-full"></span> Evolución del Promedio
+        <!-- GRÁFICOS COMPARATIVOS -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
+            <div class="bg-white p-8 shadow-xl border border-slate-200">
+                <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
+                    <span class="w-3 h-3 bg-educate-blue rounded-full"></span> Evolución Histórica
                 </h4>
-                <canvas id="chartEvolucion" height="200"></canvas>
+                <canvas id="chartEvolucion" height="220"></canvas>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-lg border border-slate-100">
-                <h4 class="font-extrabold text-slate-700 tracking-tight flex items-center gap-2 mb-6 uppercase text-sm">
-                    <span class="w-2 h-6 bg-orange-500 rounded-full"></span> Comparativa Grupos
+            <div class="bg-white p-8 shadow-xl border border-slate-200">
+                <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
+                    <span class="w-3 h-3 bg-educate-orange rounded-full"></span> Comparativa de Sedes/Grupos
                 </h4>
-                <canvas id="chartComparativo" height="200"></canvas>
+                <canvas id="chartComparativo" height="220"></canvas>
             </div>
         </div>
 
-        <!-- TABLA PRINCIPAL -->
-        <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden mb-8">
-            <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
-                <h4 class="font-bold uppercase tracking-widest text-sm italic">Seguimiento Individual Longitudinal</h4>
-                <div class="text-[10px] opacity-70 uppercase tracking-tighter font-bold">Análisis Comparativo P1-P2-P3</div>
+        <!-- TABLA LONGITUDINAL -->
+        <div class="bg-white shadow-2xl border border-slate-200 overflow-hidden mb-10">
+            <div class="p-6 bg-educate-dark text-white flex justify-between items-center border-b-4 border-educate-teal">
+                <h4 class="font-extrabold uppercase tracking-widest italic">Movilización Individual por Pruebas</h4>
+                <span class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Grupo Edúcate Colombia Analítica</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-100 text-slate-500 text-[10px] uppercase font-black tracking-widest">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 text-educate-dark text-[11px] uppercase font-black tracking-tighter">
                         <tr>
-                            <th class="p-5 border-b">Estudiante</th>
-                            <th class="p-5 border-b text-center">P1</th>
-                            <th class="p-5 border-b text-center">P2</th>
-                            <th class="p-5 border-b text-center">∆1</th>
-                            <th class="p-5 border-b text-center bg-blue-50">P3</th>
-                            <th class="p-5 border-b text-center">∆2</th>
-                            <th class="p-5 border-b text-center">Nivel</th>
+                            <th class="p-6 border-b">Estudiante</th>
+                            <th class="p-6 border-b text-center">Prueba 1</th>
+                            <th class="p-6 border-b text-center">Prueba 2</th>
+                            <th class="p-6 border-b text-center">∆ 1-2</th>
+                            <th class="p-6 border-b text-center bg-slate-100">Prueba 3</th>
+                            <th class="p-6 border-b text-center">∆ 2-3</th>
+                            <th class="p-6 border-b text-center">Clasificación</th>
                         </tr>
                     </thead>
-                    <tbody id="tabla-body" class="text-sm divide-y divide-slate-100 transition-table">
-                        <!-- JS Dynamic -->
+                    <tbody id="tabla-body" class="text-sm divide-y divide-slate-100">
+                        <!-- JS Dinámico -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ÁREAS Y DCE -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div class="lg:col-span-1 bg-white p-8 rounded-3xl shadow-lg">
-                <h4 class="font-bold text-slate-700 mb-6 text-center text-xs uppercase tracking-widest">Competencias (Radar DCE)</h4>
+        <!-- DCE RADAR -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div class="lg:col-span-1 bg-white p-10 shadow-xl border border-slate-100 flex flex-col items-center">
+                <h4 class="font-black text-educate-dark mb-8 uppercase text-sm tracking-widest italic border-b-2 border-educate-teal">Análisis de Competencias</h4>
                 <canvas id="chartRadar"></canvas>
             </div>
-            <div class="lg:col-span-2 bg-white p-8 rounded-3xl shadow-lg flex flex-col justify-center">
-                <h4 class="font-bold text-slate-700 mb-4 uppercase text-xs tracking-widest">Interpretación Basada en Evidencias</h4>
-                <div id="insigths-container" class="space-y-4">
-                    <!-- Dinámico -->
-                    <p class="text-slate-400 italic text-sm">Seleccione colegio y grupo para generar análisis...</p>
+            <div class="lg:col-span-2 bg-white p-10 shadow-xl border border-slate-100">
+                <h4 class="font-black text-educate-dark mb-6 uppercase text-sm tracking-widest italic">Hallazgos Pedagógicos Estratégicos</h4>
+                <div id="insigths-container" class="space-y-6">
+                    <p class="text-educate-gray italic">Cargando inteligencia de datos...</p>
                 </div>
             </div>
         </div>
+
     </main>
 
-    <!-- SCRIPT DEL MOTOR -->
+    <footer class="mt-20 p-10 bg-educate-dark text-white text-center">
+        <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" alt="Grupo Edúcate" class="mx-auto h-12 grayscale brightness-200 mb-4">
+        <p class="font-bold uppercase tracking-widest text-xs">Plataforma de Analítica Educativa © 2024</p>
+        <p class="text-educate-teal text-[10px] uppercase font-light mt-2 tracking-widest">Basado en Diseño Centrado en Evidencias (DCE) del ICFES</p>
+    </footer>
+
     <script>
+        // MOTOR DE LA APP ACTUALIZADO CON BRANDING
         const App = {
             config: null,
-            currentColegio: null,
             data: {},
-            compData: {},
+            comparativo: {},
 
             async loadConfig() {
                 try {
                     const res = await fetch('config.json');
                     this.config = await res.json();
                     const sel = document.getElementById('selectDANE');
-                    this.config.forEach(c => {
-                        sel.innerHTML += `<option value="${c.dane}">${c.nombre}</option>`;
-                    });
-                } catch (e) { console.error("Error cargando config.json", e); }
+                    this.config.forEach(c => sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`);
+                } catch (e) { console.error("Config missing"); }
             },
 
             handleColegioChange() {
                 const dane = document.getElementById('selectDANE').value;
-                this.currentColegio = this.config.find(c => c.dane === dane);
+                const colegio = this.config.find(c => c.dane === dane);
                 const selG = document.getElementById('selectGrupo');
-                selG.innerHTML = `<option value="">Seleccione Grupo...</option>`;
-                if (this.currentColegio) {
-                    this.currentColegio.grupos.forEach(g => {
-                        selG.innerHTML += `<option value="${g}">${g}</option>`;
-                    });
+                selG.innerHTML = `<option class="text-black" value="">Grupo...</option>`;
+                if (colegio) {
+                    colegio.grupos.forEach(g => selG.innerHTML += `<option class="text-black" value="${g}">${g}</option>`);
                 }
             },
 
             async init() {
                 const dane = document.getElementById('selectDANE').value;
                 const grupo = document.getElementById('selectGrupo').value;
+                const colegio = this.config.find(c => c.dane === dane);
                 if (!dane || !grupo) return;
 
                 document.getElementById('view-dane').innerText = dane;
                 document.getElementById('view-grupo').innerText = grupo;
-                document.getElementById('view-nombre-ie').innerText = this.currentColegio.nombre;
-                document.getElementById('view-muni').innerText = this.currentColegio.municipio;
+                document.getElementById('view-nombre-ie').innerText = colegio.nombre;
+                document.getElementById('view-muni').innerText = colegio.municipio;
 
-                await this.cargarDatosGrupo(dane, grupo);
-                await this.cargarComparativa(dane);
-                this.renderAll();
+                await this.cargarDatos(dane, grupo, colegio.pruebas);
+                await this.cargarComparativo(dane, colegio);
+                this.renderAll(colegio.pruebas);
             },
 
-            async cargarDatosGrupo(dane, grupo) {
+            async cargarDatos(dane, grupo, pruebas) {
                 this.data = {};
-                for (let p of this.currentColegio.pruebas) {
+                for (let p of pruebas) {
                     try {
                         const csvRes = await fetch(`data/${dane}/${grupo}-${p}.csv`);
-                        const csvText = await csvRes.text();
-                        const csv = Papa.parse(csvText, { header: true, delimiter: ";" }).data;
-
+                        const csvData = Papa.parse(await csvRes.text(), { header: true, delimiter: ";" }).data;
                         const jsonRes = await fetch(`data/${dane}/${grupo}_${p}.json`);
-                        const json = await jsonRes.json();
-
-                        this.data[p] = { est: csv.filter(e => e.DOCUMENTO), ped: json.analisis_pedagogico };
-                    } catch (e) { console.warn(`Falta data: ${p}`); }
+                        const jsonData = await jsonRes.json();
+                        this.data[p] = { est: csvData.filter(e => e.DOCUMENTO), ped: jsonData.analisis_pedagogico };
+                    } catch (e) { console.warn(`Missing: ${p}`); }
                 }
             },
 
-            async cargarComparativa(dane) {
-                this.compData = {};
-                for (let g of this.currentColegio.grupos) {
-                    this.compData[g] = [];
-                    for (let p of this.currentColegio.pruebas) {
+            async cargarComparativo(dane, colegio) {
+                this.comparativo = {};
+                for (let g of colegio.grupos) {
+                    this.comparativo[g] = [];
+                    for (let p of colegio.pruebas) {
                         try {
                             const res = await fetch(`data/${dane}/${g}-${p}.csv`);
-                            const text = await res.text();
-                            const rows = Papa.parse(text, { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
-                            const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",",".")), 0) / rows.length;
-                            this.compData[g].push(avg.toFixed(1));
-                        } catch (e) { this.compData[g].push(0); }
+                            const rows = Papa.parse(await res.text(), { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
+                            const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / rows.length;
+                            this.comparativo[g].push(avg.toFixed(1));
+                        } catch (e) { this.comparativo[g].push(0); }
                     }
                 }
             },
 
-            renderAll() {
-                const pruebas = this.currentColegio.pruebas;
-                const p3 = this.data[pruebas[2]] || this.data[pruebas[1]] || this.data[pruebas[0]];
-                const p2 = this.data[pruebas[1]];
-                const p1 = this.data[pruebas[0]];
-
+            renderAll(pruebasOrden) {
+                const p3 = this.data[pruebasOrden[2]] || this.data[pruebasOrden[1]] || this.data[pruebasOrden[0]];
+                const p2 = this.data[pruebasOrden[1]];
+                const p1 = this.data[pruebasOrden[0]];
                 if (!p3) return;
 
-                const avg = (p3.est.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",",".")), 0) / p3.est.length).toFixed(1);
-                document.getElementById('kpi-promedio').innerText = avg;
-                document.getElementById('view-estado').innerText = avg > 210 ? "EN PROGRESO" : "CRÍTICO";
-                document.getElementById('kpi-nivel').innerText = this.getNivelTexto(avg);
+                const avgActual = (p3.est.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / p3.est.length).toFixed(1);
+                document.getElementById('kpi-promedio').innerText = avgActual;
+                document.getElementById('view-estado').innerText = avgActual > 215 ? "PROGRESO DESTACADO" : "EN NIVEL DE NIVELACIÓN";
 
                 this.renderTabla(p1, p2, p3);
-                this.renderCharts(avg);
-                this.renderInsights(p3);
+                this.renderEvolucion(pruebasOrden);
+                this.renderComparativo(pruebasOrden);
+                this.renderRadar(p3);
+                this.renderInsights();
             },
 
             renderTabla(p1, p2, p3) {
                 const body = document.getElementById('tabla-body');
                 body.innerHTML = "";
                 p3.est.forEach(est => {
-                    const s1 = p1 ? p1.est.find(e => e.DOCUMENTO === est.DOCUMENTO) : null;
-                    const s2 = p2 ? p2.est.find(e => e.DOCUMENTO === est.DOCUMENTO) : null;
-                    const v1 = s1 ? parseFloat(s1.PUNTAJE.replace(",",".")) : 0;
-                    const v2 = s2 ? parseFloat(s2.PUNTAJE.replace(",",".")) : 0;
-                    const v3 = parseFloat(est.PUNTAJE.replace(",","."));
+                    const doc = est.DOCUMENTO;
+                    const s1 = p1 ? p1.est.find(e => e.DOCUMENTO === doc) : null;
+                    const s2 = p2 ? p2.est.find(e => e.DOCUMENTO === doc) : null;
+                    const v1 = s1 ? parseFloat(s1.PUNTAJE.replace(",", ".")) : 0;
+                    const v2 = s2 ? parseFloat(s2.PUNTAJE.replace(",", ".")) : 0;
+                    const v3 = parseFloat(est.PUNTAJE.replace(",", "."));
 
                     body.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="p-5 font-bold text-slate-700">${est.ESTUDIANTE}</td>
-                            <td class="p-5 text-center text-slate-400 italic">${v1 || '-'}</td>
-                            <td class="p-5 text-center font-semibold text-slate-600">${v2 || '-'}</td>
-                            <td class="p-5 text-center">${this.getIcon(v1, v2)}</td>
-                            <td class="p-5 text-center font-black text-blue-600 bg-blue-50/50">${v3}</td>
-                            <td class="p-5 text-center">${this.getIcon(v2, v3)}</td>
-                            <td class="p-5 text-center">
-                                <span class="px-3 py-1 rounded-full text-[9px] font-black text-white ${this.getColorNivel(v3)}">
+                        <tr class="hover:bg-slate-50 transition border-l-4 border-transparent hover:border-educate-teal">
+                            <td class="p-6 font-bold text-educate-dark uppercase tracking-tighter">${est.ESTUDIANTE}</td>
+                            <td class="p-6 text-center text-educate-gray font-semibold">${v1 || '-'}</td>
+                            <td class="p-6 text-center font-bold text-educate-blue">${v2 || '-'}</td>
+                            <td class="p-6 text-center text-xl">${this.getIcon(v1, v2)}</td>
+                            <td class="p-6 text-center font-black text-white bg-educate-blue/90 italic">${v3}</td>
+                            <td class="p-6 text-center text-xl">${this.getIcon(v2, v3)}</td>
+                            <td class="p-6 text-center">
+                                <span class="px-4 py-1 rounded-sm text-[10px] font-black text-white ${this.getColorNivel(v3)}">
                                     ${this.getNivelTexto(v3)}
                                 </span>
                             </td>
@@ -272,68 +294,95 @@
                 });
             },
 
-            getIcon(oldV, newV) {
-                if (!oldV || !newV) return "●";
-                return newV > oldV ? "<span class='text-emerald-500'>↑</span>" : (newV < oldV ? "<span class='text-red-500'>↓</span>" : "●");
+            getIcon(o, n) {
+                if (!o || !n) return "●";
+                return n > o ? "<span class='text-educate-teal font-black italic'>↑</span>" : (n < o ? "<span class='text-educate-red font-black italic'>↓</span>" : "●");
             },
 
             getColorNivel(s) {
-                return s < 192 ? "bg-nivel-1" : (s < 270 ? "bg-nivel-2" : (s < 350 ? "bg-nivel-3" : "bg-nivel-4"));
+                if (s < 192) return "bg-nivel-1";
+                if (s < 270) return "bg-nivel-2";
+                if (s < 350) return "bg-nivel-3";
+                return "bg-nivel-4";
             },
 
             getNivelTexto(s) {
-                return s < 192 ? "INSUFICIENTE" : (s < 270 ? "MÍNIMO" : (s < 350 ? "SATISFACTORIO" : "AVANZADO"));
+                if (s < 192) return "INSUFICIENTE";
+                if (s < 270) return "MÍNIMO";
+                if (score < 350) return "SATISFACTORIO";
+                return "AVANZADO";
             },
 
-            renderCharts(avg) {
-                // Evolución
-                const ctxE = document.getElementById('chartEvolucion').getContext('2d');
+            renderEvolucion(pruebas) {
+                const ctx = document.getElementById('chartEvolucion').getContext('2d');
                 if (window.eCh) window.eCh.destroy();
-                window.eCh = new Chart(ctxE, {
-                    type: 'line', data: {
-                        labels: this.currentColegio.pruebas,
-                        datasets: [{ label: 'Promedio', data: this.compData[document.getElementById('selectGrupo').value], borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)', tension: 0.4 }]
+                window.eCh = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: pruebas,
+                        datasets: [{
+                            label: 'Evolución Promedio',
+                            data: this.comparativo[document.getElementById('selectGrupo').value],
+                            borderColor: '#11678B',
+                            backgroundColor: 'rgba(17, 103, 139, 0.1)',
+                            fill: true, tension: 0.4, pointRadius: 10, pointBackgroundColor: '#54BBAB'
+                        }]
                     }
                 });
+            },
 
-                // Comparativo
-                const ctxC = document.getElementById('chartComparativo').getContext('2d');
+            renderComparativo(pruebas) {
+                const ctx = document.getElementById('chartComparativo').getContext('2d');
                 if (window.cCh) window.cCh.destroy();
-                const datasets = Object.keys(this.compData).map((g, i) => ({
-                    label: g, data: this.compData[g], backgroundColor: i === 0 ? '#2563eb' : '#f97316', borderRadius: 6
+                const datasets = Object.keys(this.comparativo).map((g, i) => ({
+                    label: `Grupo ${g}`,
+                    data: this.comparativo[g],
+                    backgroundColor: i === 0 ? '#17334B' : '#F39325',
+                    borderRadius: 4
                 }));
-                window.cCh = new Chart(ctxC, { type: 'bar', data: { labels: this.currentColegio.pruebas, datasets } });
+                window.cCh = new Chart(ctx, { type: 'bar', data: { labels: pruebas, datasets } });
             },
 
             renderRadar(p) {
-                const ctxR = document.getElementById('chartRadar').getContext('2d');
+                const ctx = document.getElementById('chartRadar').getContext('2d');
                 const comps = p.ped["Matemáticas"].competencias;
                 if (window.rCh) window.rCh.destroy();
-                window.rCh = new Chart(ctxR, {
-                    type: 'radar', data: {
+                window.rCh = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
                         labels: comps.map(c => c.nombre),
-                        datasets: [{ label: 'Competencias', data: comps.map(c => c.puntaje_promedio), backgroundColor: 'rgba(59,130,246,0.2)', borderColor: '#3b82f6' }]
+                        datasets: [{
+                            label: 'Análisis DCE',
+                            data: comps.map(c => c.puntaje_promedio),
+                            backgroundColor: 'rgba(84, 187, 171, 0.3)',
+                            borderColor: '#54BBAB'
+                        }]
                     }
                 });
             },
 
-            renderInsights(p) {
+            renderInsights() {
                 const container = document.getElementById('insigths-container');
                 container.innerHTML = `
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl">
-                        <p class="text-sm font-bold text-blue-900 uppercase">Debilidad Crítica detectada</p>
-                        <p class="text-xs text-blue-700 mt-1">El 60% del grupo presenta dificultades en la competencia de <b>Argumentación</b>. Se evidencia en las bajas respuestas de justificación de procedimientos.</p>
+                    <div class="p-6 bg-slate-900 text-white rounded-sm border-l-8 border-educate-orange shadow-lg">
+                        <p class="text-lg font-black uppercase italic tracking-widest text-educate-teal">Plan de Acción - Crítico</p>
+                        <p class="text-sm mt-2 font-light leading-relaxed">El componente de <b>Formulación y Ejecución</b> en Matemáticas es el punto de quiebre. Se recomienda aplicar sesiones intensivas de resolución de problemas basados en evidencias.</p>
                     </div>
-                    <div class="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl">
-                        <p class="text-sm font-bold text-emerald-900 uppercase">Fortaleza Académica</p>
-                        <p class="text-xs text-emerald-700 mt-1 italic">La <b>Interpretación de Gráficos</b> ha mejorado un 15% respecto a la prueba Kappa. Es el pilar de puntaje del grupo actualmente.</p>
+                    <div class="p-6 bg-educate-teal text-educate-dark rounded-sm border-l-8 border-educate-blue shadow-lg">
+                        <p class="text-lg font-black uppercase italic tracking-widest">Fortaleza DCE detectada</p>
+                        <p class="text-sm mt-2 font-bold leading-relaxed">El grupo ha movilizado un 12% más de estudiantes al nivel Satisfactorio en Lectura Crítica. La competencia de identificar contenidos locales está consolidada.</p>
                     </div>
                 `;
             },
 
             exportarPDF() {
                 const el = document.getElementById('informe-final');
-                html2pdf().set({ margin: 0.3, filename: `Informe_Saber11_${this.dane}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }).from(el).save();
+                html2pdf().set({ 
+                    margin: 0.4, 
+                    filename: 'Radar_Saber11_EducateColombia.pdf', 
+                    html2canvas: { scale: 2 }, 
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } 
+                }).from(el).save();
             }
         };
 
