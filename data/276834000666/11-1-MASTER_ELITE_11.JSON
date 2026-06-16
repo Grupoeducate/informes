@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "archivo_fuente": "JOVITA_SANTA_COLOMA_MASTER_ELITE_11_V2.pdf",
+    "institucion": "JOVITA SANTA COLOMA",
+    "prueba_evaluacion": "MASTER ELITE 11",
+    "orden": "3"
+  },
+  "analisis_pedagogico": {
+    "Matemáticas": {
+      "competencias": [
+        { "nombre": "ARGUMENTACIÓN", "puntaje_promedio": 27.1 },
+        { "nombre": "INTERPRETACIÓN Y REPRESENTACIÓN", "puntaje_promedio": 31.8 },
+        { "nombre": "FORMULACIÓN Y EJECUCIÓN", "puntaje_promedio": 27.7 }
+      ],
+      "componentes": [
+        { "nombre": "GEOMÉTRICO - MÉTRICO", "puntaje_promedio": 25.0 },
+        { "nombre": "NUMÉRICO - VARIACIONAL", "puntaje_promedio": 29.4 },
+        { "nombre": "ALEATORIO", "puntaje_promedio": 31.4 }
+      ]
+    },
+    "Lectura crítica": {
+      "competencias": [
+        { "nombre": "EVALUAR Y REFLEXIONAR SOBRE LA FORMA Y EL CONTENIDO DE TEXTOS", "puntaje_promedio": 35.0 },
+        { "nombre": "RELACIONAR E INTERPRETAR INFORMACION", "puntaje_promedio": 45.8 },
+        { "nombre": "IDENTIFICAR Y UBICAR INFORMACIÓN LOCAL QUE CONFORMA UN TEXTO", "puntaje_promedio": 38.3 }
+      ],
+      "componentes": [
+        { "nombre": "PRAGMÁTICO", "puntaje_promedio": 29.5 },
+        { "nombre": "SEMÁNTICO", "puntaje_promedio": 42.5 },
+        { "nombre": "SINTÁCTICO", "puntaje_promedio": 45.0 }
+      ]
+    },
+    "Ciencias Sociales": {
+      "competencias": [
+        { "nombre": "PENSAMIENTO SOCIAL", "puntaje_promedio": 42.7 },
+        { "nombre": "INTERPRETACIÓN Y ANÁLISIS DE PERSPECTIVAS", "puntaje_promedio": 43.3 },
+        { "nombre": "PENSAMIENTO REFLEXIVO Y SISTÉMICO", "puntaje_promedio": 47.6 }
+      ],
+      "componentes": [
+        { "nombre": "COMPETENCIAS CIUDADANAS", "puntaje_promedio": 46.9 },
+        { "nombre": "ÉTICO / POLÍTICO", "puntaje_promedio": 43.1 },
+        { "nombre": "HISTORIA Y CULTURA", "puntaje_promedio": 41.7 },
+        { "nombre": "ESPACIO Y AMBIENTE", "puntaje_promedio": 37.5 }
+      ]
+    },
+    "Ciencias Naturales": {
+      "competencias": [
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 29.4 },
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIENTÍFICO", "puntaje_promedio": 39.8 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 41.7 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 40.6 },
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 32.7 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 40.7 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCIEDAD", "puntaje_promedio": 29.5 }
+      ]
+    },
+    "Inglés": {
+      "competencias": [
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 29.4 },
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIENTÍFICO", "puntaje_promedio": 39.8 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 41.7 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 40.6 },
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 32.7 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 40.7 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCIEDAD", "puntaje_promedio": 29.5 }
+      ]
+    }
+  }
+}

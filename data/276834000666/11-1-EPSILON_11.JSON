@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "archivo_fuente": "JOVITA_SANTA_COLOMA_EPSILON_11.pdf",
+    "institucion": "JOVITA SANTA COLOMA",
+    "prueba_evaluacion": "EPSILON 11",
+    "orden": "2"
+  },
+  "analisis_pedagogico": {
+    "Matemáticas": {
+      "competencias": [
+        { "nombre": "INTERPRETACIÓN Y REPRESENTACIÓN", "puntaje_promedio": 52.2 },
+        { "nombre": "FORMULACIÓN Y EJECUCIÓN", "puntaje_promedio": 36.8 },
+        { "nombre": "ARGUMENTACIÓN", "puntaje_promedio": 42.0 }
+      ],
+      "componentes": [
+        { "nombre": "ALEATORIO", "puntaje_promedio": 57.8 },
+        { "nombre": "NUMÉRICO - VARIACIONAL", "puntaje_promedio": 35.7 },
+        { "nombre": "GEOMÉTRICO - MÉTRICO", "puntaje_promedio": 39.5 }
+      ]
+    },
+    "Lectura Crítica": {
+      "competencias": [
+        { "nombre": "IDENTIFICAR Y ENTENDER LOS CONTENIDOS LOCALES QUE CONFORMAN UN TEXTO", "puntaje_promedio": 50.0 },
+        { "nombre": "COMPRENDER CÓMO SE ARTICULAN LAS PARTES DE UN TEXTO PARA DARLE UN SENTIDO GLOBAL", "puntaje_promedio": 47.5 },
+        { "nombre": "REFLEXIONAR A PARTIR DE UN TEXTO Y EVALUAR SU CONTENIDO", "puntaje_promedio": 34.8 }
+      ],
+      "componentes": [
+        { "nombre": "SEMÁNTICO", "puntaje_promedio": 48.5 },
+        { "nombre": "PRAGMÁTICO", "puntaje_promedio": 42.3 },
+        { "nombre": "SINTÁCTICO", "puntaje_promedio": 44.4 }
+      ]
+    },
+    "Ciencias Sociales": {
+      "competencias": [
+        { "nombre": "PENSAMIENTO SOCIAL", "puntaje_promedio": 34.2 },
+        { "nombre": "INTERPRETACIÓN Y ANÁLISIS DE PERSPECTIVAS", "puntaje_promedio": 43.7 },
+        { "nombre": "PENSAMIENTO REFLEXIVO Y SISTÉMICO", "puntaje_promedio": 30.7 }
+      ],
+      "componentes": [
+        { "nombre": "HISTORIA Y CULTURA", "puntaje_promedio": 37.1 },
+        { "nombre": "ESPACIO Y AMBIENTE", "puntaje_promedio": 49.5 },
+        { "nombre": "ÉTICO / POLÍTICO", "puntaje_promedio": 23.3 },
+        { "nombre": "COMPETENCIAS CIUDADANAS", "puntaje_promedio": 36.7 }
+      ]
+    },
+    "Ciencias Naturales": {
+      "competencias": [
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIENTÍFICO", "puntaje_promedio": 43.8 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 45.3 },
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 42.7 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 41.4 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCIEDAD", "puntaje_promedio": 53.3 },
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 51.8 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 36.5 }
+      ]
+    },
+    "Inglés": {
+      "competencias": [
+        { "nombre": "LINGÜÍSTICA", "puntaje_promedio": 47.0 },
+        { "nombre": "SOCIOLINGÜÍSTICO", "puntaje_promedio": 57.8 },
+        { "nombre": "PRAGMÁTICA", "puntaje_promedio": 41.5 }
+      ],
+      "componentes": [
+        { "nombre": "LEXICAL", "puntaje_promedio": 53.3 },
+        { "nombre": "CONVERSACIONAL", "puntaje_promedio": 57.8 },
+        { "nombre": "GRAMATICAL", "puntaje_promedio": 41.5 },
+        { "nombre": "LECTURA", "puntaje_promedio": 39.3 }
+      ]
+    }
+  }
+}
