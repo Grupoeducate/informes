@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "archivo_fuente": "I_E_JULIO_CAICEDO_TELLEZ_MASTER_ELITE_11.pdf",
+    "institucion": "I.E. JULIO CAICEDO TELLEZ",
+    "prueba_evaluacion": "MASTER ELITE 11",
+    "orden": "3"
+  },
+  "analisis_pedagogico": {
+    "Matemáticas": {
+      "competencias": [
+        { "nombre": "ARGUMENTACIÓN", "puntaje_promedio": 22.2 },
+        { "nombre": "INTERPRETACIÓN Y REPRESENTACIÓN", "puntaje_promedio": 31.3 },
+        { "nombre": "FORMULACIÓN Y EJECUCIÓN", "puntaje_promedio": 28.8 }
+      ],
+      "componentes": [
+        { "nombre": "GEOMÉTRICO - MÉTRICO", "puntaje_promedio": 29.8 },
+        { "nombre": "NUMÉRICO - VARIACIONAL", "puntaje_promedio": 30.7 },
+        { "nombre": "ALEATORIO", "puntaje_promedio": 23.5 }
+      ]
+    },
+    "Lectura crítica": {
+      "competencias": [
+        { "nombre": "EVALUAR Y REFLEXIONAR SOBRE LA FORMA Y EL CONTENIDO DE TEXTOS", "puntaje_promedio": 29.2 },
+        { "nombre": "RELACIONAR E INTERPRETAR INFORMACION", "puntaje_promedio": 33.3 },
+        { "nombre": "IDENTIFICAR Y UBICAR INFORMACIÓN LOCAL QUE CONFORMA UN TEXTO", "puntaje_promedio": 36.7 }
+      ],
+      "componentes": [
+        { "nombre": "PRAGMÁTICO", "puntaje_promedio": 30.3 },
+        { "nombre": "SEMÁNTICO", "puntaje_promedio": 30.8 },
+        { "nombre": "SINTÁCTICO", "puntaje_promedio": 35.0 }
+      ]
+    },
+    "Ciencias Sociales": {
+      "competencias": [
+        { "nombre": "PENSAMIENTO SOCIAL", "puntaje_promedio": 29.2 },
+        { "nombre": "INTERPRETACIÓN Y ANÁLISIS DE PERSPECTIVAS", "puntaje_promedio": 35.8 },
+        { "nombre": "PENSAMIENTO REFLEXIVO Y SISTÉMICO", "puntaje_promedio": 44.0 }
+      ],
+      "componentes": [
+        { "nombre": "COMPETENCIAS CIUDADANAS", "puntaje_promedio": 40.0 },
+        { "nombre": "ÉTICO / POLÍTICO", "puntaje_promedio": 30.6 },
+        { "nombre": "HISTORIA Y CULTURA", "puntaje_promedio": 30.6 },
+        { "nombre": "ESPACIO Y AMBIENTE", "puntaje_promedio": 29.2 }
+      ]
+    },
+    "Ciencias Naturales": {
+      "competencias": [
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 23.8 },
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIENTÍFICO", "puntaje_promedio": 37.0 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 23.7 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 30.2 },
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 26.2 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 22.5 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCIEDAD", "puntaje_promedio": 34.8 }
+      ]
+    },
+    "Inglés": {
+      "competencias": [],
+      "componentes": []
+    }
+  }
+}
