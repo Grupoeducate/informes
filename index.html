@@ -1,1 +1,263 @@
-sas
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADAR SABER 11 - Inteligencia Educativa</title>
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .print-only { display: none; }
+        @media print {
+            .no-print { display: none; }
+            .print-only { display: block; }
+            .page-break { page-break-after: always; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- BARRA DE NAVEGACIÓN (NO PRINT) -->
+    <nav class="no-print bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-2 rounded-lg font-bold text-xl">R11</div>
+                <h1 class="text-lg font-semibold tracking-tight">RADAR SABER 11 <span class="text-blue-400 font-light">| DCE Expert</span></h1>
+            </div>
+            
+            <div class="flex gap-4 items-center">
+                <select id="selectDANE" class="bg-slate-800 text-sm border border-slate-700 rounded px-3 py-1 outline-none focus:border-blue-500">
+                    <option value="">Seleccione Colegio (DANE)</option>
+                    <option value="176670000240">I.E. JULIO CAICEDO TELLEZ</option>
+                </select>
+                
+                <select id="selectGrupo" class="bg-slate-800 text-sm border border-slate-700 rounded px-3 py-1">
+                    <option value="11-1">Grupo 11-1</option>
+                    <option value="11-2">Grupo 11-2</option>
+                </select>
+
+                <button onclick="generarPDF()" class="bg-green-600 hover:bg-green-500 text-white text-sm font-bold py-1 px-4 rounded transition">
+                    Exportar Informe PDF
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main id="informe-contenido" class="container mx-auto p-4 lg:p-8">
+        
+        <!-- CABECERA INSTITUCIONAL -->
+        <header class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 mb-8 flex justify-between items-center">
+            <div>
+                <h2 id="display-colegio" class="text-3xl font-bold text-slate-800">Cargando Institución...</h2>
+                <p class="text-slate-500 flex gap-4 mt-1">
+                    <span>DANE: <b id="display-dane">-</b></span>
+                    <span>Municipio: <b>Tuluá</b></span>
+                    <span>Grupo: <b id="display-grupo">-</b></span>
+                </p>
+            </div>
+            <div class="text-right">
+                <div class="text-sm text-slate-400 uppercase font-bold tracking-widest">Estado de Progresión</div>
+                <div id="status-global" class="text-2xl font-black text-blue-600 italic">ANALIZANDO...</div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD DE KPIs -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <p class="text-xs font-bold text-slate-500 uppercase">Promedio Global</p>
+                <h3 id="kpi-promedio" class="text-4xl font-black text-slate-800">0.0</h3>
+                <p id="kpi-diff" class="text-sm mt-1 font-semibold text-green-600">--</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500">
+                <p class="text-xs font-bold text-slate-500 uppercase">Potencial Percentil</p>
+                <h3 id="kpi-percentil" class="text-4xl font-black text-slate-800">0%</h3>
+                <p class="text-xs text-slate-400 mt-1">Estimado Nacional</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-orange-500">
+                <p class="text-xs font-bold text-slate-500 uppercase">Movilidad Positiva</p>
+                <h3 id="kpi-movilidad" class="text-4xl font-black text-slate-800">0%</h3>
+                <p class="text-xs text-slate-400 mt-1">Estudiantes que subieron</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                <p class="text-xs font-bold text-slate-500 uppercase">Nivel Destacado</p>
+                <h3 id="kpi-nivel" class="text-xl font-bold text-slate-800">--</h3>
+                <p class="text-xs text-slate-400 mt-1">Desempeño predominante</p>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS PRINCIPALES -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h4 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-blue-600 rounded-full"></span> Evolución Histórica de Puntajes
+                </h4>
+                <canvas id="chartEvolucion" height="200"></canvas>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h4 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-emerald-500 rounded-full"></span> Distribución por Niveles (Saber 11)
+                </h4>
+                <canvas id="chartNiveles" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- TABLA DE SEGUIMIENTO INDIVIDUAL (CON FLECHAS) -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h4 class="font-bold text-slate-700 uppercase tracking-wider text-sm">Seguimiento de Progreso Individual</h4>
+                <span class="text-xs text-slate-400 italic">Comparativa automática entre pruebas aplicadas</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold">
+                        <tr>
+                            <th class="p-4 border-b">Estudiante</th>
+                            <th class="p-4 border-b text-center">P1 (Kappa)</th>
+                            <th class="p-4 border-b text-center">P2 (Epsilon)</th>
+                            <th class="p-4 border-b text-center">C1</th>
+                            <th class="p-4 border-b text-center">P3 (Master)</th>
+                            <th class="p-4 border-b text-center">C2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-estudiantes" class="text-sm divide-y divide-slate-100">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ANÁLISIS DE COMPETENCIAS (DCE) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h4 class="font-bold text-slate-700 mb-4 text-center">Perfil de Competencias (Radar)</h4>
+                <canvas id="chartRadar"></canvas>
+                <div class="mt-4 p-4 bg-slate-50 rounded-lg text-xs text-slate-500 italic">
+                    * Análisis basado en Diseño Centrado en Evidencias (DCE) del ICFES.
+                </div>
+            </div>
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h4 class="font-bold text-slate-700 mb-4">Fortalezas y Debilidades Pedagógicas</h4>
+                <div id="insights-container" class="space-y-4">
+                    <!-- Se llena dinámicamente -->
+                    <div class="p-4 border-l-4 border-blue-500 bg-blue-50">
+                        <p class="text-sm text-blue-800 font-semibold italic italic">"Cargando análisis de evidencias..."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-12 p-8 text-center text-slate-400 text-xs">
+        <p>© 2024 RADAR SABER 11 - Sistema de Analítica Predictiva</p>
+        <p class="mt-1 font-bold">Diseño Centrado en Evidencias (DCE) | Framework Educativo V3.0</p>
+    </footer>
+
+    <!-- LOGICA DE LA APP (GO) -->
+    <script>
+        // Estructura de carga dinámica
+        const configApp = {
+            currentDane: '176670000240',
+            currentGrupo: '11-1',
+            pruebas: ['KAPPA_10', 'EPSILON_11', 'MASTER_ELITE_11']
+        };
+
+        // Función para procesar y cargar datos
+        async function loadData() {
+            const dane = document.getElementById('selectDANE').value || configApp.currentDane;
+            const grupo = document.getElementById('selectGrupo').value;
+            
+            document.getElementById('display-colegio').innerText = "I.E. JULIO CAICEDO TELLEZ";
+            document.getElementById('display-dane').innerText = dane;
+            document.getElementById('display-grupo').innerText = grupo;
+
+            // Simulación de carga (Aquí conectarás PapaParse con tus archivos de GitHub)
+            renderCharts();
+            renderTable();
+        }
+
+        function renderCharts() {
+            // Lógica de Chart.js para Evolución
+            const ctxEvol = document.getElementById('chartEvolucion').getContext('2d');
+            new Chart(ctxEvol, {
+                type: 'line',
+                data: {
+                    labels: ['Prueba 1', 'Prueba 2', 'Prueba 3'],
+                    datasets: [{
+                        label: 'Puntaje Global 11-1',
+                        data: [156, 162, 159],
+                        borderColor: '#2563eb',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)'
+                    }]
+                }
+            });
+
+            // Lógica de Niveles (Barras Apiladas)
+            const ctxNiv = document.getElementById('chartNiveles').getContext('2d');
+            new Chart(ctxNiv, {
+                type: 'bar',
+                data: {
+                    labels: ['P1', 'P2', 'P3'],
+                    datasets: [
+                        { label: 'Insuficiente', data: [80, 75, 78], backgroundColor: '#ef4444' },
+                        { label: 'Mínimo', data: [15, 20, 18], backgroundColor: '#f59e0b' },
+                        { label: 'Satisfactorio', data: [5, 5, 4], backgroundColor: '#3b82f6' }
+                    ]
+                },
+                options: { scales: { y: { stacked: true }, x: { stacked: true } } }
+            });
+        }
+
+        function renderTable() {
+            const tabla = document.getElementById('tabla-estudiantes');
+            const mockupData = [
+                { nombre: "VASQUEZ NEIRA BRENDA", p1: 183, p2: 190, c1: "↑", p3: 173, c2: "↓" },
+                { nombre: "MORENO VALENCIA ANDERSON", p1: 175, p2: 179, c1: "↑", p3: 149, c2: "↓" },
+                { nombre: "ARANGO DELGADO SARA", p1: 168, p2: 170, c1: "↑", p3: 173, c2: "↑" }
+            ];
+
+            tabla.innerHTML = mockupData.map(est => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-4 font-bold text-slate-700">${est.nombre}</td>
+                    <td class="p-4 text-center text-slate-500">${est.p1}</td>
+                    <td class="p-4 text-center font-bold text-blue-600">${est.p2}</td>
+                    <td class="p-4 text-center">
+                        <span class="${est.c1 === '↑' ? 'text-green-500' : 'text-red-500'} font-black text-xl">${est.c1}</span>
+                    </td>
+                    <td class="p-4 text-center font-bold text-purple-600">${est.p3}</td>
+                    <td class="p-4 text-center">
+                        <span class="${est.c2 === '↑' ? 'text-green-500' : 'text-red-500'} font-black text-xl">${est.c2}</span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function generarPDF() {
+            const element = document.getElementById('informe-contenido');
+            const opt = {
+                margin: 0.5,
+                filename: 'Informe_Saber11_DANE.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Inicializar
+        window.onload = loadData;
+        document.getElementById('selectDANE').addEventListener('change', loadData);
+        document.getElementById('selectGrupo').addEventListener('change', loadData);
+    </script>
+</body>
+</html>
