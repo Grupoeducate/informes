@@ -16,7 +16,13 @@
             theme: {
                 extend: {
                     colors: {
-                        educate: { 'dark': '#17334B', 'blue': '#11678B', 'teal': '#54BBAB', 'orange': '#F39325', 'red': '#B01829' }
+                        educate: {
+                            'dark': '#17334B',
+                            'blue': '#11678B',
+                            'teal': '#54BBAB',
+                            'orange': '#F39325',
+                            'red': '#B01829'
+                        }
                     },
                     fontFamily: { barlow: ['Barlow Condensed', 'sans-serif'] }
                 }
@@ -34,26 +40,39 @@
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <img src="assets/img/Logo_grupo_educate.png" alt="Edúcate" class="h-10 bg-white p-1 rounded">
-                <h1 class="text-xl font-bold uppercase italic tracking-tighter">Módulo 1: <span class="text-educate-teal font-light">Análisis Institucional</span></h1>
+                <h1 class="text-xl font-bold uppercase italic tracking-tighter">
+                    Módulo 1: <span class="text-educate-teal font-light">Análisis Institucional</span>
+                </h1>
             </div>
             <div class="flex gap-4">
-                <select id="selectDANE" onchange="Inst.init()" class="bg-white/10 border border-white/20 rounded px-4 py-1.5 text-sm text-white outline-none">
+                <select id="selectDANE" onchange="Inst.init()" 
+                    class="bg-white/10 border border-white/20 rounded px-4 py-1.5 text-sm text-white outline-none">
                     <option class="text-black" value="">Seleccione Institución...</option>
                 </select>
-                <a href="index.html" class="bg-educate-blue px-4 py-1.5 rounded text-sm font-bold uppercase">Vista Estudiantes</a>
-                <button onclick="Inst.exportar()" class="bg-educate-orange px-4 py-1.5 rounded text-sm font-bold uppercase">Exportar PDF</button>
+                <a href="index.html" class="bg-educate-blue px-4 py-1.5 rounded text-sm font-bold uppercase">
+                    Vista Estudiantes
+                </a>
+                <button onclick="Inst.exportar()" 
+                    class="bg-educate-orange px-4 py-1.5 rounded text-sm font-bold uppercase">
+                    Exportar PDF
+                </button>
             </div>
         </div>
     </nav>
 
     <main id="reporte-inst" class="container mx-auto p-6 lg:p-10 max-w-7xl">
         <div class="bg-gradient-educate rounded-sm p-10 text-white shadow-2xl mb-10 relative overflow-hidden">
-            <h2 id="inst-nombre" class="text-6xl font-extrabold uppercase italic tracking-tighter leading-none relative z-10">Seleccione Colegio</h2>
+            <h2 id="inst-nombre" 
+                class="text-6xl font-extrabold uppercase italic tracking-tighter leading-none relative z-10">
+                Seleccione Colegio
+            </h2>
             <div class="flex gap-10 mt-6 text-educate-teal font-bold text-xl uppercase tracking-widest relative z-10">
                 <p>DANE: <span id="inst-dane" class="text-white">--</span></p>
                 <p>GRADOS: <span id="inst-grados" class="text-white">--</span></p>
             </div>
-            <div class="absolute right-[-50px] top-[-50px] opacity-10 text-[300px] font-black italic select-none">EDÚCATE</div>
+            <div class="absolute right-[-50px] top-[-50px] opacity-10 text-[300px] font-black italic select-none">
+                EDÚCATE
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
@@ -62,14 +81,18 @@
                 <div id="ranking-list" class="space-y-4 text-2xl font-bold"></div>
             </div>
             <div class="lg:col-span-2 bg-white p-8 shadow-xl border-t-4 border-educate-teal">
-                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2 text-center text-sm">Evolución Promedios por Grupo</h4>
+                <h4 class="font-black text-educate-dark mb-6 uppercase italic border-b pb-2 text-center text-sm">
+                    Evolución Promedios por Grupo
+                </h4>
                 <canvas id="chartProgresoInst" height="150"></canvas>
             </div>
         </div>
 
         <div class="bg-white shadow-2xl mb-10 border border-slate-200 overflow-hidden">
             <div class="bg-educate-dark p-4 text-white">
-                <h4 class="font-black uppercase tracking-widest italic text-sm">Matriz de Desempeño por Áreas (Promedios Reales)</h4>
+                <h4 class="font-black uppercase tracking-widest italic text-sm">
+                    Matriz de Desempeño por Áreas (Promedios Reales)
+                </h4>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse">
@@ -90,27 +113,56 @@
     </main>
 
     <script>
-        const Inst = {
-            config: null,
-            instData: {},
+        // ✅ CORRECCIÓN 1: Uso de clase ES6 en lugar de objeto literal con métodos async
+        // Esto resuelve el "Unexpected token 'async'" en entornos más estrictos
+        class InstController {
+            constructor() {
+                this.config = null;
+                this.instData = {};
+                this.chartInstance = null; // ✅ CORRECCIÓN 2: Control de instancia de chart en la clase
+            }
 
-            // CORRECCIÓN: Uso de sintaxis de método abreviado
+            // ✅ CORRECCIÓN 3: loadConfig con manejo robusto de errores y feedback
             async loadConfig() {
                 try {
                     const res = await fetch('./config.json');
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    
                     this.config = await res.json();
                     const sel = document.getElementById('selectDANE');
-                    this.config.forEach(c => {
-                        sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`;
-                    });
-                } catch (e) { console.error("Error config", e); }
-            },
 
+                    // ✅ CORRECCIÓN 4: Construcción eficiente con fragment en lugar de innerHTML +=
+                    const fragment = document.createDocumentFragment();
+                    this.config.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.dane;
+                        opt.className = 'text-black';
+                        opt.textContent = c.nombre;
+                        fragment.appendChild(opt);
+                    });
+                    sel.appendChild(fragment);
+
+                } catch (e) {
+                    console.error("Error cargando config.json:", e);
+                    alert("No se pudo cargar la configuración de instituciones.");
+                }
+            }
+
+            // ✅ CORRECCIÓN 5: Validación completa de la selección antes de procesar
             async init() {
                 const dane = document.getElementById('selectDANE').value;
-                if (!this.config) return; 
+                
+                if (!dane) return; // Usuario seleccionó la opción vacía
+                if (!this.config) {
+                    console.warn("Config no cargada aún.");
+                    return;
+                }
+
                 const colegio = this.config.find(c => c.dane === dane);
-                if (!colegio) return;
+                if (!colegio) {
+                    console.warn("Institución no encontrada para DANE:", dane);
+                    return;
+                }
 
                 document.getElementById('inst-nombre').innerText = colegio.nombre;
                 document.getElementById('inst-dane').innerText = colegio.dane;
@@ -118,111 +170,186 @@
 
                 await this.procesarData(colegio);
                 this.renderDashboard(colegio.pruebas);
-            },
+            }
+
+            // ✅ CORRECCIÓN 6: Parseo seguro de números con fallback a 0
+            parseNum(val) {
+                if (val === undefined || val === null || val === '') return 0;
+                return parseFloat(String(val).replace(',', '.')) || 0;
+            }
+
+            // ✅ CORRECCIÓN 7: Promedio seguro con verificación de longitud
+            promedio(rows, campo) {
+                const vals = rows
+                    .map(r => this.parseNum(r[campo]))
+                    .filter(v => !isNaN(v));
+                if (vals.length === 0) return '0.0';
+                return (vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(1);
+            }
 
             async procesarData(colegio) {
                 this.instData = { grupos: {}, matData: {} };
-                for (let g of colegio.grupos) {
+
+                for (const g of colegio.grupos) {
                     this.instData.grupos[g] = [];
-                    this.instData.matData[g] = { mat:0, lec:0, soc:0, nat:0, ing:0 };
-                    
-                    for (let p of colegio.pruebas) {
+                    this.instData.matData[g] = { mat:'0.0', lec:'0.0', soc:'0.0', nat:'0.0', ing:'0.0' };
+
+                    for (const p of colegio.pruebas) {
                         try {
                             const res = await fetch(`./data/${colegio.dane}/${g}-${p}.csv`);
-                            if (!res.ok) continue;
-                            const text = await res.text();
-                            const rows = Papa.parse(text, { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
-                            
-                            if (rows.length > 0) {
-                                const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / rows.length;
-                                this.instData.grupos[g].push(avg.toFixed(1));
-                                
-                                this.instData.matData[g] = {
-                                    mat: (rows.reduce((s, c) => s + parseFloat((c["MATEMÁTICAS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
-                                    lec: (rows.reduce((s, c) => s + parseFloat((c["LECTURA CRÍTICA"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
-                                    soc: (rows.reduce((s, c) => s + parseFloat((c["SOCIALES Y CIUDADANAS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
-                                    nat: (rows.reduce((s, c) => s + parseFloat((c["CIENCIAS NATURALES"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
-                                    ing: (rows.reduce((s, c) => s + parseFloat((c["INGLÉS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1)
-                                };
+                            if (!res.ok) {
+                                this.instData.grupos[g].push(0);
+                                continue;
                             }
-                        } catch (e) { 
-                            console.error("Error cargando CSV", e);
-                            this.instData.grupos[g].push(0); 
+
+                            const text = await res.text();
+                            const parsed = Papa.parse(text, { header: true, delimiter: ";" });
+                            
+                            // ✅ CORRECCIÓN 8: Filtro más robusto de filas vacías
+                            const rows = parsed.data.filter(r => r.PUNTAJE && r.PUNTAJE.trim() !== '');
+
+                            if (rows.length > 0) {
+                                const avg = this.promedio(rows, 'PUNTAJE');
+                                this.instData.grupos[g].push(avg);
+
+                                // ✅ CORRECCIÓN 9: Uso del método promedio() para cada área
+                                this.instData.matData[g] = {
+                                    mat: this.promedio(rows, 'MATEMÁTICAS'),
+                                    lec: this.promedio(rows, 'LECTURA CRÍTICA'),
+                                    soc: this.promedio(rows, 'SOCIALES Y CIUDADANAS'),
+                                    nat: this.promedio(rows, 'CIENCIAS NATURALES'),
+                                    ing: this.promedio(rows, 'INGLÉS')
+                                };
+                            } else {
+                                this.instData.grupos[g].push(0);
+                            }
+
+                        } catch (e) {
+                            console.error(`Error cargando ${g}-${p}.csv:`, e);
+                            this.instData.grupos[g].push(0);
                         }
                     }
                 }
-            },
+            }
 
             renderDashboard(pruebas) {
                 this.renderRanking();
                 this.renderProgreso(pruebas);
                 this.renderMatriz();
-            },
+            }
 
             renderRanking() {
                 const list = document.getElementById('ranking-list');
                 list.innerHTML = "";
+
                 const ranking = Object.keys(this.instData.grupos)
-                    .map(g => ({ name: g, score: parseFloat(this.instData.grupos[g].slice(-1)[0] || 0) }))
+                    .map(g => ({
+                        name: g,
+                        // ✅ CORRECCIÓN 10: slice(-1)[0] devuelve string, parseFloat asegura comparación numérica
+                        score: parseFloat(this.instData.grupos[g].slice(-1)[0] || 0)
+                    }))
                     .sort((a, b) => b.score - a.score);
 
+                const fragment = document.createDocumentFragment();
                 ranking.forEach((r, i) => {
-                    list.innerHTML += `
-                        <div class="flex justify-between items-center p-4 ${i === 0 ? 'bg-educate-dark text-white' : 'bg-slate-50'} rounded mb-2">
-                            <span class="text-xs italic">#${i + 1}</span>
-                            <span>GRUPO ${r.name}</span>
-                            <span class="text-3xl font-black">${r.score}</span>
-                        </div>`;
+                    const div = document.createElement('div');
+                    div.className = `flex justify-between items-center p-4 ${
+                        i === 0 ? 'bg-educate-dark text-white' : 'bg-slate-50'
+                    } rounded mb-2`;
+                    div.innerHTML = `
+                        <span class="text-xs italic">#${i + 1}</span>
+                        <span>GRUPO ${r.name}</span>
+                        <span class="text-3xl font-black">${r.score}</span>
+                    `;
+                    fragment.appendChild(div);
                 });
-            },
+                list.appendChild(fragment);
+            }
 
             renderProgreso(pruebas) {
                 const ctx = document.getElementById('chartProgresoInst').getContext('2d');
-                if (window.pCh) window.pCh.destroy();
+                
+                // ✅ CORRECCIÓN 11: Control de instancia con referencia de clase
+                if (this.chartInstance) {
+                    this.chartInstance.destroy();
+                    this.chartInstance = null;
+                }
+
+                const colores = ['#11678B', '#F39325', '#54BBAB', '#B01829'];
                 const datasets = Object.keys(this.instData.grupos).map((g, i) => ({
                     label: `Grupo ${g}`,
-                    data: this.instData.grupos[g],
-                    borderColor: ['#11678B', '#F39325', '#54BBAB', '#B01829'][i % 4],
-                    tension: 0.4, fill: false, borderWidth: 4
+                    data: this.instData.grupos[g].map(v => parseFloat(v) || 0),
+                    borderColor: colores[i % colores.length],
+                    tension: 0.4,
+                    fill: false,
+                    borderWidth: 4
                 }));
-                window.pCh = new Chart(ctx, { type: 'line', data: { labels: pruebas, datasets } });
-            },
+
+                this.chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: pruebas, datasets },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } },
+                        scales: {
+                            y: { beginAtZero: false, min: 0, max: 100 }
+                        }
+                    }
+                });
+            }
 
             renderMatriz() {
                 const body = document.getElementById('body-matriz');
                 body.innerHTML = "";
+                const fragment = document.createDocumentFragment();
+
                 Object.keys(this.instData.matData).forEach(g => {
                     const d = this.instData.matData[g];
-                    body.innerHTML += `
-                        <tr class="border-b">
-                            <td class="p-6 bg-slate-900 text-white text-sm">${g}</td>
-                            <td class="p-6" style="color:${this.getColor(d.mat)}">${d.mat}</td>
-                            <td class="p-6" style="color:${this.getColor(d.lec)}">${d.lec}</td>
-                            <td class="p-6" style="color:${this.getColor(d.soc)}">${d.soc}</td>
-                            <td class="p-6" style="color:${this.getColor(d.nat)}">${d.nat}</td>
-                            <td class="p-6" style="color:${this.getColor(d.ing)}">${d.ing}</td>
-                        </tr>`;
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b';
+                    tr.innerHTML = `
+                        <td class="p-6 bg-slate-900 text-white text-sm">${g}</td>
+                        <td class="p-6" style="color:${this.getColor(d.mat)}">${d.mat}</td>
+                        <td class="p-6" style="color:${this.getColor(d.lec)}">${d.lec}</td>
+                        <td class="p-6" style="color:${this.getColor(d.soc)}">${d.soc}</td>
+                        <td class="p-6" style="color:${this.getColor(d.nat)}">${d.nat}</td>
+                        <td class="p-6" style="color:${this.getColor(d.ing)}">${d.ing}</td>
+                    `;
+                    fragment.appendChild(tr);
                 });
-            },
+                body.appendChild(fragment);
+            }
 
             getColor(val) {
                 const v = parseFloat(val);
-                if (v < 35) return '#B01829'; // Rojo
-                if (v < 50) return '#F39325'; // Naranja
-                return '#11678B'; // Azul Educate
-            },
+                if (isNaN(v) || v < 35) return '#B01829';
+                if (v < 50) return '#F39325';
+                return '#11678B';
+            }
 
+            // ✅ CORRECCIÓN 12: exportar() con manejo de errores y feedback
             exportar() {
                 const el = document.getElementById('reporte-inst');
-                html2pdf().set({ 
-                    margin: 0.3, 
-                    filename: 'Institucional.pdf', 
-                    html2canvas: { scale: 2 }, 
-                    jsPDF: { orientation: 'landscape' } 
-                }).from(el).save();
+                if (!el) {
+                    alert("No hay contenido para exportar.");
+                    return;
+                }
+                try {
+                    html2pdf().set({
+                        margin: 0.3,
+                        filename: 'Institucional.pdf',
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { orientation: 'landscape' }
+                    }).from(el).save();
+                } catch (e) {
+                    console.error("Error exportando PDF:", e);
+                    alert("Ocurrió un error al generar el PDF.");
+                }
             }
-        };
+        }
 
+        // ✅ CORRECCIÓN 13: Instancia global accesible desde los atributos onclick del HTML
+        const Inst = new InstController();
         window.onload = () => Inst.loadConfig();
     </script>
 </body>
