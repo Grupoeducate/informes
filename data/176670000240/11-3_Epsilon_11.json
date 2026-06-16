@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "archivo_fuente": "EPSILON 11.pdf",
+    "institucion": "I.E. JOSE ANTONIO AGUILERA",
+    "prueba_evaluacion": "EPSILON 11",
+    "orden": "2"
+  },
+  "analisis_pedagogico": {
+    "Matemáticas": {
+      "competencias": [
+        { "nombre": "INTERPRETACIÓN Y REPRESENTACIÓN", "puntaje_promedio": 51.0 },
+        { "nombre": "FORMULACIÓN Y EJECUCIÓN", "puntaje_promedio": 33.9 },
+        { "nombre": "ARGUMENTACIÓN", "puntaje_promedio": 46.3 }
+      ],
+      "componentes": [
+        { "nombre": "ALEATORIO", "puntaje_promedio": 61.7 },
+        { "nombre": "NUMÉRICO - VARIACIONAL", "puntaje_promedio": 32.0 },
+        { "nombre": "GEOMÉTRICO - MÉTRICO", "puntaje_promedio": 37.6 }
+      ]
+    },
+    "Lectura Crítica": {
+      "competencias": [
+        { "nombre": "IDENTIFICAR Y ENTENDER LOS CONTENIDOS...", "puntaje_promedio": 53.2 },
+        { "nombre": "COMPRENDER CÓMO SE ARTICULAN LAS PART...", "puntaje_promedio": 61.3 },
+        { "nombre": "REFLEXIONAR A PARTIR DE UN TEXTO Y EV...", "puntaje_promedio": 43.6 }
+      ],
+      "componentes": [
+        { "nombre": "SEMÁNTICO", "puntaje_promedio": 57.8 },
+        { "nombre": "PRAGMÁTICO", "puntaje_promedio": 53.1 },
+        { "nombre": "SINTÁCTICO", "puntaje_promedio": 61.7 }
+      ]
+    },
+    "Ciencias Sociales": {
+      "competencias": [
+        { "nombre": "PENSAMIENTO SOCIAL", "puntaje_promedio": 36.3 },
+        { "nombre": "INTERPRETACIÓN Y ANÁLISIS DE PERSPECT...", "puntaje_promedio": 57.8 },
+        { "nombre": "PENSAMIENTO REFLEXIVO Y SISTÉMICO", "puntaje_promedio": 49.9 }
+      ],
+      "componentes": [
+        { "nombre": "HISTORIA Y CULTURA", "puntaje_promedio": 39.2 },
+        { "nombre": "ESPACIO Y AMBIENTE", "puntaje_promedio": 55.6 },
+        { "nombre": "ÉTICO / POLÍTICO", "puntaje_promedio": 26.5 },
+        { "nombre": "COMPETENCIAS CIUDADANAS", "puntaje_promedio": 54.2 }
+      ]
+    },
+    "Ciencias Naturales": {
+      "competencias": [
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIEN...", "puntaje_promedio": 46.5 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 55.0 },
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 50.1 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 54.2 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCI...", "puntaje_promedio": 61.5 },
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 54.9 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 38.3 }
+      ]
+    },
+    "Inglés": {
+      "competencias": [
+        { "nombre": "LINGÜÍSTICA", "puntaje_promedio": 54.0 },
+        { "nombre": "SOCIOLINGÜÍSTICO", "puntaje_promedio": 61.1 },
+        { "nombre": "PRAGMÁTICA", "puntaje_promedio": 41.2 }
+      ],
+      "componentes": [
+        { "nombre": "LEXICAL", "puntaje_promedio": 49.4 },
+        { "nombre": "CONVERSACIONAL", "puntaje_promedio": 61.1 },
+        { "nombre": "GRAMATICAL", "puntaje_promedio": 41.2 },
+        { "nombre": "LECTURA", "puntaje_promedio": 59.6 }
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "archivo_fuente": "KAPPA 10.pdf",
+    "institucion": "I.E. JOSE ANTONIO AGUILERA",
+    "prueba_evaluacion": "KAPPA 10",
+    "orden": "1"
+  },
+  "analisis_pedagogico": {
+    "Matemáticas": {
+      "competencias": [
+        { "nombre": "FORMULACIÓN Y EJECUCIÓN", "puntaje_promedio": 30.9 },
+        { "nombre": "ARGUMENTACIÓN", "puntaje_promedio": 33.0 },
+        { "nombre": "INTERPRETACIÓN Y REPRESENTACIÓN", "puntaje_promedio": 37.8 }
+      ],
+      "componentes": [
+        { "nombre": "NUMÉRICO - VARIACIONAL", "puntaje_promedio": 34.1 },
+        { "nombre": "GEOMÉTRICO - MÉTRICO", "puntaje_promedio": 29.3 },
+        { "nombre": "ALEATORIO", "puntaje_promedio": 36.4 }
+      ]
+    },
+    "Lectura Crítica": {
+      "competencias": [
+        { "nombre": "IDENTIFICAR Y ENTENDER LOS CONTENIDOS...", "puntaje_promedio": 52.5 },
+        { "nombre": "REFLEXIONAR A PARTIR DE UN TEXTO Y EV...", "puntaje_promedio": 34.0 },
+        { "nombre": "COMPRENDER CÓMO SE ARTICULAN LAS PART...", "puntaje_promedio": 38.7 }
+      ],
+      "componentes": [
+        { "nombre": "SINTÁCTICO", "puntaje_promedio": 48.7 },
+        { "nombre": "PRAGMÁTICO", "puntaje_promedio": 34.0 },
+        { "nombre": "SEMÁNTICO", "puntaje_promedio": 41.6 }
+      ]
+    },
+    "Ciencias Sociales": {
+      "competencias": [
+        { "nombre": "INTERPRETACIÓN Y ANÁLISIS DE PERSPECT...", "puntaje_promedio": 36.9 },
+        { "nombre": "PENSAMIENTO REFLEXIVO Y SISTÉMICO", "puntaje_promedio": 37.5 },
+        { "nombre": "PENSAMIENTO SOCIAL", "puntaje_promedio": 44.7 }
+      ],
+      "componentes": [
+        { "nombre": "HISTORIA Y CULTURA", "puntaje_promedio": 35.0 },
+        { "nombre": "COMPETENCIAS CIUDADANAS", "puntaje_promedio": 41.5 },
+        { "nombre": "ÉTICO / POLÍTICO", "puntaje_promedio": 34.1 },
+        { "nombre": "ESPACIO Y AMBIENTE", "puntaje_promedio": 39.2 }
+      ]
+    },
+    "Ciencias Naturales": {
+      "competencias": [
+        { "nombre": "USO COMPRENSIVO DEL CONOCIMIENTO CIEN...", "puntaje_promedio": 41.7 },
+        { "nombre": "EXPLICACIÓN DE FENÓMENOS", "puntaje_promedio": 37.0 },
+        { "nombre": "INDAGACIÓN", "puntaje_promedio": 38.0 }
+      ],
+      "componentes": [
+        { "nombre": "ENTORNO QUÍMICO", "puntaje_promedio": 35.5 },
+        { "nombre": "ENTORNO BIOLÓGICO", "puntaje_promedio": 39.7 },
+        { "nombre": "ENTORNO FÍSICO", "puntaje_promedio": 42.3 },
+        { "nombre": "ENTORNO DE CIENCIA, TECNOLOGÍA Y SOCI...", "puntaje_promedio": 30.6 }
+      ]
+    },
+    "Inglés": {
+      "competencias": [
+        { "nombre": "LINGÜÍSTICA", "puntaje_promedio": 32.5 },
+        { "nombre": "PRAGMÁTICA", "puntaje_promedio": 41.1 },
+        { "nombre": "SOCIOLINGÜÍSTICO", "puntaje_promedio": 38.5 }
+      ],
+      "componentes": [
+        { "nombre": "LEXICAL", "puntaje_promedio": 40.6 },
+        { "nombre": "CONVERSACIONAL", "puntaje_promedio": 33.9 },
+        { "nombre": "GRAMATICAL", "puntaje_promedio": 32.4 },
+        { "nombre": "LECTURA", "puntaje_promedio": 38.5 }
+      ]
+    }
+  }
+}
