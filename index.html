@@ -162,102 +162,191 @@
     </footer>
 
     <!-- LOGICA DE LA APP (GO) -->
-    <script>
-        // Estructura de carga dinámica
-        const configApp = {
-            currentDane: '176670000240',
-            currentGrupo: '11-1',
-            pruebas: ['KAPPA_10', 'EPSILON_11', 'MASTER_ELITE_11']
-        };
+   <script>
+// CONFIGURACIÓN DEL MOTOR DE DATOS
+const AppEngine = {
+    dane: '176670000240', // Por defecto
+    grupo: '11-1',
+    // Listado de pruebas en orden cronológico
+    pruebas: ['KAPPA_10', 'EPSILON_11', 'MASTER_ELITE_11'],
+    dataRepo: {}, // Aquí se guardará todo el proceso
 
-        // Función para procesar y cargar datos
-        async function loadData() {
-            const dane = document.getElementById('selectDANE').value || configApp.currentDane;
-            const grupo = document.getElementById('selectGrupo').value;
+    async init() {
+        this.dane = document.getElementById('selectDANE').value || this.dane;
+        this.grupo = document.getElementById('selectGrupo').value || this.grupo;
+        await this.cargarTodo();
+    },
+
+    async cargarTodo() {
+        this.dataRepo = {};
+        const promesas = this.pruebas.map(async (p) => {
+            const fileName = `${this.grupo}-${p}`;
+            const pathBase = `data/${this.dane}/${fileName}`;
             
+            try {
+                // 1. Cargar CSV
+                const resCsv = await fetch(`${pathBase}.csv`);
+                const csvText = await resCsv.text();
+                const csvData = Papa.parse(csvText, { header: true, delimiter: ";" }).data;
+
+                // 2. Cargar JSON (Metadatos Pedagógicos)
+                const resJson = await fetch(`${pathBase}.json`);
+                const jsonData = await resJson.json();
+
+                this.dataRepo[p] = {
+                    estudiantes: csvData.filter(r => r.DOCUMENTO), // Limpiar filas vacías
+                    pedagogia: jsonData.analisis_pedagogico
+                };
+            } catch (e) {
+                console.warn(`No se encontró la prueba ${p} para este grupo.`);
+            }
+        });
+
+        await Promise.all(promesas);
+        this.renderizarDashboard();
+    },
+
+    renderizarDashboard() {
+        const p1 = this.dataRepo['KAPPA_10'];
+        const p2 = this.dataRepo['EPSILON_11'];
+        const p3 = this.dataRepo['MASTER_ELITE_11'];
+
+        // 1. Actualizar KPIs
+        if (p3) {
+            const avg = this.calcularPromedio(p3.estudiantes);
+            document.getElementById('kpi-promedio').innerText = avg.toFixed(1);
             document.getElementById('display-colegio').innerText = "I.E. JULIO CAICEDO TELLEZ";
-            document.getElementById('display-dane').innerText = dane;
-            document.getElementById('display-grupo').innerText = grupo;
-
-            // Simulación de carga (Aquí conectarás PapaParse con tus archivos de GitHub)
-            renderCharts();
-            renderTable();
+            document.getElementById('status-global').innerText = avg > 250 ? "PROGRESANDO" : "CRÍTICO";
         }
 
-        function renderCharts() {
-            // Lógica de Chart.js para Evolución
-            const ctxEvol = document.getElementById('chartEvolucion').getContext('2d');
-            new Chart(ctxEvol, {
-                type: 'line',
-                data: {
-                    labels: ['Prueba 1', 'Prueba 2', 'Prueba 3'],
-                    datasets: [{
-                        label: 'Puntaje Global 11-1',
-                        data: [156, 162, 159],
-                        borderColor: '#2563eb',
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)'
-                    }]
-                }
-            });
+        // 2. Renderizar Tabla de Seguimiento Individual
+        this.renderTablaSeguimiento(p1, p2, p3);
 
-            // Lógica de Niveles (Barras Apiladas)
-            const ctxNiv = document.getElementById('chartNiveles').getContext('2d');
-            new Chart(ctxNiv, {
-                type: 'bar',
-                data: {
-                    labels: ['P1', 'P2', 'P3'],
-                    datasets: [
-                        { label: 'Insuficiente', data: [80, 75, 78], backgroundColor: '#ef4444' },
-                        { label: 'Mínimo', data: [15, 20, 18], backgroundColor: '#f59e0b' },
-                        { label: 'Satisfactorio', data: [5, 5, 4], backgroundColor: '#3b82f6' }
-                    ]
-                },
-                options: { scales: { y: { stacked: true }, x: { stacked: true } } }
-            });
-        }
+        // 3. Renderizar Gráficos
+        this.renderGraficoEvolucion(p1, p2, p3);
+        this.renderGraficoRadar(p3); // Usamos la última prueba para el radar
+    },
 
-        function renderTable() {
-            const tabla = document.getElementById('tabla-estudiantes');
-            const mockupData = [
-                { nombre: "VASQUEZ NEIRA BRENDA", p1: 183, p2: 190, c1: "↑", p3: 173, c2: "↓" },
-                { nombre: "MORENO VALENCIA ANDERSON", p1: 175, p2: 179, c1: "↑", p3: 149, c2: "↓" },
-                { nombre: "ARANGO DELGADO SARA", p1: 168, p2: 170, c1: "↑", p3: 173, c2: "↑" }
-            ];
+    calcularPromedio(lista) {
+        const sum = lista.reduce((acc, curr) => acc + parseFloat(curr.PUNTAJE || 0), 0);
+        return sum / lista.length;
+    },
 
-            tabla.innerHTML = mockupData.map(est => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="p-4 font-bold text-slate-700">${est.nombre}</td>
-                    <td class="p-4 text-center text-slate-500">${est.p1}</td>
-                    <td class="p-4 text-center font-bold text-blue-600">${est.p2}</td>
-                    <td class="p-4 text-center">
-                        <span class="${est.c1 === '↑' ? 'text-green-500' : 'text-red-500'} font-black text-xl">${est.c1}</span>
-                    </td>
-                    <td class="p-4 text-center font-bold text-purple-600">${est.p3}</td>
-                    <td class="p-4 text-center">
-                        <span class="${est.c2 === '↑' ? 'text-green-500' : 'text-red-500'} font-black text-xl">${est.c2}</span>
-                    </td>
-                </tr>
-            `).join('');
-        }
+    renderTablaSeguimiento(p1, p2, p3) {
+        const tabla = document.getElementById('tabla-estudiantes');
+        tabla.innerHTML = "";
 
-        function generarPDF() {
-            const element = document.getElementById('informe-contenido');
-            const opt = {
-                margin: 0.5,
-                filename: 'Informe_Saber11_DANE.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        // Usamos la lista de la última prueba como base
+        const base = p3 || p2 || p1;
+        if (!base) return;
+
+        base.estudiantes.forEach(est => {
+            const doc = est.DOCUMENTO;
+            
+            // Buscar al mismo estudiante en las otras pruebas
+            const s1 = p1 ? p1.estudiantes.find(e => e.DOCUMENTO === doc) : null;
+            const s2 = p2 ? p2.estudiantes.find(e => e.DOCUMENTO === doc) : null;
+            const s3 = p3 ? p3.estudiantes.find(e => e.DOCUMENTO === doc) : null;
+
+            const puntajes = {
+                v1: s1 ? parseFloat(s1.PUNTAJE) : 0,
+                v2: s2 ? parseFloat(s2.PUNTAJE) : 0,
+                v3: s3 ? parseFloat(s3.PUNTAJE) : 0
             };
-            html2pdf().set(opt).from(element).save();
-        }
 
-        // Inicializar
-        window.onload = loadData;
-        document.getElementById('selectDANE').addEventListener('change', loadData);
-        document.getElementById('selectGrupo').addEventListener('change', loadData);
-    </script>
+            const f1 = this.getFlecha(puntajes.v1, puntajes.v2);
+            const f2 = this.getFlecha(puntajes.v2, puntajes.v3);
+
+            tabla.innerHTML += `
+                <tr class="hover:bg-slate-50 border-b border-slate-100">
+                    <td class="p-4 font-bold text-slate-700">${est.ESTUDIANTE}</td>
+                    <td class="p-4 text-center text-slate-400">${puntajes.v1 || '-'}</td>
+                    <td class="p-4 text-center font-semibold text-slate-600">${puntajes.v2 || '-'}</td>
+                    <td class="p-4 text-center">${f1}</td>
+                    <td class="p-4 text-center font-bold text-blue-600">${puntajes.v3 || '-'}</td>
+                    <td class="p-4 text-center">${f2}</td>
+                </tr>
+            `;
+        });
+    },
+
+    getFlecha(valAnt, valAct) {
+        if (!valAnt || !valAct) return '<span class="text-slate-300">●</span>';
+        if (valAct > valAnt) return '<span class="text-green-500 font-black">↑</span>';
+        if (valAct < valAnt) return '<span class="text-red-500 font-black">↓</span>';
+        return '<span class="text-slate-400">●</span>';
+    },
+
+    renderGraficoEvolucion(p1, p2, p3) {
+        const ctx = document.getElementById('chartEvolucion').getContext('2d');
+        const labels = ['KAPPA 10', 'EPSILON 11', 'MASTER ELITE 11'];
+        const data = [
+            p1 ? this.calcularPromedio(p1.estudiantes) : 0,
+            p2 ? this.calcularPromedio(p2.estudiantes) : 0,
+            p3 ? this.calcularPromedio(p3.estudiantes) : 0
+        ];
+
+        if (window.chartEv) window.chartEv.destroy();
+        window.chartEv = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Promedio Global del Grupo',
+                    data: data,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6
+                }]
+            }
+        });
+    },
+
+    renderGraficoRadar(p) {
+        if (!p || !p.pedagogia) return;
+        const ctx = document.getElementById('chartRadar').getContext('2d');
+        
+        // Extraer competencias de Matemáticas como ejemplo del JSON
+        const mats = p.pedagogia["Matemáticas"].competencias;
+        const labels = mats.map(c => c.nombre);
+        const values = mats.map(c => c.puntaje_promedio);
+
+        if (window.chartRad) window.chartRad.destroy();
+        window.chartRad = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Fortaleza por Competencia',
+                    data: values,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: '#3b82f6',
+                    pointBackgroundColor: '#3b82f6'
+                }]
+            },
+            options: { scales: { r: { beginAtZero: true, max: 50 } } }
+        });
+    }
+};
+
+// Listeners
+document.getElementById('selectDANE').addEventListener('change', () => AppEngine.init());
+document.getElementById('selectGrupo').addEventListener('change', () => AppEngine.init());
+window.onload = () => AppEngine.init();
+
+function generarPDF() {
+    const element = document.getElementById('informe-contenido');
+    const opt = {
+        margin: 0.3,
+        filename: `Informe_Saber11_${AppEngine.grupo}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+}
+</script>
 </body>
 </html>
