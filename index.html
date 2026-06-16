@@ -107,7 +107,27 @@
                 <canvas id="chartNiveles" height="200"></canvas>
             </div>
         </div>
-
+<!-- MÓDULO COMPARATIVO INTER-GRUPAL -->
+<section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">
+    <h4 class="font-bold text-slate-700 mb-6 flex items-center gap-2">
+        <span class="w-2 h-6 bg-orange-500 rounded-full"></span> 
+        Comparativa de Progreso: 11-1 vs 11-2
+    </h4>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Gráfico de Barras Agrupadas -->
+        <div class="lg:col-span-2">
+            <canvas id="chartComparativoGrupos" height="150"></canvas>
+        </div>
+        <!-- Tabla Resumen de Brechas -->
+        <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl">
+            <h5 class="text-xs font-bold text-slate-400 uppercase mb-4">Resumen de Brechas</h5>
+            <div id="tabla-brechas" class="space-y-4">
+                <!-- Se llena dinámicamente -->
+                <p class="text-xs text-slate-500 italic text-center">Calculando diferencias...</p>
+            </div>
+        </div>
+    </div>
+</section>
         <!-- TABLA DE SEGUIMIENTO INDIVIDUAL (CON FLECHAS) -->
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
