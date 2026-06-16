@@ -1,0 +1,26 @@
+[
+  {
+    "dane": "276670000201",
+    "nombre": "I.E. JULIO CAICEDO TELLEZ",
+    "municipio": "San Pedro",
+    "departamento": "Valle del Cauca",
+    "grupos": ["11-1"],
+    "pruebas": ["KAPPA_10", "EPSILON_11", "MASTER_ELITE_11"]
+  },
+  {
+    "dane": "176670000240",
+    "nombre": "I.E. JOSE ANTONIO AGUILERA",
+    "municipio": "San Pedro",
+    "departamento": "Valle del Cauca",
+    "grupos": ["11-1", "11-2", "11-3"],
+    "pruebas": ["KAPPA_10", "EPSILON_11", "MASTER_ELITE_11"]
+  },
+  {
+    "dane": "276834000666",
+    "nombre": "IE JOVITA SANTACOLOMA",
+    "municipio": "Tuluá",
+    "departamento": "Valle del Cauca",
+    "grupos": ["11-1", "11-2", "11-3"],
+    "pruebas": ["KAPPA_10", "EPSILON_11", "MASTER_ELITE_11"]
+  }
+]
