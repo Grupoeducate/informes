@@ -132,7 +132,7 @@
             instData: {}, // Agregado de todos los grupos
 
             async loadConfig() {
-                const res = await fetch('config.json');
+                const res = await fetch('../config.json');
                 this.config = await res.json();
                 const sel = document.getElementById('selectDANE');
                 this.config.forEach(c => sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`);
