@@ -221,19 +221,45 @@
                 this.renderAll(colegio.pruebas);
             },
 
-            async cargarDatos(dane, grupo, pruebas) {
-                this.data = {};
-                for (let p of pruebas) {
-                    try {
-                        const csvRes = await fetch(`data/${dane}/${grupo}-${p}.csv`);
-                        const csvData = Papa.parse(await csvRes.text(), { header: true, delimiter: ";" }).data;
-                        const jsonRes = await fetch(`data/${dane}/${grupo}_${p}.json`);
-                        const jsonData = await jsonRes.json();
-                        this.data[p] = { est: csvData.filter(e => e.DOCUMENTO), ped: jsonData.analisis_pedagogico };
-                    } catch (e) { console.warn(`Missing: ${p}`); }
-                }
-            },
+    async cargarDatosGrupo(dane, grupo, pruebas) {
+    this.data = {};
+    for (let p of pruebas) {
+        // CORRECCIÓN: Usamos guion medio "-" como en tu captura
+        const csvPath = `data/${dane}/${grupo}-${p}.csv`; 
+        
+        try {
+            // Cargar CSV
+            const resCsv = await fetch(csvPath);
+            if (!resCsv.ok) throw new Error("CSV no encontrado");
+            const csvText = await resCsv.text();
+            const csvParsed = Papa.parse(csvText, { header: true, delimiter: ";" }).data;
 
+            // Cargar JSON con doble intento (minúsculas y mayúsculas)
+            let jsonParsed = null;
+            const pathsJson = [
+                `data/${dane}/${grupo}-${p}.json`,
+                `data/${dane}/${grupo}-${p}.JSON`
+            ];
+
+            for (let path of pathsJson) {
+                const resJson = await fetch(path);
+                if (resJson.ok) {
+                    jsonParsed = await resJson.json();
+                    break; // Si lo encuentra, deja de buscar
+                }
+            }
+
+            if (jsonParsed) {
+                this.data[p] = {
+                    est: csvParsed.filter(e => e.DOCUMENTO),
+                    ped: jsonParsed.analisis_pedagogico
+                };
+            }
+        } catch (e) { 
+            console.error(`Error cargando datos para ${grupo}-${p}:`, e); 
+        }
+    }
+}
             async cargarComparativo(dane, colegio) {
                 this.comparativo = {};
                 for (let g of colegio.grupos) {
