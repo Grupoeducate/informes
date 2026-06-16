@@ -67,7 +67,6 @@
             </div>
         </div>
 
-        <!-- TABLA MATRIZ REAL -->
         <div class="bg-white shadow-2xl mb-10 border border-slate-200 overflow-hidden">
             <div class="bg-educate-dark p-4 text-white">
                 <h4 class="font-black uppercase tracking-widest italic text-sm">Matriz de Desempeño por Áreas (Promedios Reales)</h4>
@@ -95,9 +94,9 @@
             config: null,
             instData: {},
 
-            loadConfig: async function() {
+            // CORRECCIÓN: Uso de sintaxis de método abreviado
+            async loadConfig() {
                 try {
-                    // RUTA CORREGIDA: Ahora busca en la raíz
                     const res = await fetch('./config.json');
                     this.config = await res.json();
                     const sel = document.getElementById('selectDANE');
@@ -107,8 +106,9 @@
                 } catch (e) { console.error("Error config", e); }
             },
 
-            init: async function() {
+            async init() {
                 const dane = document.getElementById('selectDANE').value;
+                if (!this.config) return; 
                 const colegio = this.config.find(c => c.dane === dane);
                 if (!colegio) return;
 
@@ -120,7 +120,7 @@
                 this.renderDashboard(colegio.pruebas);
             },
 
-            procesarData: async function(colegio) {
+            async procesarData(colegio) {
                 this.instData = { grupos: {}, matData: {} };
                 for (let g of colegio.grupos) {
                     this.instData.grupos[g] = [];
@@ -128,7 +128,6 @@
                     
                     for (let p of colegio.pruebas) {
                         try {
-                            // RUTA CORREGIDA: Busca en ./data/
                             const res = await fetch(`./data/${colegio.dane}/${g}-${p}.csv`);
                             if (!res.ok) continue;
                             const text = await res.text();
@@ -138,28 +137,29 @@
                                 const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / rows.length;
                                 this.instData.grupos[g].push(avg.toFixed(1));
                                 
-                                // Guardar promedios de áreas de la última prueba cargada
-                                const last = rows[0];
                                 this.instData.matData[g] = {
-                                    mat: (rows.reduce((s, c) => s + parseFloat(c["MATEMÁTICAS"]?.replace(",",".") || 0), 0) / rows.length).toFixed(1),
-                                    lec: (rows.reduce((s, c) => s + parseFloat(c["LECTURA CRÍTICA"]?.replace(",",".") || 0), 0) / rows.length).toFixed(1),
-                                    soc: (rows.reduce((s, c) => s + parseFloat(c["SOCIALES Y CIUDADANAS"]?.replace(",",".") || 0), 0) / rows.length).toFixed(1),
-                                    nat: (rows.reduce((s, c) => s + parseFloat(c["CIENCIAS NATURALES"]?.replace(",",".") || 0), 0) / rows.length).toFixed(1),
-                                    ing: (rows.reduce((s, c) => s + parseFloat(c["INGLÉS"]?.replace(",",".") || 0), 0) / rows.length).toFixed(1)
+                                    mat: (rows.reduce((s, c) => s + parseFloat((c["MATEMÁTICAS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
+                                    lec: (rows.reduce((s, c) => s + parseFloat((c["LECTURA CRÍTICA"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
+                                    soc: (rows.reduce((s, c) => s + parseFloat((c["SOCIALES Y CIUDADANAS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
+                                    nat: (rows.reduce((s, c) => s + parseFloat((c["CIENCIAS NATURALES"] || "0").replace(",",".")), 0) / rows.length).toFixed(1),
+                                    ing: (rows.reduce((s, c) => s + parseFloat((c["INGLÉS"] || "0").replace(",",".")), 0) / rows.length).toFixed(1)
                                 };
                             }
-                        } catch (e) { this.instData.grupos[g].push(0); }
+                        } catch (e) { 
+                            console.error("Error cargando CSV", e);
+                            this.instData.grupos[g].push(0); 
+                        }
                     }
                 }
             },
 
-            renderDashboard: function(pruebas) {
+            renderDashboard(pruebas) {
                 this.renderRanking();
                 this.renderProgreso(pruebas);
                 this.renderMatriz();
             },
 
-            renderRanking: function() {
+            renderRanking() {
                 const list = document.getElementById('ranking-list');
                 list.innerHTML = "";
                 const ranking = Object.keys(this.instData.grupos)
@@ -176,19 +176,19 @@
                 });
             },
 
-            renderProgreso: function(pruebas) {
+            renderProgreso(pruebas) {
                 const ctx = document.getElementById('chartProgresoInst').getContext('2d');
                 if (window.pCh) window.pCh.destroy();
                 const datasets = Object.keys(this.instData.grupos).map((g, i) => ({
                     label: `Grupo ${g}`,
                     data: this.instData.grupos[g],
-                    borderColor: ['#11678B', '#F39325', '#54BBAB'][i % 3],
+                    borderColor: ['#11678B', '#F39325', '#54BBAB', '#B01829'][i % 4],
                     tension: 0.4, fill: false, borderWidth: 4
                 }));
                 window.pCh = new Chart(ctx, { type: 'line', data: { labels: pruebas, datasets } });
             },
 
-            renderMatriz: function() {
+            renderMatriz() {
                 const body = document.getElementById('body-matriz');
                 body.innerHTML = "";
                 Object.keys(this.instData.matData).forEach(g => {
@@ -205,15 +205,21 @@
                 });
             },
 
-            getColor: function(val) {
-                if (val < 35) return '#B01829'; // Rojo
-                if (val < 50) return '#F39325'; // Naranja
+            getColor(val) {
+                const v = parseFloat(val);
+                if (v < 35) return '#B01829'; // Rojo
+                if (v < 50) return '#F39325'; // Naranja
                 return '#11678B'; // Azul Educate
             },
 
-            exportar: function() {
+            exportar() {
                 const el = document.getElementById('reporte-inst');
-                html2pdf().set({ margin: 0.3, filename: 'Institucional.pdf', html2canvas: { scale: 2 }, jsPDF: { orientation: 'landscape' } }).from(el).save();
+                html2pdf().set({ 
+                    margin: 0.3, 
+                    filename: 'Institucional.pdf', 
+                    html2canvas: { scale: 2 }, 
+                    jsPDF: { orientation: 'landscape' } 
+                }).from(el).save();
             }
         };
 
