@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RADAR SABER 11 - Grupo Edúcate Colombia</title>
     
-    <!-- BRAND FONTS: Barlow Condensed -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- LIBRERÍAS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -28,391 +25,741 @@
                             'gray': '#808080'
                         }
                     },
-                    fontFamily: {
-                        barlow: ['Barlow Condensed', 'sans-serif']
-                    }
+                    fontFamily: { barlow: ['Barlow Condensed', 'sans-serif'] }
                 }
             }
         }
     </script>
-
     <style>
         body { font-family: 'Barlow Condensed', sans-serif; }
         @media print { .no-print { display: none; } }
-        .bg-nivel-1 { background-color: #B01829; } /* Secundario 3 - Rojo */
-        .bg-nivel-2 { background-color: #F39325; } /* Secundario 1 - Naranja */
-        .bg-nivel-3 { background-color: #11678B; } /* Primario 2 - Azul */
-        .bg-nivel-4 { background-color: #54BBAB; } /* Primario 3 - Teal */
+        .bg-nivel-1 { background-color: #B01829; }
+        .bg-nivel-2 { background-color: #F39325; }
+        .bg-nivel-3 { background-color: #11678B; }
+        .bg-nivel-4 { background-color: #54BBAB; }
+        #overlay-loading {
+            position: fixed; inset: 0; background: rgba(23,51,75,0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; flex-direction: column; gap: 16px;
+        }
+        .spinner {
+            width: 48px; height: 48px; border: 5px solid rgba(84,187,171,0.3);
+            border-top-color: #54BBAB; border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 text-educate-dark">
 
-    <!-- NAV CON BRANDING GRUPO EDÚCATE -->
-    <nav class="no-print bg-educate-dark text-white p-4 sticky top-0 z-50 shadow-2xl border-b-4 border-educate-teal">
-        <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <div class="flex items-center gap-4">
-                <!-- Espacio para el Logo principal según manual (min 85px) -->
-                <div class="bg-white p-2 rounded-md">
-                    <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" alt="Grupo Edúcate" style="height: 40px;">
-                </div>
-                <div class="h-8 w-[1px] bg-white/20 hidden md:block"></div>
-                <h1 class="text-xl font-bold tracking-tight uppercase italic">Radar Saber 11 <span class="font-light text-educate-teal italic text-sm">v4.0</span></h1>
+<!-- OVERLAY DE CARGA -->
+<div id="overlay-loading" style="display:none;">
+    <div class="spinner"></div>
+    <p class="text-white font-bold uppercase tracking-widest text-sm">Cargando datos...</p>
+</div>
+
+<!-- NAV -->
+<nav class="no-print bg-educate-dark text-white p-4 sticky top-0 z-50 shadow-2xl border-b-4 border-educate-teal">
+    <div class="container mx-auto flex flex-wrap justify-between items-center gap-3">
+        <div class="flex items-center gap-4">
+            <div class="bg-white p-2 rounded-md">
+                <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" alt="Grupo Edúcate" style="height:40px;">
             </div>
-            
-            <div class="flex flex-wrap gap-3 items-center mt-3 md:mt-0">
-                <select id="selectDANE" onchange="App.handleColegioChange()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white">
-                    <option class="text-black" value="">Seleccione Institución...</option>
-                </select>
-                <select id="selectGrupo" onchange="App.init()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white">
-                    <option class="text-black" value="">Grupo...</option>
-                </select>
-                <button onclick="App.exportarPDF()" class="bg-educate-teal hover:bg-opacity-90 text-educate-dark text-sm font-extrabold py-1.5 px-6 rounded transition-all uppercase">
-                    Generar Informe
-                </button>
+            <div class="h-8 w-[1px] bg-white/20 hidden md:block"></div>
+            <h1 class="text-xl font-bold tracking-tight uppercase italic">
+                Radar Saber 11 <span class="font-light text-educate-teal italic text-sm">v4.0</span>
+            </h1>
+        </div>
+        <div class="flex flex-wrap gap-3 items-center">
+            <!-- 1. Selección institución -->
+            <select id="selectDANE" onchange="App.handleColegioChange()"
+                class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white">
+                <option class="text-black" value="">Seleccione Institución...</option>
+            </select>
+            <!-- 2. Selección grupo (incluye "Todos los grupos") -->
+            <select id="selectGrupo" onchange="App.init()"
+                class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white outline-none focus:ring-2 focus:ring-educate-teal">
+                <option class="text-black" value="">Grupo...</option>
+            </select>
+            <!-- 3. Selector de área para radar (visible solo con datos) -->
+            <select id="selectArea" onchange="App.cambiarArea()"
+                class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white outline-none focus:ring-2 focus:ring-educate-teal hidden">
+                <option value="Matemáticas">Matemáticas</option>
+                <option value="Lectura crítica">Lectura Crítica</option>
+                <option value="Ciencias Sociales">Ciencias Sociales</option>
+                <option value="Ciencias Naturales">Ciencias Naturales</option>
+                <option value="Inglés">Inglés</option>
+            </select>
+            <a href="institucional.html" class="bg-educate-blue hover:bg-opacity-90 text-white text-sm font-extrabold py-1.5 px-4 rounded uppercase">
+                Vista Institucional
+            </a>
+            <button onclick="App.exportarPDF()"
+                class="bg-educate-teal hover:bg-opacity-90 text-educate-dark text-sm font-extrabold py-1.5 px-6 rounded uppercase">
+                Generar Informe
+            </button>
+        </div>
+    </div>
+</nav>
+
+<main id="informe-final" class="container mx-auto p-4 lg:p-10 max-w-7xl">
+
+    <!-- HEADER DINÁMICO -->
+    <div class="bg-white rounded-sm p-10 shadow-xl border-t-8 border-educate-dark mb-8 flex flex-col md:flex-row justify-between items-center">
+        <div class="text-center md:text-left">
+            <h2 id="view-nombre-ie" class="text-5xl font-extrabold text-educate-dark leading-none uppercase italic tracking-tighter">
+                Seleccione una institución
+            </h2>
+            <div class="flex flex-wrap justify-center md:justify-start gap-6 mt-4 text-educate-gray font-semibold text-lg uppercase">
+                <p>DANE: <span id="view-dane" class="text-educate-blue">--</span></p>
+                <p>Municipio: <span id="view-muni" class="text-educate-blue">--</span></p>
+                <p>Grupo: <span id="view-grupo" class="text-educate-orange font-black">--</span></p>
             </div>
         </div>
-    </nav>
+        <div class="mt-6 md:mt-0 bg-educate-dark p-6 text-white rounded-sm text-center min-w-[220px]">
+            <p class="text-xs font-bold uppercase tracking-widest text-educate-teal">Estado Pedagógico</p>
+            <div id="view-estado" class="text-2xl font-black italic mt-1 uppercase">Esperando datos...</div>
+        </div>
+    </div>
 
-    <main id="informe-final" class="container mx-auto p-4 lg:p-10 max-w-7xl">
-        
-        <!-- HEADER DINÁMICO -->
-        <div class="bg-white rounded-sm p-10 shadow-xl border-t-8 border-educate-dark mb-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="text-center md:text-left">
-                <h2 id="view-nombre-ie" class="text-5xl font-extrabold text-educate-dark leading-none uppercase italic tracking-tighter">Cargando Datos...</h2>
-                <div class="flex flex-wrap justify-center md:justify-start gap-6 mt-4 text-educate-gray font-semibold text-lg uppercase">
-                    <p>DANE: <span id="view-dane" class="text-educate-blue">--</span></p>
-                    <p>Municipio: <span id="view-muni" class="text-educate-blue">--</span></p>
-                    <p>Grupo: <span id="view-grupo" class="text-educate-orange font-black">--</span></p>
-                </div>
-            </div>
-            <div class="mt-6 md:mt-0 bg-educate-dark p-6 text-white rounded-sm text-center min-w-[220px]">
-                <p class="text-xs font-bold uppercase tracking-widest text-educate-teal">Estado Pedagógico</p>
-                <div id="view-estado" class="text-2xl font-black italic mt-1 uppercase">Sincronizando...</div>
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-white">
+        <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-blue">
+            <p class="text-xs font-bold uppercase opacity-70">Promedio Global</p>
+            <h3 id="kpi-promedio" class="text-5xl font-black tracking-tighter">--</h3>
+            <p id="kpi-tendencia" class="text-sm font-bold mt-1 text-educate-teal">--</p>
+        </div>
+        <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-orange">
+            <p class="text-xs font-bold uppercase opacity-70">Total Estudiantes</p>
+            <h3 id="kpi-total" class="text-5xl font-black tracking-tighter">--</h3>
+            <p class="text-xs text-educate-teal mt-1 italic">Última prueba</p>
+        </div>
+        <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-teal">
+            <p class="text-xs font-bold uppercase opacity-70">Movilidad Positiva</p>
+            <h3 id="kpi-movilidad" class="text-5xl font-black tracking-tighter">--%</h3>
+            <p class="text-xs opacity-70 mt-1 uppercase">Ascenso de nivel</p>
+        </div>
+        <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-red">
+            <p class="text-xs font-bold uppercase opacity-70">Nivel ICFES</p>
+            <h3 id="kpi-nivel" class="text-2xl font-black tracking-tighter uppercase">--</h3>
+            <p class="text-xs opacity-70 mt-1 uppercase">Clasificación</p>
+        </div>
+    </div>
+
+    <!-- GRÁFICOS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
+        <div class="bg-white p-8 shadow-xl border border-slate-200">
+            <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
+                <span class="w-3 h-3 bg-educate-blue rounded-full"></span> Evolución Histórica
+            </h4>
+            <canvas id="chartEvolucion" height="220"></canvas>
+        </div>
+        <div class="bg-white p-8 shadow-xl border border-slate-200">
+            <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
+                <span class="w-3 h-3 bg-educate-orange rounded-full"></span> Comparativa de Grupos
+            </h4>
+            <canvas id="chartComparativo" height="220"></canvas>
+        </div>
+    </div>
+
+    <!-- TABLA LONGITUDINAL -->
+    <div class="bg-white shadow-2xl border border-slate-200 overflow-hidden mb-10">
+        <div class="p-6 bg-educate-dark text-white flex justify-between items-center border-b-4 border-educate-teal">
+            <h4 class="font-extrabold uppercase tracking-widest italic">Movilización Individual por Pruebas</h4>
+            <span class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Grupo Edúcate Colombia Analítica</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-educate-dark text-[11px] uppercase font-black tracking-tighter">
+                    <tr>
+                        <th class="p-6 border-b">Estudiante</th>
+                        <th class="p-6 border-b text-center">Grupo</th>
+                        <th class="p-6 border-b text-center">Prueba 1</th>
+                        <th class="p-6 border-b text-center">Prueba 2</th>
+                        <th class="p-6 border-b text-center">∆ 1→2</th>
+                        <th class="p-6 border-b text-center bg-slate-100">Prueba 3</th>
+                        <th class="p-6 border-b text-center">∆ 2→3</th>
+                        <th class="p-6 border-b text-center">Clasificación</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-body" class="text-sm divide-y divide-slate-100">
+                    <tr><td colspan="8" class="p-10 text-center text-educate-gray italic">Seleccione una institución y un grupo para ver los datos.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- DCE RADAR + INSIGHTS -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="lg:col-span-1 bg-white p-10 shadow-xl border border-slate-100 flex flex-col items-center">
+            <h4 class="font-black text-educate-dark mb-2 uppercase text-sm tracking-widest italic border-b-2 border-educate-teal w-full pb-2 text-center">
+                Análisis DCE de Competencias
+            </h4>
+            <p id="radar-area-label" class="text-xs text-educate-gray italic mb-4 uppercase tracking-widest">Última prueba</p>
+            <canvas id="chartRadar"></canvas>
+        </div>
+        <div class="lg:col-span-2 bg-white p-10 shadow-xl border border-slate-100">
+            <h4 class="font-black text-educate-dark mb-6 uppercase text-sm tracking-widest italic">Hallazgos Pedagógicos Estratégicos</h4>
+            <div id="insights-container" class="space-y-6">
+                <p class="text-educate-gray italic">Los hallazgos aparecerán al cargar los datos del grupo.</p>
             </div>
         </div>
+    </div>
 
-        <!-- KPIs ESTILO TOKENS -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-white">
-            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-blue">
-                <p class="text-xs font-bold uppercase opacity-70">Promedio Global</p>
-                <h3 id="kpi-promedio" class="text-5xl font-black tracking-tighter">0.0</h3>
-                <p id="kpi-tendencia" class="text-sm font-bold mt-1 text-educate-teal">--</p>
-            </div>
-            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-orange">
-                <p class="text-xs font-bold uppercase opacity-70">Desviación Grupal</p>
-                <h3 id="kpi-brecha" class="text-5xl font-black tracking-tighter">0.0</h3>
-                <p class="text-xs text-educate-teal mt-1 italic">Vs. Otros grupos</p>
-            </div>
-            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-teal">
-                <p class="text-xs font-bold uppercase opacity-70">Movilidad Positiva</p>
-                <h3 id="kpi-movilidad" class="text-5xl font-black tracking-tighter">0%</h3>
-                <p class="text-xs opacity-70 mt-1 uppercase">Ascenso de nivel</p>
-            </div>
-            <div class="bg-educate-dark p-6 rounded-sm shadow-lg border-b-8 border-educate-red">
-                <p class="text-xs font-bold uppercase opacity-70">Desempeño</p>
-                <h3 id="kpi-nivel" class="text-2xl font-black tracking-tighter uppercase">--</h3>
-                <p class="text-xs opacity-70 mt-1 uppercase">Clasificación ICFES</p>
-            </div>
-        </div>
+</main>
 
-        <!-- GRÁFICOS COMPARATIVOS -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
-            <div class="bg-white p-8 shadow-xl border border-slate-200">
-                <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
-                    <span class="w-3 h-3 bg-educate-blue rounded-full"></span> Evolución Histórica
-                </h4>
-                <canvas id="chartEvolucion" height="220"></canvas>
-            </div>
-            <div class="bg-white p-8 shadow-xl border border-slate-200">
-                <h4 class="font-black text-educate-dark tracking-tighter flex items-center gap-2 mb-8 uppercase text-lg italic">
-                    <span class="w-3 h-3 bg-educate-orange rounded-full"></span> Comparativa de Sedes/Grupos
-                </h4>
-                <canvas id="chartComparativo" height="220"></canvas>
-            </div>
-        </div>
+<footer class="mt-20 p-10 bg-educate-dark text-white text-center">
+    <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png"
+         alt="Grupo Edúcate" class="mx-auto h-12 grayscale brightness-200 mb-4">
+    <p class="font-bold uppercase tracking-widest text-xs">Plataforma de Analítica Educativa © 2024</p>
+    <p class="text-educate-teal text-[10px] uppercase font-light mt-2 tracking-widest">
+        Basado en Diseño Centrado en Evidencias (DCE) del ICFES
+    </p>
+</footer>
 
-        <!-- TABLA LONGITUDINAL -->
-        <div class="bg-white shadow-2xl border border-slate-200 overflow-hidden mb-10">
-            <div class="p-6 bg-educate-dark text-white flex justify-between items-center border-b-4 border-educate-teal">
-                <h4 class="font-extrabold uppercase tracking-widest italic">Movilización Individual por Pruebas</h4>
-                <span class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Grupo Edúcate Colombia Analítica</span>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 text-educate-dark text-[11px] uppercase font-black tracking-tighter">
-                        <tr>
-                            <th class="p-6 border-b">Estudiante</th>
-                            <th class="p-6 border-b text-center">Prueba 1</th>
-                            <th class="p-6 border-b text-center">Prueba 2</th>
-                            <th class="p-6 border-b text-center">∆ 1-2</th>
-                            <th class="p-6 border-b text-center bg-slate-100">Prueba 3</th>
-                            <th class="p-6 border-b text-center">∆ 2-3</th>
-                            <th class="p-6 border-b text-center">Clasificación</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-body" class="text-sm divide-y divide-slate-100">
-                        <!-- JS Dinámico -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<script>
+const App = {
+    config: null,
+    // data[grupo][prueba] = { est: [...], ped: {...} }
+    data: {},
+    comparativo: {},
+    _chartEvolucion: null,
+    _chartComparativo: null,
+    _chartRadar: null,
 
-        <!-- DCE RADAR -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div class="lg:col-span-1 bg-white p-10 shadow-xl border border-slate-100 flex flex-col items-center">
-                <h4 class="font-black text-educate-dark mb-8 uppercase text-sm tracking-widest italic border-b-2 border-educate-teal">Análisis de Competencias</h4>
-                <canvas id="chartRadar"></canvas>
-            </div>
-            <div class="lg:col-span-2 bg-white p-10 shadow-xl border border-slate-100">
-                <h4 class="font-black text-educate-dark mb-6 uppercase text-sm tracking-widest italic">Hallazgos Pedagógicos Estratégicos</h4>
-                <div id="insigths-container" class="space-y-6">
-                    <p class="text-educate-gray italic">Cargando inteligencia de datos...</p>
-                </div>
-            </div>
-        </div>
+    // ── Utilidades ────────────────────────────────────────────────
+    parseNum(val) {
+        if (val === undefined || val === null || val === '') return NaN;
+        return parseFloat(String(val).replace(',', '.'));
+    },
 
-    </main>
+    promedioArr(arr) {
+        const vals = arr.map(v => this.parseNum(v)).filter(v => !isNaN(v));
+        if (!vals.length) return 0;
+        return vals.reduce((s, v) => s + v, 0) / vals.length;
+    },
 
-    <footer class="mt-20 p-10 bg-educate-dark text-white text-center">
-        <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" alt="Grupo Edúcate" class="mx-auto h-12 grayscale brightness-200 mb-4">
-        <p class="font-bold uppercase tracking-widest text-xs">Plataforma de Analítica Educativa © 2024</p>
-        <p class="text-educate-teal text-[10px] uppercase font-light mt-2 tracking-widest">Basado en Diseño Centrado en Evidencias (DCE) del ICFES</p>
-    </footer>
+    getNivelTexto(s) {
+        if (s < 192) return 'INSUFICIENTE';
+        if (s < 270) return 'MÍNIMO';
+        if (s < 350) return 'SATISFACTORIO';
+        return 'AVANZADO';
+    },
 
-    <script>
-        // MOTOR DE LA APP ACTUALIZADO CON BRANDING
-        const App = {
-            config: null,
-            data: {},
-            comparativo: {},
+    getColorNivel(s) {
+        if (s < 192) return 'bg-nivel-1';
+        if (s < 270) return 'bg-nivel-2';
+        if (s < 350) return 'bg-nivel-3';
+        return 'bg-nivel-4';
+    },
 
-            async loadConfig() {
-                try {
-                    const res = await fetch('config.json');
-                    this.config = await res.json();
-                    const sel = document.getElementById('selectDANE');
-                    this.config.forEach(c => sel.innerHTML += `<option class="text-black" value="${c.dane}">${c.nombre}</option>`);
-                } catch (e) { console.error("Config missing"); }
-            },
+    getIcon(o, n) {
+        if (isNaN(o) || isNaN(n) || o === 0) return "<span class='text-slate-300'>●</span>";
+        if (n > o) return "<span class='text-green-500 font-black text-lg'>↑</span>";
+        if (n < o) return "<span class='text-educate-red font-black text-lg'>↓</span>";
+        return "<span class='text-slate-400'>●</span>";
+    },
 
-            handleColegioChange() {
-                const dane = document.getElementById('selectDANE').value;
-                const colegio = this.config.find(c => c.dane === dane);
-                const selG = document.getElementById('selectGrupo');
-                selG.innerHTML = `<option class="text-black" value="">Grupo...</option>`;
-                if (colegio) {
-                    colegio.grupos.forEach(g => selG.innerHTML += `<option class="text-black" value="${g}">${g}</option>`);
-                }
-            },
+    loading(show) {
+        document.getElementById('overlay-loading').style.display = show ? 'flex' : 'none';
+    },
 
-            async init() {
-                const dane = document.getElementById('selectDANE').value;
-                const grupo = document.getElementById('selectGrupo').value;
-                const colegio = this.config.find(c => c.dane === dane);
-                if (!dane || !grupo) return;
-
-                document.getElementById('view-dane').innerText = dane;
-                document.getElementById('view-grupo').innerText = grupo;
-                document.getElementById('view-nombre-ie').innerText = colegio.nombre;
-                document.getElementById('view-muni').innerText = colegio.municipio;
-
-                await this.cargarDatos(dane, grupo, colegio.pruebas);
-                await this.cargarComparativo(dane, colegio);
-                this.renderAll(colegio.pruebas);
-            },
-
-    async cargarDatosGrupo(dane, grupo, pruebas) {
-    this.data = {};
-    for (let p of pruebas) {
-        // CORRECCIÓN: Usamos guion medio "-" como en tu captura
-        const csvPath = `data/${dane}/${grupo}-${p}.csv`; 
-        
-        try {
-            // Cargar CSV
-            const resCsv = await fetch(csvPath);
-            if (!resCsv.ok) throw new Error("CSV no encontrado");
-            const csvText = await resCsv.text();
-            const csvParsed = Papa.parse(csvText, { header: true, delimiter: ";" }).data;
-
-            // Cargar JSON con doble intento (minúsculas y mayúsculas)
-            let jsonParsed = null;
-            const pathsJson = [
-                `data/${dane}/${grupo}-${p}.json`,
-                `data/${dane}/${grupo}-${p}.JSON`
-            ];
-
-            for (let path of pathsJson) {
-                const resJson = await fetch(path);
-                if (resJson.ok) {
-                    jsonParsed = await resJson.json();
-                    break; // Si lo encuentra, deja de buscar
-                }
-            }
-
-            if (jsonParsed) {
-                this.data[p] = {
-                    est: csvParsed.filter(e => e.DOCUMENTO),
-                    ped: jsonParsed.analisis_pedagogico
-                };
-            }
-        } catch (e) { 
-            console.error(`Error cargando datos para ${grupo}-${p}:`, e); 
+    // ── Normalización de clave de área (case-insensitive) ─────────
+    normalizarAreaKey(obj, target) {
+        // Busca la clave ignorando mayúsculas/minúsculas y tildes menores
+        const tLow = target.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        for (const k of Object.keys(obj)) {
+            const kLow = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (kLow === tLow) return obj[k];
         }
-    }
-}
-            async cargarComparativo(dane, colegio) {
-                this.comparativo = {};
-                for (let g of colegio.grupos) {
-                    this.comparativo[g] = [];
-                    for (let p of colegio.pruebas) {
-                        try {
-                            const res = await fetch(`data/${dane}/${g}-${p}.csv`);
-                            const rows = Papa.parse(await res.text(), { header: true, delimiter: ";" }).data.filter(r => r.PUNTAJE);
-                            const avg = rows.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / rows.length;
-                            this.comparativo[g].push(avg.toFixed(1));
-                        } catch (e) { this.comparativo[g].push(0); }
+        return null;
+    },
+
+    // ── Carga inicial del config ──────────────────────────────────
+    async loadConfig() {
+        try {
+            const res = await fetch('config.json');
+            if (!res.ok) throw new Error('config.json no encontrado');
+            this.config = await res.json();
+            const sel = document.getElementById('selectDANE');
+            this.config.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.dane;
+                opt.className = 'text-black';
+                opt.textContent = c.nombre;
+                sel.appendChild(opt);
+            });
+        } catch (e) {
+            console.error('Error cargando config:', e);
+            alert('No se pudo cargar la configuración de instituciones.');
+        }
+    },
+
+    // ── Al cambiar institución: poblar grupos ─────────────────────
+    handleColegioChange() {
+        const dane = document.getElementById('selectDANE').value;
+        const colegio = this.config?.find(c => c.dane === dane);
+        const selG = document.getElementById('selectGrupo');
+        selG.innerHTML = `<option class="text-black" value="">Grupo...</option>`;
+        if (colegio) {
+            // Opción "Todos los grupos" si hay más de uno
+            if (colegio.grupos.length > 1) {
+                const opt = document.createElement('option');
+                opt.value = '__TODOS__';
+                opt.className = 'text-black font-bold';
+                opt.textContent = '— Todos los grupos —';
+                selG.appendChild(opt);
+            }
+            colegio.grupos.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.className = 'text-black';
+                opt.textContent = `Grupo ${g}`;
+                selG.appendChild(opt);
+            });
+        }
+        // Limpiar informe anterior
+        this._resetVista();
+    },
+
+    _resetVista() {
+        document.getElementById('view-nombre-ie').innerText = 'Seleccione una institución';
+        document.getElementById('view-dane').innerText = '--';
+        document.getElementById('view-grupo').innerText = '--';
+        document.getElementById('view-muni').innerText = '--';
+        document.getElementById('view-estado').innerText = 'Esperando datos...';
+        document.getElementById('kpi-promedio').innerText = '--';
+        document.getElementById('kpi-tendencia').innerText = '--';
+        document.getElementById('kpi-total').innerText = '--';
+        document.getElementById('kpi-movilidad').innerText = '--%';
+        document.getElementById('kpi-nivel').innerText = '--';
+        document.getElementById('tabla-body').innerHTML =
+            '<tr><td colspan="8" class="p-10 text-center text-educate-gray italic">Seleccione una institución y un grupo.</td></tr>';
+        document.getElementById('insights-container').innerHTML =
+            '<p class="text-educate-gray italic">Los hallazgos aparecerán al cargar los datos del grupo.</p>';
+        document.getElementById('selectArea').classList.add('hidden');
+        ['_chartEvolucion','_chartComparativo','_chartRadar'].forEach(k => {
+            if (this[k]) { this[k].destroy(); this[k] = null; }
+        });
+    },
+
+    // ── Punto de entrada principal ────────────────────────────────
+    async init() {
+        const dane  = document.getElementById('selectDANE').value;
+        const grupo = document.getElementById('selectGrupo').value;
+        const colegio = this.config?.find(c => c.dane === dane);
+        if (!dane || !grupo || !colegio) return;
+
+        this.loading(true);
+        try {
+            // Determinar qué grupos cargar
+            const gruposACargar = grupo === '__TODOS__' ? colegio.grupos : [grupo];
+            const labelGrupo    = grupo === '__TODOS__' ? 'TODOS LOS GRUPOS' : grupo;
+
+            // Actualizar header
+            document.getElementById('view-dane').innerText      = dane;
+            document.getElementById('view-grupo').innerText     = labelGrupo;
+            document.getElementById('view-nombre-ie').innerText = colegio.nombre;
+            document.getElementById('view-muni').innerText      = colegio.municipio;
+
+            // Cargar datos de todos los grupos necesarios
+            await this.cargarDatosGrupos(dane, gruposACargar, colegio.pruebas);
+            await this.cargarComparativo(dane, colegio);
+
+            this.renderAll(colegio.pruebas, gruposACargar, grupo);
+            document.getElementById('selectArea').classList.remove('hidden');
+        } finally {
+            this.loading(false);
+        }
+    },
+
+    // ── Carga CSV + JSON por grupo/prueba ─────────────────────────
+    async cargarDatosGrupos(dane, grupos, pruebas) {
+        this.data = {};
+        for (const g of grupos) {
+            this.data[g] = {};
+            for (const p of pruebas) {
+                const csvPath = `data/${dane}/${g}-${p}.csv`;
+                const jsonPaths = [
+                    `data/${dane}/${g}-${p}.json`,
+                    `data/${dane}/${g}-${p}.JSON`
+                ];
+                try {
+                    const resCsv = await fetch(csvPath);
+                    if (!resCsv.ok) throw new Error('CSV no encontrado');
+                    const csvText  = await resCsv.text();
+                    const csvData  = Papa.parse(csvText, { header: true, delimiter: ';' })
+                                        .data.filter(e => e.DOCUMENTO && String(e.DOCUMENTO).trim() !== '');
+
+                    let pedData = null;
+                    for (const jp of jsonPaths) {
+                        const resJ = await fetch(jp);
+                        if (resJ.ok) { pedData = (await resJ.json()).analisis_pedagogico; break; }
+                    }
+
+                    this.data[g][p] = { est: csvData, ped: pedData };
+                } catch (e) {
+                    console.warn(`No se encontró ${g}-${p}:`, e.message);
+                    this.data[g][p] = null;
+                }
+            }
+        }
+    },
+
+    // ── Carga comparativo (todos los grupos de la institución) ────
+    async cargarComparativo(dane, colegio) {
+        this.comparativo = {};
+        for (const g of colegio.grupos) {
+            this.comparativo[g] = [];
+            for (const p of colegio.pruebas) {
+                try {
+                    const res  = await fetch(`data/${dane}/${g}-${p}.csv`);
+                    if (!res.ok) { this.comparativo[g].push(null); continue; }
+                    const rows = Papa.parse(await res.text(), { header: true, delimiter: ';' })
+                                    .data.filter(r => r.PUNTAJE && String(r.PUNTAJE).trim() !== '');
+                    const avg  = this.promedioArr(rows.map(r => r.PUNTAJE));
+                    this.comparativo[g].push(parseFloat(avg.toFixed(1)));
+                } catch {
+                    this.comparativo[g].push(null);
+                }
+            }
+        }
+    },
+
+    // ── Render orquestador ────────────────────────────────────────
+    renderAll(pruebas, gruposActivos, seleccion) {
+        // Consolidar estudiantes de todos los grupos activos (última prueba disponible)
+        const ultimaPrueba = pruebas[pruebas.length - 1];
+        const penultimaPrueba = pruebas[pruebas.length - 2] || null;
+        const primeraPrueba   = pruebas[0];
+
+        // Flatten de estudiantes para la tabla
+        let todosEst = [];
+        gruposActivos.forEach(g => {
+            const d = this.data[g]?.[ultimaPrueba];
+            if (d) d.est.forEach(e => todosEst.push({ ...e, _grupo: g }));
+        });
+
+        // KPIs basados en última prueba
+        const puntajes = todosEst.map(e => this.parseNum(e.PUNTAJE)).filter(v => !isNaN(v));
+        const avgActual = puntajes.length ? (puntajes.reduce((s, v) => s + v, 0) / puntajes.length) : 0;
+
+        // Movilidad: % estudiantes que mejoraron respecto a prueba anterior
+        let mejoraron = 0, comparables = 0;
+        if (penultimaPrueba) {
+            gruposActivos.forEach(g => {
+                const dActual = this.data[g]?.[ultimaPrueba];
+                const dPrev   = this.data[g]?.[penultimaPrueba];
+                if (!dActual || !dPrev) return;
+                dActual.est.forEach(e => {
+                    const prev = dPrev.est.find(p => String(p.DOCUMENTO) === String(e.DOCUMENTO));
+                    if (prev) {
+                        comparables++;
+                        if (this.parseNum(e.PUNTAJE) > this.parseNum(prev.PUNTAJE)) mejoraron++;
+                    }
+                });
+            });
+        }
+        const movilidad = comparables > 0 ? Math.round((mejoraron / comparables) * 100) : 0;
+
+        // Actualizar KPIs
+        document.getElementById('kpi-promedio').innerText  = avgActual.toFixed(1);
+        document.getElementById('kpi-total').innerText     = puntajes.length;
+        document.getElementById('kpi-movilidad').innerText = `${movilidad}%`;
+        document.getElementById('kpi-nivel').innerText     = this.getNivelTexto(avgActual);
+        document.getElementById('kpi-tendencia').innerText = (() => {
+            if (!penultimaPrueba) return 'Primera prueba';
+            const prevPuntajes = gruposActivos.flatMap(g => {
+                const d = this.data[g]?.[penultimaPrueba];
+                return d ? d.est.map(e => this.parseNum(e.PUNTAJE)).filter(v => !isNaN(v)) : [];
+            });
+            const avgPrev = prevPuntajes.length ? prevPuntajes.reduce((s,v) => s+v, 0) / prevPuntajes.length : 0;
+            const delta = (avgActual - avgPrev).toFixed(1);
+            return delta >= 0 ? `▲ +${delta} vs prueba anterior` : `▼ ${delta} vs prueba anterior`;
+        })();
+        document.getElementById('view-estado').innerText = avgActual >= 270
+            ? 'PROGRESO DESTACADO'
+            : avgActual >= 192
+            ? 'EN NIVELACIÓN'
+            : 'ATENCIÓN URGENTE';
+
+        this.renderTabla(pruebas, gruposActivos, seleccion);
+        this.renderEvolucion(pruebas);
+        this.renderComparativo(pruebas);
+        this.renderRadarArea(document.getElementById('selectArea').value || 'Matemáticas', pruebas);
+        this.renderInsights(pruebas, gruposActivos);
+    },
+
+    // ── Tabla longitudinal ────────────────────────────────────────
+    renderTabla(pruebas, gruposActivos, seleccion) {
+        const body = document.getElementById('tabla-body');
+        body.innerHTML = '';
+
+        // Mostrar columna Grupo solo si son todos
+        const mostrarGrupo = seleccion === '__TODOS__';
+        // Ajustar colspan del mensaje vacío
+        const p1k = pruebas[0], p2k = pruebas[1] || null, p3k = pruebas[2] || pruebas[1];
+
+        gruposActivos.forEach(g => {
+            const d3 = this.data[g]?.[p3k];
+            const d2 = p2k ? this.data[g]?.[p2k] : null;
+            const d1 = this.data[g]?.[p1k];
+            if (!d3) return;
+
+            d3.est.forEach(est => {
+                const doc = String(est.DOCUMENTO).trim();
+                const s1  = d1?.est.find(e => String(e.DOCUMENTO).trim() === doc);
+                const s2  = d2?.est.find(e => String(e.DOCUMENTO).trim() === doc);
+                const v1  = s1 ? this.parseNum(s1.PUNTAJE) : NaN;
+                const v2  = s2 ? this.parseNum(s2.PUNTAJE) : NaN;
+                const v3  = this.parseNum(est.PUNTAJE);
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-l-4 border-transparent hover:border-educate-teal';
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-educate-dark uppercase tracking-tighter">${est.ESTUDIANTE || doc}</td>
+                    ${mostrarGrupo ? `<td class="p-4 text-center text-xs font-bold text-educate-blue uppercase">${g}</td>` : ''}
+                    <td class="p-4 text-center text-educate-gray font-semibold">${isNaN(v1) ? '—' : v1}</td>
+                    <td class="p-4 text-center font-bold text-educate-blue">${isNaN(v2) ? '—' : v2}</td>
+                    <td class="p-4 text-center text-xl">${this.getIcon(v1, v2)}</td>
+                    <td class="p-4 text-center font-black text-white bg-educate-blue/90 italic">${isNaN(v3) ? '—' : v3}</td>
+                    <td class="p-4 text-center text-xl">${this.getIcon(v2, v3)}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-sm text-[10px] font-black text-white ${this.getColorNivel(v3)}">
+                            ${this.getNivelTexto(v3)}
+                        </span>
+                    </td>`;
+                body.appendChild(tr);
+            });
+        });
+
+        if (!body.children.length) {
+            body.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-educate-gray italic">No se encontraron datos para los grupos seleccionados.</td></tr>';
+        }
+    },
+
+    // ── Gráfica de evolución ──────────────────────────────────────
+    renderEvolucion(pruebas) {
+        const ctx = document.getElementById('chartEvolucion').getContext('2d');
+        if (this._chartEvolucion) { this._chartEvolucion.destroy(); }
+
+        // Un dataset por grupo cargado
+        const colores = ['#11678B','#F39325','#54BBAB','#B01829'];
+        const datasets = Object.keys(this.comparativo).map((g, i) => ({
+            label: `Grupo ${g}`,
+            data: this.comparativo[g],
+            borderColor: colores[i % colores.length],
+            backgroundColor: colores[i % colores.length] + '22',
+            fill: true, tension: 0.4, pointRadius: 8,
+            pointBackgroundColor: colores[i % colores.length]
+        }));
+
+        this._chartEvolucion = new Chart(ctx, {
+            type: 'line',
+            data: { labels: pruebas, datasets },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: false } }
+            }
+        });
+    },
+
+    // ── Gráfica comparativa (barras) ──────────────────────────────
+    renderComparativo(pruebas) {
+        const ctx = document.getElementById('chartComparativo').getContext('2d');
+        if (this._chartComparativo) { this._chartComparativo.destroy(); }
+
+        const colores = ['#17334B','#F39325','#54BBAB','#B01829'];
+        const datasets = Object.keys(this.comparativo).map((g, i) => ({
+            label: `Grupo ${g}`,
+            data: this.comparativo[g],
+            backgroundColor: colores[i % colores.length],
+            borderRadius: 4
+        }));
+
+        this._chartComparativo = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: pruebas, datasets },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: false } }
+            }
+        });
+    },
+
+    // ── Radar DCE ─────────────────────────────────────────────────
+    cambiarArea() {
+        const area = document.getElementById('selectArea').value;
+        const colegio = this.config?.find(c => c.dane === document.getElementById('selectDANE').value);
+        if (!colegio) return;
+        const grupo = document.getElementById('selectGrupo').value;
+        const gruposActivos = grupo === '__TODOS__' ? colegio.grupos : [grupo];
+        this.renderRadarArea(area, colegio.pruebas, gruposActivos);
+    },
+
+    renderRadarArea(area, pruebas, gruposActivos) {
+        // Usar datos de la última prueba disponible (con ped no nulo)
+        if (!gruposActivos) {
+            const colegio = this.config?.find(c => c.dane === document.getElementById('selectDANE').value);
+            const grupo   = document.getElementById('selectGrupo').value;
+            gruposActivos = grupo === '__TODOS__' ? colegio.grupos : [grupo];
+        }
+        const ultimaPrueba = [...pruebas].reverse().find(p =>
+            gruposActivos.some(g => this.data[g]?.[p]?.ped)
+        );
+        if (!ultimaPrueba) return;
+
+        // Consolidar competencias de todos los grupos activos
+        let pedRef = null;
+        gruposActivos.forEach(g => {
+            const d = this.data[g]?.[ultimaPrueba];
+            if (d?.ped && !pedRef) pedRef = d.ped;
+        });
+        if (!pedRef) return;
+
+        const areaData = this.normalizarAreaKey(pedRef, area);
+        document.getElementById('radar-area-label').innerText =
+            `${area} · ${ultimaPrueba.replace('_', ' ')}`;
+
+        const ctx = document.getElementById('chartRadar').getContext('2d');
+        if (this._chartRadar) { this._chartRadar.destroy(); }
+
+        if (!areaData || !areaData.competencias?.length) {
+            this._chartRadar = null;
+            const canvas = document.getElementById('chartRadar');
+            const ctx2   = canvas.getContext('2d');
+            ctx2.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('radar-area-label').innerText += ' · Sin datos de competencias';
+            return;
+        }
+
+        const labels = areaData.competencias.map(c => c.nombre);
+        const values = areaData.competencias.map(c => c.puntaje_promedio);
+
+        this._chartRadar = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels,
+                datasets: [{
+                    label: area,
+                    data: values,
+                    backgroundColor: 'rgba(84,187,171,0.25)',
+                    borderColor: '#54BBAB',
+                    pointBackgroundColor: '#17334B',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { r: { beginAtZero: true, max: 100,
+                    ticks: { font: { size: 9 } },
+                    pointLabels: { font: { size: 10, weight: 'bold' } }
+                }},
+                plugins: { legend: { display: false } }
+            }
+        });
+    },
+
+    // ── Insights pedagógicos dinámicos ────────────────────────────
+    renderInsights(pruebas, gruposActivos) {
+        const container = document.getElementById('insights-container');
+        const ultimaPrueba = [...pruebas].reverse().find(p =>
+            gruposActivos.some(g => this.data[g]?.[p]?.ped)
+        );
+
+        // Área más débil y más fuerte basada en promedios CSV
+        const areas = ['MATEMÁTICAS', 'LECTURA CRÍTICA', 'SOCIALES Y CIUDADANAS', 'INGLÉS', 'CIENCIAS NATURALES'];
+        let promediosAreas = {};
+        areas.forEach(a => {
+            let vals = [];
+            gruposActivos.forEach(g => {
+                const d = ultimaPrueba ? this.data[g]?.[ultimaPrueba] : null;
+                if (d) d.est.forEach(e => {
+                    const v = this.parseNum(e[a]);
+                    if (!isNaN(v)) vals.push(v);
+                });
+            });
+            if (vals.length) promediosAreas[a] = vals.reduce((s,v) => s+v, 0) / vals.length;
+        });
+
+        const sorted = Object.entries(promediosAreas).sort((a,b) => a[1]-b[1]);
+        const debil  = sorted[0];
+        const fuerte = sorted[sorted.length-1];
+
+        // Competencia más débil del área débil (del JSON pedagógico)
+        let compDebildetalle = '';
+        if (debil && ultimaPrueba) {
+            gruposActivos.forEach(g => {
+                const ped = this.data[g]?.[ultimaPrueba]?.ped;
+                if (ped) {
+                    const areaKey = Object.keys(ped).find(k =>
+                        k.toLowerCase().includes(debil[0].split(' ')[0].toLowerCase())
+                    );
+                    if (areaKey && ped[areaKey].competencias?.length) {
+                        const minComp = ped[areaKey].competencias
+                            .sort((a,b) => a.puntaje_promedio - b.puntaje_promedio)[0];
+                        if (minComp) compDebildetalle = `La competencia más crítica es <b>${minComp.nombre}</b> con ${minComp.puntaje_promedio.toFixed(1)} pts.`;
                     }
                 }
-            },
+            });
+        }
 
-            renderAll(pruebasOrden) {
-                const p3 = this.data[pruebasOrden[2]] || this.data[pruebasOrden[1]] || this.data[pruebasOrden[0]];
-                const p2 = this.data[pruebasOrden[1]];
-                const p1 = this.data[pruebasOrden[0]];
-                if (!p3) return;
-
-                const avgActual = (p3.est.reduce((s, c) => s + parseFloat(c.PUNTAJE.replace(",", ".")), 0) / p3.est.length).toFixed(1);
-                document.getElementById('kpi-promedio').innerText = avgActual;
-                document.getElementById('view-estado').innerText = avgActual > 215 ? "PROGRESO DESTACADO" : "EN NIVEL DE NIVELACIÓN";
-
-                this.renderTabla(p1, p2, p3);
-                this.renderEvolucion(pruebasOrden);
-                this.renderComparativo(pruebasOrden);
-                this.renderRadar(p3);
-                this.renderInsights();
-            },
-
-            renderTabla(p1, p2, p3) {
-                const body = document.getElementById('tabla-body');
-                body.innerHTML = "";
-                p3.est.forEach(est => {
-                    const doc = est.DOCUMENTO;
-                    const s1 = p1 ? p1.est.find(e => e.DOCUMENTO === doc) : null;
-                    const s2 = p2 ? p2.est.find(e => e.DOCUMENTO === doc) : null;
-                    const v1 = s1 ? parseFloat(s1.PUNTAJE.replace(",", ".")) : 0;
-                    const v2 = s2 ? parseFloat(s2.PUNTAJE.replace(",", ".")) : 0;
-                    const v3 = parseFloat(est.PUNTAJE.replace(",", "."));
-
-                    body.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-l-4 border-transparent hover:border-educate-teal">
-                            <td class="p-6 font-bold text-educate-dark uppercase tracking-tighter">${est.ESTUDIANTE}</td>
-                            <td class="p-6 text-center text-educate-gray font-semibold">${v1 || '-'}</td>
-                            <td class="p-6 text-center font-bold text-educate-blue">${v2 || '-'}</td>
-                            <td class="p-6 text-center text-xl">${this.getIcon(v1, v2)}</td>
-                            <td class="p-6 text-center font-black text-white bg-educate-blue/90 italic">${v3}</td>
-                            <td class="p-6 text-center text-xl">${this.getIcon(v2, v3)}</td>
-                            <td class="p-6 text-center">
-                                <span class="px-4 py-1 rounded-sm text-[10px] font-black text-white ${this.getColorNivel(v3)}">
-                                    ${this.getNivelTexto(v3)}
-                                </span>
-                            </td>
-                        </tr>`;
-                });
-            },
-
-            getIcon(o, n) {
-                if (!o || !n) return "●";
-                return n > o ? "<span class='text-educate-teal font-black italic'>↑</span>" : (n < o ? "<span class='text-educate-red font-black italic'>↓</span>" : "●");
-            },
-
-            getColorNivel(s) {
-                if (s < 192) return "bg-nivel-1";
-                if (s < 270) return "bg-nivel-2";
-                if (s < 350) return "bg-nivel-3";
-                return "bg-nivel-4";
-            },
-
-            getNivelTexto(s) {
-                if (s < 192) return "INSUFICIENTE";
-                if (s < 270) return "MÍNIMO";
-                if (score < 350) return "SATISFACTORIO";
-                return "AVANZADO";
-            },
-
-            renderEvolucion(pruebas) {
-                const ctx = document.getElementById('chartEvolucion').getContext('2d');
-                if (window.eCh) window.eCh.destroy();
-                window.eCh = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: pruebas,
-                        datasets: [{
-                            label: 'Evolución Promedio',
-                            data: this.comparativo[document.getElementById('selectGrupo').value],
-                            borderColor: '#11678B',
-                            backgroundColor: 'rgba(17, 103, 139, 0.1)',
-                            fill: true, tension: 0.4, pointRadius: 10, pointBackgroundColor: '#54BBAB'
-                        }]
+        container.innerHTML = `
+            <div class="p-6 bg-slate-900 text-white rounded-sm border-l-8 border-educate-red shadow-lg">
+                <p class="text-lg font-black uppercase italic tracking-widest text-educate-orange">🔴 Área Crítica · Plan de Acción</p>
+                <p class="text-sm mt-2 font-light leading-relaxed">
+                    El área con menor desempeño es <b>${debil ? debil[0] : '—'}</b>
+                    ${debil ? `(promedio ${debil[1].toFixed(1)} pts)` : ''}.
+                    ${compDebildetalle}
+                    Se recomienda refuerzo inmediato con actividades basadas en DCE.
+                </p>
+            </div>
+            <div class="p-6 bg-educate-teal text-educate-dark rounded-sm border-l-8 border-educate-blue shadow-lg">
+                <p class="text-lg font-black uppercase italic tracking-widest">✅ Fortaleza DCE Detectada</p>
+                <p class="text-sm mt-2 font-bold leading-relaxed">
+                    El grupo demuestra mayor solidez en <b>${fuerte ? fuerte[0] : '—'}</b>
+                    ${fuerte ? `(promedio ${fuerte[1].toFixed(1)} pts)` : ''}.
+                    Esta fortaleza puede usarse como palanca para las áreas en intervención.
+                </p>
+            </div>
+            ${(() => {
+                // Alerta si hay estudiantes sin prueba anterior (no vinculados)
+                const p1k = pruebas[0], p3k = pruebas[pruebas.length-1];
+                let noVinculados = 0;
+                gruposActivos.forEach(g => {
+                    const d3 = this.data[g]?.[p3k];
+                    const d1 = this.data[g]?.[p1k];
+                    if (d3 && d1) {
+                        d3.est.forEach(e => {
+                            if (!d1.est.find(p => String(p.DOCUMENTO).trim() === String(e.DOCUMENTO).trim()))
+                                noVinculados++;
+                        });
                     }
                 });
-            },
+                return noVinculados > 0
+                    ? `<div class="p-4 bg-yellow-50 border-l-8 border-yellow-400 rounded-sm text-yellow-900 text-sm font-semibold">
+                          ⚠️ <b>${noVinculados} estudiante(s)</b> no tienen registro en la Prueba 1 y no se puede calcular su progresión completa. Verificar DOCUMENTO.
+                       </div>`
+                    : '';
+            })()}
+        `;
+    },
 
-            renderComparativo(pruebas) {
-                const ctx = document.getElementById('chartComparativo').getContext('2d');
-                if (window.cCh) window.cCh.destroy();
-                const datasets = Object.keys(this.comparativo).map((g, i) => ({
-                    label: `Grupo ${g}`,
-                    data: this.comparativo[g],
-                    backgroundColor: i === 0 ? '#17334B' : '#F39325',
-                    borderRadius: 4
-                }));
-                window.cCh = new Chart(ctx, { type: 'bar', data: { labels: pruebas, datasets } });
-            },
+    // ── Exportar PDF ──────────────────────────────────────────────
+    exportarPDF() {
+        const el = document.getElementById('informe-final');
+        const grupo = document.getElementById('selectGrupo').value || 'grupo';
+        html2pdf().set({
+            margin: 0.4,
+            filename: `RadarSaber11_${grupo}.pdf`,
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }).from(el).save();
+    }
+};
 
-            renderRadar(p) {
-                const ctx = document.getElementById('chartRadar').getContext('2d');
-                const comps = p.ped["Matemáticas"].competencias;
-                if (window.rCh) window.rCh.destroy();
-                window.rCh = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: comps.map(c => c.nombre),
-                        datasets: [{
-                            label: 'Análisis DCE',
-                            data: comps.map(c => c.puntaje_promedio),
-                            backgroundColor: 'rgba(84, 187, 171, 0.3)',
-                            borderColor: '#54BBAB'
-                        }]
-                    }
-                });
-            },
-
-            renderInsights() {
-                const container = document.getElementById('insigths-container');
-                container.innerHTML = `
-                    <div class="p-6 bg-slate-900 text-white rounded-sm border-l-8 border-educate-orange shadow-lg">
-                        <p class="text-lg font-black uppercase italic tracking-widest text-educate-teal">Plan de Acción - Crítico</p>
-                        <p class="text-sm mt-2 font-light leading-relaxed">El componente de <b>Formulación y Ejecución</b> en Matemáticas es el punto de quiebre. Se recomienda aplicar sesiones intensivas de resolución de problemas basados en evidencias.</p>
-                    </div>
-                    <div class="p-6 bg-educate-teal text-educate-dark rounded-sm border-l-8 border-educate-blue shadow-lg">
-                        <p class="text-lg font-black uppercase italic tracking-widest">Fortaleza DCE detectada</p>
-                        <p class="text-sm mt-2 font-bold leading-relaxed">El grupo ha movilizado un 12% más de estudiantes al nivel Satisfactorio en Lectura Crítica. La competencia de identificar contenidos locales está consolidada.</p>
-                    </div>
-                `;
-            },
-
-            exportarPDF() {
-                const el = document.getElementById('informe-final');
-                html2pdf().set({ 
-                    margin: 0.4, 
-                    filename: 'Radar_Saber11_EducateColombia.pdf', 
-                    html2canvas: { scale: 2 }, 
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } 
-                }).from(el).save();
-            }
-        };
-
-        window.onload = () => App.loadConfig();
-    </script>
+window.onload = () => App.loadConfig();
+</script>
 </body>
 </html>
