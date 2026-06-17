@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RADAR SABER 11 - Inteligencia Pedagógica DCE</title>
+    <title>RADAR SABER 11 - Grupo Edúcate Colombia</title>
     
-    <!-- Fuentes y Librerías -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,12 +17,8 @@
                 extend: {
                     colors: {
                         educate: {
-                            'dark': '#17334B',   /* Primario 1 */
-                            'blue': '#11678B',   /* Primario 2 */
-                            'teal': '#54BBAB',   /* Primario 3 */
-                            'orange': '#F39325', /* Secundario 1 */
-                            'red': '#B01829',    /* Secundario 3 */
-                            'gray': '#808080'
+                            'dark': '#17334B', 'blue': '#11678B', 'teal': '#54BBAB',
+                            'orange': '#F39325', 'red': '#B01829', 'gray': '#808080'
                         }
                     },
                     fontFamily: { barlow: ['Barlow Condensed', 'sans-serif'] }
@@ -32,78 +27,59 @@
         }
     </script>
     <style>
-        body { font-family: 'Barlow Condensed', sans-serif; background-color: #f8fafc; color: #17334B; }
-        .font-kpi { font-weight: 800; }
-        .bg-nivel-1 { background-color: #B01829; } /* Insuficiente */
-        .bg-nivel-2 { background-color: #F39325; } /* Mínimo */
-        .bg-nivel-3 { background-color: #11678B; } /* Satisfactorio */
-        .bg-nivel-4 { background-color: #54BBAB; } /* Avanzado */
-        
+        body { font-family: 'Barlow Condensed', sans-serif; background-color: #f8fafc; }
+        .bg-nivel-1 { background-color: #B01829; } .bg-nivel-2 { background-color: #F39325; }
+        .bg-nivel-3 { background-color: #11678B; } .bg-nivel-4 { background-color: #54BBAB; }
         #overlay-loading {
             position: fixed; inset: 0; background: rgba(23,51,75,0.9);
             display: flex; align-items: center; justify-content: center;
             z-index: 9999; flex-direction: column; gap: 20px;
         }
-        .spinner {
-            width: 50px; height: 50px; border: 6px solid rgba(84,187,171,0.2);
-            border-top-color: #54BBAB; border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .spinner { width: 40px; height: 40px; border: 4px solid #54BBAB33; border-top-color: #54BBAB; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @media print { .no-print { display: none; } }
     </style>
 </head>
 <body>
 
-<div id="overlay-loading" style="display:none;">
-    <div class="spinner"></div>
-    <p class="text-white font-bold uppercase tracking-widest text-sm">Procesando Evidencias DCE...</p>
-</div>
+<div id="overlay-loading" style="display:none;"><div class="spinner"></div><p class="text-white font-bold text-sm uppercase tracking-widest">Cargando Analítica DCE...</p></div>
 
-<!-- NAVEGACIÓN -->
 <nav class="no-print bg-educate-dark text-white p-4 sticky top-0 z-50 border-b-4 border-educate-teal shadow-xl">
     <div class="container mx-auto flex flex-wrap justify-between items-center gap-4">
         <div class="flex items-center gap-3">
-            <div class="bg-white p-1.5 rounded">
-                <img src="assets/img/Logo_grupo_educate.png" alt="Edúcate" class="h-10" onerror="this.src='https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png'">
-            </div>
+            <img src="https://grupoeducatecolombia.com/wp-content/uploads/2023/04/Logo-Educate-Colombia-1.png" class="h-10 bg-white p-1 rounded" alt="Logo">
             <h1 class="text-xl font-bold uppercase italic tracking-tighter">Radar <span class="text-educate-teal">Saber 11</span></h1>
         </div>
-        
         <div class="flex flex-wrap gap-2">
-            <select id="selectDANE" onchange="App.handleColegioChange()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white">
-                <option value="" class="text-black">Institución...</option>
-            </select>
-            <select id="selectGrupo" onchange="App.init()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white">
-                <option value="" class="text-black">Grupo...</option>
-            </select>
-            <select id="selectArea" onchange="App.cambiarArea()" class="bg-educate-blue border border-white/20 rounded px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-educate-teal text-white hidden">
+            <select id="selectDANE" onchange="App.handleColegioChange()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-educate-teal outline-none"><option value="" class="text-black">Institución...</option></select>
+            <select id="selectGrupo" onchange="App.init()" class="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white outline-none"><option value="" class="text-black">Grupo...</option></select>
+            <select id="selectArea" onchange="App.cambiarArea()" class="bg-educate-blue border border-white/20 rounded px-3 py-1.5 text-sm text-white hidden">
                 <option value="Matemáticas">Matemáticas</option>
                 <option value="Lectura Crítica">Lectura Crítica</option>
                 <option value="Ciencias Sociales">Ciencias Sociales</option>
                 <option value="Ciencias Naturales">Ciencias Naturales</option>
                 <option value="Inglés">Inglés</option>
             </select>
-            <button onclick="App.exportarPDF()" class="bg-educate-teal hover:bg-opacity-90 text-educate-dark font-bold py-1.5 px-4 rounded text-sm uppercase">Exportar Informe</button>
+            <button onclick="App.exportarPDF()" class="bg-educate-teal text-educate-dark font-bold py-1.5 px-4 rounded text-sm uppercase">Exportar Informe</button>
         </div>
     </div>
 </nav>
 
 <main id="informe-final" class="container mx-auto p-4 lg:p-8 max-w-7xl">
 
-    <!-- CABECERA DINÁMICA -->
+    <!-- HEADER IE -->
     <div class="bg-white rounded shadow-sm border-t-8 border-educate-dark p-8 mb-6 flex flex-col md:flex-row justify-between items-center">
         <div>
             <h2 id="view-nombre-ie" class="text-4xl font-extrabold text-educate-dark uppercase italic tracking-tighter leading-none">SELECCIONE INSTITUCIÓN</h2>
-            <div class="flex flex-wrap gap-4 mt-3 text-educate-gray font-semibold uppercase text-sm">
+            <div class="flex flex-wrap gap-4 mt-3 text-educate-gray font-semibold uppercase text-xs">
                 <span>DANE: <b id="view-dane" class="text-educate-blue">--</b></span>
                 <span>Municipio: <b id="view-muni" class="text-educate-blue">--</b></span>
                 <span>Análisis: <b id="view-grupo" class="text-educate-orange">--</b></span>
             </div>
         </div>
-        <div id="status-badge" class="mt-4 md:mt-0 bg-slate-100 p-4 rounded border-l-4 border-slate-400 text-center min-w-[200px]">
+        <div class="mt-4 md:mt-0 bg-slate-100 p-4 rounded border-l-4 border-slate-400 text-center min-w-[200px]">
             <p class="text-[10px] font-bold uppercase opacity-60">Estado Pedagógico</p>
-            <div id="view-estado" class="text-xl font-bold uppercase italic">Esperando...</div>
+            <div id="view-estado" class="text-xl font-bold uppercase italic text-educate-dark">ESPERANDO...</div>
         </div>
     </div>
 
@@ -111,51 +87,46 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-educate-dark text-white p-5 rounded border-b-4 border-educate-blue shadow">
             <p class="text-[10px] font-bold uppercase opacity-60">Promedio Global</p>
-            <h3 id="kpi-promedio" class="text-4xl font-kpi">--</h3>
+            <h3 id="kpi-promedio" class="text-4xl font-black">--</h3>
             <p id="kpi-tendencia" class="text-xs font-bold text-educate-teal mt-1">--</p>
         </div>
         <div class="bg-white p-5 rounded border-b-4 border-educate-orange shadow">
             <p class="text-[10px] font-bold uppercase text-educate-gray">Estudiantes</p>
-            <h3 id="kpi-total" class="text-4xl font-kpi text-educate-dark">--</h3>
-            <p class="text-[10px] font-bold text-educate-orange uppercase mt-1">Última Prueba Cargada</p>
+            <h3 id="kpi-total" class="text-4xl font-black text-educate-dark">--</h3>
+            <p class="text-[10px] font-bold text-educate-orange uppercase mt-1">Evaluados</p>
         </div>
         <div class="bg-white p-5 rounded border-b-4 border-educate-teal shadow">
             <p class="text-[10px] font-bold uppercase text-educate-gray">Movilidad Positiva</p>
-            <h3 id="kpi-movilidad" class="text-4xl font-kpi text-educate-dark">--%</h3>
+            <h3 id="kpi-movilidad" class="text-4xl font-black text-educate-dark">--%</h3>
             <p class="text-[10px] font-bold text-educate-teal uppercase mt-1">Ascenso de Nivel</p>
         </div>
         <div class="bg-white p-5 rounded border-b-4 border-educate-red shadow">
             <p class="text-[10px] font-bold uppercase text-educate-gray">Clasificación</p>
-            <h3 id="kpi-nivel" class="text-2xl font-kpi text-educate-dark uppercase">--</h3>
+            <h3 id="kpi-nivel" class="text-2xl font-black text-educate-dark uppercase">--</h3>
             <p class="text-[10px] font-bold text-educate-red uppercase mt-1">Rango Saber 11</p>
         </div>
     </div>
 
-    <!-- GRÁFICOS PRINCIPALES -->
+    <!-- GRÁFICOS -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white p-6 rounded shadow border">
-            <h4 class="text-sm font-bold uppercase mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-educate-blue inline-block"></span> Evolución Histórica del Grupo
-            </h4>
-            <canvas id="chartEvolucion" height="180"></canvas>
+            <h4 class="text-xs font-bold uppercase mb-4 flex items-center gap-2"><span class="w-1 h-4 bg-educate-blue block"></span> Evolución Histórica</h4>
+            <canvas id="chartEvolucion" height="150"></canvas>
         </div>
         <div class="bg-white p-6 rounded shadow border">
-            <h4 class="text-sm font-bold uppercase mb-4 flex items-center gap-2">
-                <span class="w-2 h-4 bg-educate-orange inline-block"></span> Comparativa por Áreas
-            </h4>
-            <canvas id="chartComparativo" height="180"></canvas>
+            <h4 class="text-xs font-bold uppercase mb-4 flex items-center gap-2"><span class="w-1 h-4 bg-educate-orange block"></span> Comparativa por Áreas</h4>
+            <canvas id="chartComparativo" height="150"></canvas>
         </div>
     </div>
 
-    <!-- TABLA DE SEGUIMIENTO -->
+    <!-- TABLA -->
     <div class="bg-white rounded shadow border overflow-hidden mb-6">
-        <div class="bg-educate-dark p-4 text-white flex justify-between items-center">
-            <h4 class="text-xs font-bold uppercase tracking-widest">Semáforo de Movilización Individual</h4>
-            <span class="text-[9px] uppercase font-bold opacity-50 text-educate-teal">Diseño Centrado en Evidencias</span>
+        <div class="bg-educate-dark p-3 text-white flex justify-between items-center">
+            <h4 class="text-[10px] font-bold uppercase tracking-widest">Semáforo de Movilización Individual (DCE)</h4>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-50 text-[10px] uppercase font-bold text-educate-gray border-b">
+                <thead class="bg-slate-50 text-[9px] uppercase font-bold text-educate-gray border-b">
                     <tr>
                         <th class="p-4">Estudiante</th>
                         <th class="p-4 text-center">P1</th>
@@ -167,60 +138,56 @@
                     </tr>
                 </thead>
                 <tbody id="tabla-body" class="text-sm divide-y">
-                    <tr><td colspan="7" class="p-10 text-center italic text-slate-400">Seleccione los filtros superiores para cargar datos.</td></tr>
+                    <tr><td colspan="7" class="p-10 text-center italic text-slate-400 font-light">Seleccione institución para cargar datos.</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- ANALISIS DCE PROFUNDO -->
+    <!-- ANALISIS DCE -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-1 bg-white p-6 rounded shadow border flex flex-col items-center">
-            <h4 class="text-sm font-bold uppercase mb-2 text-center">Radar de Competencias</h4>
-            <p id="radar-area-label" class="text-[10px] font-bold text-educate-blue mb-4 uppercase">Matemáticas</p>
-            <div class="w-full">
-                <canvas id="chartRadar"></canvas>
-            </div>
+            <h4 class="text-xs font-bold uppercase mb-2">Radar de Competencias</h4>
+            <p id="radar-area-label" class="text-[10px] font-bold text-educate-blue mb-4 uppercase">Cargando...</p>
+            <canvas id="chartRadar"></canvas>
         </div>
         <div class="lg:col-span-2 bg-white p-6 rounded shadow border">
-            <h4 class="text-sm font-bold uppercase mb-4">Interpretación Pedagógica y Hallazgos</h4>
-            <div id="insights-container" class="space-y-4">
-                <p class="text-sm italic text-slate-500">Cargue un grupo para ver el análisis de evidencias.</p>
-            </div>
+            <h4 class="text-xs font-bold uppercase mb-4">Interpretación Pedagógica</h4>
+            <div id="insights-container" class="space-y-4"></div>
         </div>
     </div>
 
 </main>
 
-<footer class="mt-12 p-8 bg-educate-dark text-white text-center">
-    <p class="text-[10px] uppercase font-bold tracking-[0.2em] opacity-60 mb-2">Plataforma desarrollada para</p>
-    <img src="assets/img/Logo_grupo_educate.png" alt="Grupo Edúcate" class="h-10 mx-auto grayscale brightness-200" onerror="this.style.display='none'">
-    <p class="text-xs mt-4 font-light">© 2025 Analítica Educativa - Basado en Marco de Referencia ICFES</p>
-</footer>
-
 <script>
-/**
- * APP CORE - Lógica de Analítica Web
- */
 const App = {
-    config: null,
-    data: {},         
-    niveles: {},      
-    marcos: {},       
-    charts: {},       
-    
+    config: null, data: {}, niveles: {}, marcos: {}, charts: {},
+
+    // --- Normalización ---
+    getSlug(area) {
+        const mapa = { "Matemáticas": "matematicas", "Lectura Crítica": "lectura-critica", "Ciencias Sociales": "ciencias-sociales", "Ciencias Naturales": "ciencias-naturales", "Inglés": "ingles" };
+        return mapa[area] || area.toLowerCase();
+    },
+
+    getCSVKey(est, area) {
+        const sinonimos = {
+            "Matemáticas": ["MATEMÁTICAS", "MATEMATICAS", "MATEMATICA"],
+            "Lectura Crítica": ["LECTURA CRÍTICA", "LECTURA CRITICA", "LECTURA"],
+            "Ciencias Sociales": ["SOCIALES Y CIUDADANAS", "CIENCIAS SOCIALES", "SOCIALES"],
+            "Ciencias Naturales": ["CIENCIAS NATURALES", "NATURALES"],
+            "Inglés": ["INGLÉS", "INGLES"]
+        };
+        const keys = Object.keys(est);
+        const posibles = sinonimos[area] || [area.toUpperCase()];
+        return posibles.find(p => keys.includes(p));
+    },
+
+    // --- Carga ---
     async loadConfig() {
-        try {
-            const res = await fetch('config.json');
-            this.config = await res.json();
-            const sel = document.getElementById('selectDANE');
-            this.config.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.dane;
-                opt.textContent = c.nombre;
-                sel.appendChild(opt);
-            });
-        } catch (e) { console.error("Error config:", e); }
+        const res = await fetch('config.json');
+        this.config = await res.json();
+        const sel = document.getElementById('selectDANE');
+        this.config.forEach(c => { const opt = document.createElement('option'); opt.value = c.dane; opt.textContent = c.nombre; sel.appendChild(opt); });
     },
 
     handleColegioChange() {
@@ -228,105 +195,49 @@ const App = {
         const col = this.config.find(c => c.dane === dane);
         const selG = document.getElementById('selectGrupo');
         selG.innerHTML = '<option value="">Grupo...</option>';
-        if (col) {
-            col.grupos.forEach(g => {
-                const opt = document.createElement('option');
-                opt.value = g;
-                opt.textContent = `Grado ${g}`;
-                selG.appendChild(opt);
-            });
-        }
+        if (col) col.grupos.forEach(g => { const opt = document.createElement('option'); opt.value = g; opt.textContent = `Grado ${g}`; selG.appendChild(opt); });
     },
 
     async init() {
         const dane = document.getElementById('selectDANE').value;
         const grupo = document.getElementById('selectGrupo').value;
         if (!dane || !grupo) return;
-
         this.showLoading(true);
         const col = this.config.find(c => c.dane === dane);
-        
-        document.getElementById('view-nombre-ie').innerText = col.nombre;
-        document.getElementById('view-dane').innerText = col.dane;
-        document.getElementById('view-muni').innerText = col.municipio;
-        document.getElementById('view-grupo').innerText = `Grupo ${grupo}`;
 
         try {
             this.data[grupo] = {};
             for (const p of col.pruebas) {
-                const csvPath = `data/${dane}/${grupo}-${p}.csv`;
-                const jsonPath = `data/${dane}/${grupo}-${p}.json`;
-
-                const [csvRes, jsonRes] = await Promise.all([
-                    fetch(csvPath).then(r => r.ok ? r.text() : null),
-                    fetch(jsonPath).then(r => r.ok ? r.json() : null)
+                const [csv, json] = await Promise.all([
+                    fetch(`data/${dane}/${grupo}-${p}.csv`).then(r => r.ok ? r.text() : null),
+                    fetch(`data/${dane}/${grupo}-${p}.json`).then(r => r.ok ? r.json() : null)
                 ]);
-
-                if (csvRes) {
-                    const parsed = Papa.parse(csvRes, { header: true, skipEmptyLines: true, delimiter: ';' });
-                    this.data[grupo][p] = { 
-                        est: parsed.data.filter(r => r.PUNTAJE), 
-                        ped: jsonRes ? jsonRes.analisis_pedagogico : null 
-                    };
-                }
+                if (csv) this.data[grupo][p] = { est: Papa.parse(csv, {header:true, skipEmptyLines:true, delimiter:';'}).data.filter(r => r.PUNTAJE), ped: json ? json.analisis_pedagogico : null };
             }
-
             await this.cargarMetadatosGlobales();
             this.renderizarTodo(col.pruebas, grupo);
             document.getElementById('selectArea').classList.remove('hidden');
-            
-        } catch (err) {
-            console.error("Error cargando datos:", err);
-        } finally {
-            this.showLoading(false);
-        }
-    },
-
-    // ESTA ES LA FUNCIÓN QUE FALTABA
-    async cambiarArea() {
-        const area = document.getElementById('selectArea').value;
-        const grupo = document.getElementById('selectGrupo').value;
-        const dane = document.getElementById('selectDANE').value;
-        const col = this.config.find(c => c.dane === dane);
-        const p3 = col.pruebas[col.pruebas.length - 1];
-        const d3 = this.data[grupo][p3];
-
-        if (d3) {
-            document.getElementById('radar-area-label').innerText = area;
-            this.renderRadar(d3.ped, area);
-            this.renderInsights(d3, area);
-        }
+        } finally { this.showLoading(false); }
     },
 
     async cargarMetadatosGlobales() {
-        // Normalización de nombres para archivos
         const areas = ["lectura-critica", "matematicas", "ciencias-naturales", "ciencias-sociales", "ingles"];
         for (const a of areas) {
-            try {
-                const [n, s] = await Promise.all([
-                    fetch(`data/Niveles/Niveles-${a}.json`).then(r => r.ok ? r.json() : null),
-                    fetch(`data/Saber/Saber-${a}.json`).then(r => r.ok ? r.json() : null)
-                ]);
-                if (n) this.niveles[a] = n;
-                if (s) this.marcos[a] = s;
-            } catch (e) { }
+            const [n, s] = await Promise.all([ fetch(`data/Niveles/Niveles-${a}.json`).then(r => r.ok ? r.json() : null), fetch(`data/Saber/Saber-${a}.json`).then(r => r.ok ? r.json() : null) ]);
+            if (n) this.niveles[a] = n; if (s) this.marcos[a] = s;
         }
     },
 
+    // --- Visualización ---
     renderizarTodo(pruebas, grupo) {
-        const p1 = pruebas[0];
-        const p2 = pruebas[1];
-        const p3 = pruebas[pruebas.length - 1]; 
-        const d1 = this.data[grupo][p1];
-        const d2 = this.data[grupo][p2];
-        const d3 = this.data[grupo][p3];
-
-        if (!d3) return;
-
+        const p1 = pruebas[0], p2 = pruebas[1], p3 = pruebas[pruebas.length-1];
+        const d1 = this.data[grupo][p1], d2 = this.data[grupo][p2], d3 = this.data[grupo][p3];
+        
         const avg = this.calcPromedio(d3.est, 'PUNTAJE');
         document.getElementById('kpi-promedio').innerText = avg.toFixed(1);
         document.getElementById('kpi-total').innerText = d3.est.length;
         document.getElementById('kpi-nivel').innerText = this.getNivelGlobal(avg);
+        document.getElementById('view-estado').innerText = this.getNivelGlobal(avg);
         
         let saltos = 0;
         d3.est.forEach(e => {
@@ -337,202 +248,85 @@ const App = {
 
         this.renderTabla(d1, d2, d3);
         this.renderEvolucion(pruebas, grupo);
-        
-        // Ejecutar por defecto con la primera opción del select
-        const areaInicial = document.getElementById('selectArea').value || "Matemáticas";
-        this.renderRadar(d3.ped, areaInicial);
-        this.renderInsights(d3, areaInicial);
-    },
-
-    // ... (Resto de funciones renderTabla, renderEvolucion, renderRadar, etc. se mantienen igual)
-
-    // --- Renderizado de Componentes ---
-    renderizarTodo(pruebas, grupo) {
-        const p1 = pruebas[0];
-        const p2 = pruebas[1];
-        const p3 = pruebas[pruebas.length - 1]; // Última disponible
-
-        const d1 = this.data[grupo][p1];
-        const d2 = this.data[grupo][p2];
-        const d3 = this.data[grupo][p3];
-
-        if (!d3) return;
-
-        // 1. KPIs
-        const avg = this.calcPromedio(d3.est, 'PUNTAJE');
-        document.getElementById('kpi-promedio').innerText = avg.toFixed(1);
-        document.getElementById('kpi-total').innerText = d3.est.length;
-        document.getElementById('kpi-nivel').innerText = this.getNivelGlobal(avg);
-        
-        // 2. Movilidad (Salto de niveles entre p1 y p3)
-        let saltos = 0;
-        d3.est.forEach(e => {
-            const ant = d1?.est.find(x => x.DOCUMENTO === e.DOCUMENTO);
-            if (ant && this.getNivelGlobal(e.PUNTAJE, true) > this.getNivelGlobal(ant.PUNTAJE, true)) saltos++;
-        });
-        document.getElementById('kpi-movilidad').innerText = Math.round((saltos/d3.est.length)*100) + '%';
-
-        // 3. Tabla
-        this.renderTabla(d1, d2, d3);
-
-        // 4. Gráficos
-        this.renderEvolucion(pruebas, grupo);
-        this.renderRadar(d3.ped, "Matemáticas");
-        
-        // 5. Insights
-        this.renderInsights(d3, "Matemáticas");
+        this.renderComparativo(d3);
+        this.cambiarArea();
     },
 
     renderTabla(d1, d2, d3) {
-        const body = document.getElementById('tabla-body');
-        body.innerHTML = '';
-        
+        const body = document.getElementById('tabla-body'); body.innerHTML = '';
         d3.est.forEach(est => {
-            const v3 = parseFloat(est.PUNTAJE);
-            const e1 = d1?.est.find(x => x.DOCUMENTO === est.DOCUMENTO);
-            const e2 = d2?.est.find(x => x.DOCUMENTO === est.DOCUMENTO);
-            const v1 = e1 ? parseFloat(e1.PUNTAJE) : null;
-            const v2 = e2 ? parseFloat(e2.PUNTAJE) : null;
-
+            const v3 = parseFloat(est.PUNTAJE), e1 = d1?.est.find(x => x.DOCUMENTO === est.DOCUMENTO), e2 = d2?.est.find(x => x.DOCUMENTO === est.DOCUMENTO);
+            const v1 = e1 ? parseFloat(e1.PUNTAJE) : null, v2 = e2 ? parseFloat(e2.PUNTAJE) : null;
             const tr = document.createElement('tr');
-            tr.className = "hover:bg-slate-50 transition-colors";
-            tr.innerHTML = `
-                <td class="p-4 font-bold text-educate-dark uppercase text-xs">${est.ESTUDIANTE}</td>
-                <td class="p-4 text-center text-slate-400 font-semibold">${v1 || '--'}</td>
-                <td class="p-4 text-center text-educate-blue font-semibold">${v2 || '--'}</td>
-                <td class="p-4 text-center text-lg">${this.getIconoDelta(v1, v2)}</td>
-                <td class="p-4 text-center bg-slate-50 font-black text-educate-dark">${v3}</td>
-                <td class="p-4 text-center text-lg">${this.getIconoDelta(v2, v3)}</td>
-                <td class="p-4 text-center">
-                    <span class="px-2 py-1 rounded-full text-[9px] font-bold text-white ${this.getColorNivel(v3)}">
-                        ${this.getNivelGlobal(v3)}
-                    </span>
-                </td>
-            `;
+            tr.innerHTML = `<td class="p-4 font-bold text-educate-dark uppercase text-xs">${est.ESTUDIANTE}</td><td class="p-4 text-center text-slate-400 font-semibold">${v1||'--'}</td><td class="p-4 text-center text-educate-blue font-semibold">${v2||'--'}</td><td class="p-4 text-center">${this.getIconoDelta(v1,v2)}</td><td class="p-4 text-center bg-slate-50 font-black">${v3}</td><td class="p-4 text-center">${this.getIconoDelta(v2,v3)}</td><td class="p-4 text-center"><span class="px-2 py-1 rounded-full text-[9px] font-bold text-white ${this.getColorNivel(v3)}">${this.getNivelGlobal(v3)}</span></td>`;
             body.appendChild(tr);
         });
     },
 
-    renderEvolucion(pruebas, grupo) {
-        const ctx = document.getElementById('chartEvolucion').getContext('2d');
-        if (this.charts.evolucion) this.charts.evolucion.destroy();
-
-        const dataset = pruebas.map(p => this.calcPromedio(this.data[grupo][p]?.est || [], 'PUNTAJE'));
-
-        this.charts.evolucion = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: pruebas,
-                datasets: [{
-                    label: 'Puntaje Global',
-                    data: dataset,
-                    borderColor: '#11678B',
-                    backgroundColor: 'rgba(17,103,139,0.1)',
-                    fill: true, tension: 0.4, pointRadius: 6, pointHoverRadius: 8
-                }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } } }
+    renderComparativo(d3) {
+        const ctx = document.getElementById('chartComparativo').getContext('2d');
+        if (this.charts.comparativo) this.charts.comparativo.destroy();
+        const areas = ["Matemáticas", "Lectura Crítica", "Ciencias Sociales", "Ciencias Naturales", "Inglés"];
+        const promedios = areas.map(a => {
+            const key = this.getCSVKey(d3.est[0], a);
+            return key ? this.calcPromedio(d3.est, key) : 0;
         });
+        this.charts.comparativo = new Chart(ctx, { type: 'bar', data: { labels: areas, datasets: [{ data: promedios, backgroundColor: ['#11678B', '#54BBAB', '#F39325', '#B01829', '#808080'], borderRadius: 4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } } });
+    },
+
+    cambiarArea() {
+        const area = document.getElementById('selectArea').value;
+        const grupo = document.getElementById('selectGrupo').value;
+        const p3 = this.config.find(c => c.dane === document.getElementById('selectDANE').value).pruebas.slice(-1)[0];
+        const d3 = this.data[grupo][p3];
+        document.getElementById('radar-area-label').innerText = area;
+        this.renderRadar(d3.ped, area);
+        this.renderInsights(d3, area);
     },
 
     renderRadar(ped, area) {
         const ctx = document.getElementById('chartRadar').getContext('2d');
         if (this.charts.radar) this.charts.radar.destroy();
-        
-        if (!ped || !ped[area]) {
-            ctx.clearRect(0,0,300,300);
-            return;
-        }
-
-        const comp = ped[area].competencias;
-        this.charts.radar = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: comp.map(c => c.nombre),
-                datasets: [{
-                    data: comp.map(c => c.puntaje_promedio),
-                    backgroundColor: 'rgba(84,187,171,0.2)',
-                    borderColor: '#54BBAB',
-                    pointBackgroundColor: '#17334B'
-                }]
-            },
-            options: { 
-                scales: { r: { beginAtZero: true, max: 100, ticks: { display: false } } },
-                plugins: { legend: { display: false } }
-            }
-        });
+        const areaNormalizada = Object.keys(ped || {}).find(k => k.toLowerCase().includes(area.toLowerCase().substring(0,5)));
+        if (!ped || !areaNormalizada) return;
+        const comp = ped[areaNormalizada].competencias;
+        this.charts.radar = new Chart(ctx, { type: 'radar', data: { labels: comp.map(c => c.nombre), datasets: [{ data: comp.map(c => c.puntaje_promedio), backgroundColor: 'rgba(84,187,171,0.2)', borderColor: '#54BBAB' }] }, options: { scales: { r: { beginAtZero: true, max: 60, ticks: { display: false } } }, plugins: { legend: { display: false } } } });
     },
 
-    renderInsights(dataActual, areaSeleccionada) {
+    renderInsights(d3, area) {
         const container = document.getElementById('insights-container');
-        const avgArea = this.calcPromedio(dataActual.est, areaSeleccionada.toUpperCase());
-        const slug = areaSeleccionada.toLowerCase().replace(' ', '-');
-        
-        const nivelInfo = this.niveles[slug]?.niveles.find(n => {
-            const [min, max] = n.rango_puntaje.replace(' a ', '-').split('-').map(Number);
-            return avgArea >= min && avgArea <= max;
-        });
-
-        const marcoSaber = this.marcos[slug];
+        const key = this.getCSVKey(d3.est[0], area);
+        const avg = key ? this.calcPromedio(d3.est, key) : 0;
+        const slug = this.getSlug(area);
+        const nivelInfo = this.niveles[slug]?.niveles.find(n => { const r = n.rango_puntaje.split(' a ').map(Number); return avg >= r[0] && avg <= r[1]; });
+        const marco = this.marcos[slug];
 
         container.innerHTML = `
             <div class="p-4 bg-slate-900 text-white rounded border-l-8 border-educate-teal shadow">
-                <p class="text-[10px] font-bold uppercase text-educate-teal mb-1">Estado de Competencia: ${areaSeleccionada}</p>
-                <p class="text-xs italic font-light">"El promedio del grupo es <b>${avgArea.toFixed(1)}</b>, lo que los ubica en <b>Nivel ${nivelInfo?.nivel || '--'}</b>."</p>
-                <div class="mt-3 text-[11px] leading-relaxed opacity-90">
-                    <b>Habilidades Detectadas:</b> ${nivelInfo ? nivelInfo.habilidades[0] : 'Cargando habilidades del marco...'}
-                </div>
+                <p class="text-[10px] font-bold uppercase text-educate-teal">Estado de competencia: ${area}</p>
+                <p class="text-sm mt-1">El grupo promedia <b>${avg.toFixed(1)}</b>, ubicándose en <b>Nivel ${nivelInfo ? nivelInfo.nivel : '-'}</b>.</p>
+                <p class="text-[11px] mt-2 italic opacity-80">${nivelInfo ? nivelInfo.habilidades[0] : 'Analizando evidencias...'}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div class="p-4 bg-white border rounded">
-                    <p class="text-[10px] font-bold uppercase text-educate-orange mb-2">Debilidad Crítica</p>
-                    <p class="text-xs text-slate-600">Basado en el DCE, se requiere reforzar la articulación de textos según el marco de <b>Lectura Crítica</b>.</p>
-                </div>
-                <div class="p-4 bg-white border rounded">
-                    <p class="text-[10px] font-bold uppercase text-educate-blue mb-2">Acción Sugerida</p>
-                    <p class="text-xs text-slate-600">Utilizar el <b>${marcoSaber?.distribucion_tipos_texto[0].formato}</b> para mejorar el desempeño en textos ${marcoSaber?.distribucion_tipos_texto[0].tipos[0].categoria}.</p>
-                </div>
-            </div>
-        `;
+                <div class="p-4 bg-white border rounded"><p class="text-[10px] font-bold uppercase text-educate-orange mb-1">Debilidad Detectada</p><p class="text-xs text-slate-600">${marco ? marco.competencias[0].descripcion : 'Focalizar en componentes básicos.'}</p></div>
+                <div class="p-4 bg-white border rounded"><p class="text-[10px] font-bold uppercase text-educate-blue mb-1">Acción Sugerida</p><p class="text-xs text-slate-600">${marco ? 'Entrenamiento en ' + marco.distribucion_tipos_texto[0].tipos[0].categoria : 'Refuerzo de contenidos locales.'}</p></div>
+            </div>`;
     },
 
     // --- Helpers ---
-    calcPromedio(arr, key) {
-        const vals = arr.map(i => parseFloat(i[key])).filter(v => !isNaN(v));
-        return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+    renderEvolucion(pruebas, grupo) {
+        const ctx = document.getElementById('chartEvolucion').getContext('2d');
+        if (this.charts.evolucion) this.charts.evolucion.destroy();
+        this.charts.evolucion = new Chart(ctx, { type: 'line', data: { labels: pruebas, datasets: [{ data: pruebas.map(p => this.calcPromedio(this.data[grupo][p]?.est || [], 'PUNTAJE')), borderColor: '#11678B', fill: true, backgroundColor: 'rgba(17,103,139,0.1)', tension: 0.4 }] }, options: { plugins: { legend: { display: false } } } });
     },
 
-    getNivelGlobal(s, numerico = false) {
-        let n = 1;
-        if (s < 192) n = 1; else if (s < 270) n = 2; else if (s < 350) n = 3; else n = 4;
-        if (numerico) return n;
-        const labels = ["INSUFICIENTE", "MÍNIMO", "SATISFACTORIO", "AVANZADO"];
-        return labels[n - 1];
-    },
-
-    getColorNivel(s) {
-        const n = this.getNivelGlobal(s, true);
-        return `bg-nivel-${n}`;
-    },
-
-    getIconoDelta(vAnt, vAct) {
-        if (!vAnt || !vAct) return '●';
-        if (vAct > vAnt) return '<span class="text-green-500 font-black">↑</span>';
-        if (vAct < vAnt) return '<span class="text-educate-red font-black">↓</span>';
-        return '<span class="text-slate-300">●</span>';
-    },
-
-    showLoading(show) { document.getElementById('overlay-loading').style.display = show ? 'flex' : 'none'; },
-
-    exportarPDF() {
-        const el = document.getElementById('informe-final');
-        html2pdf().set({
-            margin: 0.5, filename: 'Radar_Saber11_Educate.pdf',
-            html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        }).from(el).save();
-    }
+    calcPromedio(arr, key) { const v = arr.map(i => parseFloat(String(i[key]).replace(',','.'))).filter(v => !isNaN(v)); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0; },
+    getNivelGlobal(s, num = false) { const n = s < 192 ? 1 : s < 270 ? 2 : s < 350 ? 3 : 4; return num ? n : ["INSUFICIENTE", "MÍNIMO", "SATISFACTORIO", "AVANZADO"][n-1]; },
+    getColorNivel(s) { return `bg-nivel-${this.getNivelGlobal(s, true)}`; },
+    getIconoDelta(v1, v2) { if (!v1 || !v2) return '●'; return v2 > v1 ? '<span class="text-green-500 font-black">↑</span>' : v2 < v1 ? '<span class="text-educate-red font-black">↓</span>' : '●'; },
+    showLoading(s) { document.getElementById('overlay-loading').style.display = s ? 'flex' : 'none'; },
+    exportarPDF() { const el = document.getElementById('informe-final'); html2pdf().set({ margin: 0.5, filename: 'Informe_Saber11.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter' } }).from(el).save(); }
 };
-
 window.onload = () => App.loadConfig();
 </script>
 </body>
