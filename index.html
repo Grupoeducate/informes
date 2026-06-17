@@ -810,5 +810,75 @@ const App = {
 
 window.onload = () => App.loadConfig();
 </script>
+    // Extendemos el objeto App para manejar los Metadatos Pedagógicos
+App.pedagogia = {
+    niveles: {}, // Almacena Niveles-lectura.json, etc.
+    marcos: {},  // Almacena Saber-lectura.json, etc.
+
+    async cargarMetadatos(area) {
+        // Normalizamos el nombre del área para buscar archivos
+        const slug = area.toLowerCase().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        try {
+            const [resNivel, resSaber] = await Promise.all([
+                fetch(`data/Niveles/Niveles-${slug}.json`).then(r => r.ok ? r.json() : null),
+                fetch(`data/Saber/Saber-${slug}.json`).then(r => r.ok ? r.json() : null)
+            ]);
+            if (resNivel) this.niveles[area] = resNivel;
+            if (resSaber) this.marcos[area] = resSaber;
+        } catch (e) {
+            console.warn(`No se encontraron metadatos DCE para el área: ${area}`);
+        }
+    },
+
+    getDescripcionNivel(area, puntaje) {
+        const marco = this.niveles[area];
+        if (!marco) return "Descripción no disponible.";
+        const nivel = marco.niveles.find(n => {
+            const [min, max] = n.rango_puntaje.split(' a ').map(Number);
+            return puntaje >= min && puntaje <= max;
+        });
+        return nivel ? nivel.habilidades.join(' ') : "Sin descripción.";
+    }
+};
+
+// 2. Modificación en App.renderRadarArea para incluir el "Insight DCE"
+App.renderRadarArea = async function(area, pruebas, gruposActivos) {
+    // ... (Mantener lógica de renderizado del Chart anterior) ...
+
+    // Nueva Lógica: Cargar marcos pedagógicos en tiempo real
+    await this.pedagogia.cargarMetadatos(area);
+    
+    // Actualizar el panel de Insights con terminología de Evidencias
+    this.generarInsightDCE(area);
+};
+
+App.generarInsightDCE = function(area) {
+    const marco = this.pedagogia.marcos[area];
+    const niveles = this.pedagogia.niveles[area];
+    const container = document.getElementById('insights-container');
+    
+    if (!marco || !niveles) return;
+
+    // Buscamos el promedio del área en la última prueba
+    const avgArea = parseFloat(document.getElementById('kpi-promedio').innerText); // Ejemplo
+    const descripcion = this.pedagogia.getDescripcionNivel(area, avgArea);
+
+    // Insertar el análisis de nivel en el UI
+    const htmlDCE = `
+        <div class="mt-4 p-4 bg-blue-50 border-l-4 border-educate-blue">
+            <h5 class="text-sm font-bold text-educate-dark uppercase">Interpretación Pedagógica (Nivel de Desempeño)</h5>
+            <p class="text-xs mt-2 italic text-slate-700">${descripcion}</p>
+            <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                ${marco.competencias.map(c => `
+                    <div class="text-[10px] p-2 bg-white rounded border">
+                        <span class="font-bold text-educate-teal">${c.descripcion}</span>
+                        <br>Peso en la prueba: ${c.porcentaje_preguntas}%
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', htmlDCE);
+};
 </body>
 </html>
