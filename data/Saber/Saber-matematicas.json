@@ -1,0 +1,60 @@
+{
+  "prueba": "Saber 11",
+  "area": "Matemáticas",
+  "competencias": [
+    {
+      "id": "a",
+      "descripcion": "Interpretación y representación",
+      "porcentaje_preguntas": 34,
+      "evidencias": [
+        { "codigo": "1.1", "descripcion": "Da cuenta de las características básicas de la información presentada en diferentes formatos, como series, gráficas, tablas y esquemas." },
+        { "codigo": "1.2", "descripcion": "Transforma la representación de una o más piezas de información." }
+      ]
+    },
+    {
+      "id": "b",
+      "descripcion": "Formulación y ejecución",
+      "porcentaje_preguntas": 43,
+      "evidencias": [
+        { "codigo": "2.1", "descripcion": "Diseña planes para la solución de problemas que involucran información cuantitativa o esquemática." },
+        { "codigo": "2.2", "descripcion": "Ejecuta un plan de solución para un problema que involucra información cuantitativa o esquemática." },
+        { "codigo": "2.3", "descripcion": "Resuelve un problema que involucra información cuantitativa o esquemática." }
+      ]
+    },
+    {
+      "id": "c",
+      "descripcion": "Argumentación",
+      "porcentaje_preguntas": 23,
+      "evidencias": [
+        { "codigo": "3.1", "descripcion": "Plantea afirmaciones que sustentan o refutan una interpretación dada a la información disponible en el marco de la solución de un problema." },
+        { "codigo": "3.2", "descripcion": "Argumenta a favor o en contra de un procedimiento para resolver un problema a la luz de criterios presentados o establecidos." },
+        { "codigo": "3.3", "descripcion": "Establece la validez o pertinencia de una solución propuesta a un problema dado." }
+      ]
+    }
+  ],
+  "contenidos_curriculares": {
+    "categorias": [
+      {
+        "nombre": "Estadística",
+        "genericos": ["Diferentes tipos de representación de datos", "Intersección, unión y contenencia de conjuntos", "Promedio y rango estadístico", "Conteos simples (principios de suma y multiplicación)", "Noción de población, muestra e inferencia muestral"],
+        "no_genericos": ["Estimación del error", "Varianza, percentiles, mediana y correlación", "Combinaciones y permutaciones"]
+      },
+      {
+        "nombre": "Geometría",
+        "genericos": ["Triángulos, círculos, paralelogramos, esferas, cilindros y sus medidas", "Relaciones de paralelismo y ortogonalidad", "Desigualdad triangular", "Sistemas de coordenadas cartesianas"],
+        "no_genericos": ["Sólidos y figuras complejas", "Relaciones de congruencia y semejanza", "Teoremas clásicos (Pitágoras, Tales)", "Coordenadas polares y tridimensionales", "Transformaciones en el plano"]
+      },
+      {
+        "nombre": "Álgebra y cálculo",
+        "genericos": ["Números racionales (fracciones, razones, decimales, porcentajes)", "Propiedades básicas de operaciones aritméticas", "Relaciones lineales, afines y razones de cambio"],
+        "no_genericos": ["Expresiones algebraicas y operaciones", "Funciones racionales, trigonométricas, polinomiales, exponenciales y logarítmicas", "Sucesiones y sus límites"]
+      }
+    ]
+  },
+  "contextos": [
+    { "nombre": "Familiares o personales", "descripcion": "Situaciones del entorno familiar (finanzas, hogar, salud, transporte)." },
+    { "nombre": "Laborales u ocupacionales", "descripcion": "Tareas de trabajo que no requieren habilidades técnicas específicas." },
+    { "nombre": "Comunitarios o sociales", "descripcion": "Interacción social, política, economía y medioambiente." },
+    { "nombre": "Matemáticos o científicos", "descripcion": "Situaciones abstractas, uso de las matemáticas en sí mismas (relacionado con contenidos no genéricos)." }
+  ]
+}

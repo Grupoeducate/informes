@@ -1,0 +1,65 @@
+{
+  "prueba": "Saber 11",
+  "area": "Lectura Crítica",
+  "metadatos": {
+    "total_competencias": 3
+  },
+  "competencias": [
+    {
+      "id": "a",
+      "descripcion": "Identifica y entiende los contenidos locales que conforman un texto.",
+      "porcentaje_preguntas": 25,
+      "evidencias": [
+        {
+          "codigo": "1.1",
+          "descripcion": "Entiende el significado de los elementos locales que constituyen un texto."
+        },
+        {
+          "codigo": "1.2",
+          "descripcion": "Identifica los eventos narrados de manera explícita en un texto (literario, descriptivo, caricatura o cómic) y los personajes involucrados."
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "descripcion": "Comprende cómo se articulan las partes de un texto para darle un sentido global.",
+      "porcentaje_preguntas": 42,
+      "evidencias": [
+        { "codigo": "2.1", "descripcion": "Comprende la estructura formal de un texto y la función de sus partes." },
+        { "codigo": "2.2", "descripcion": "Identifica y caracteriza las diferentes voces o situaciones presentes en un texto." },
+        { "codigo": "2.3", "descripcion": "Comprende las relaciones entre diferentes partes o enunciados de un texto." },
+        { "codigo": "2.4", "descripcion": "Identifica y caracteriza las ideas o afirmaciones presentes en un texto informativo." },
+        { "codigo": "2.5", "descripcion": "Identifica el tipo de relación existente entre diferentes elementos de un texto (discontinuo)." }
+      ]
+    },
+    {
+      "id": "c",
+      "descripcion": "Reflexiona a partir de un texto y evalúa su contenido.",
+      "porcentaje_preguntas": 33,
+      "evidencias": [
+        { "codigo": "3.1", "descripcion": "Establece la validez e implicaciones de un enunciado de un texto (argumentativo o expositivo)." },
+        { "codigo": "3.2", "descripcion": "Establece relaciones entre un texto y otros textos o enunciados." },
+        { "codigo": "3.3", "descripcion": "Reconoce contenidos valorativos presentes en un texto." },
+        { "codigo": "3.4", "descripcion": "Reconoce las estrategias discursivas en un texto." },
+        { "codigo": "3.5", "descripcion": "Contextualiza adecuadamente un texto o la información contenida en este." }
+      ]
+    }
+  ],
+  "distribucion_tipos_texto": [
+    {
+      "formato": "Continuos",
+      "tipos": [
+        { "categoria": "Literario", "porcentaje": 24 },
+        { "categoria": "Informativo filosófico", "porcentaje": 30 },
+        { "categoria": "Informativo no filosófico", "porcentaje": 30 }
+      ]
+    },
+    {
+      "formato": "Discontinuos",
+      "tipos": [
+        { "categoria": "Literario", "porcentaje": 8 },
+        { "categoria": "Informativo", "porcentaje": 8 }
+      ]
+    }
+  ]
+}

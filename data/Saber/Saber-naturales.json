@@ -1,0 +1,122 @@
+{
+  "prueba": "Saber 11",
+  "area": "Ciencias Naturales",
+  "competencias": [
+    {
+      "id": "a",
+      "descripcion": "Uso comprensivo del conocimiento científico",
+      "afirmaciones": [
+        {
+          "id": 4,
+          "descripcion": "Asocia fenómenos naturales con conceptos propios del conocimiento científico.",
+          "evidencias": [
+            "4.1 Relaciona los componentes de un circuito en serie y en paralelo con sus respectivos voltajes y corrientes.",
+            "4.2 Relaciona los distintos factores que determinan la dinámica de un sistema o fenómeno.",
+            "4.3 Relaciona los tipos de energía presentes en un objeto con las interacciones que presenta el sistema con su entorno.",
+            "4.4 Establece relaciones entre fenómenos biológicos para comprender la dinámica de lo vivo.",
+            "4.5 Establece relaciones entre fenómenos biológicos para comprender su entorno.",
+            "4.6 Diferencia distintos tipos de reacciones químicas y realiza cálculos (ley de conservación de masa y carga).",
+            "4.7 Establece relaciones entre conceptos fisicoquímicos simples con distintos fenómenos naturales.",
+            "4.8 Establece relaciones entre las propiedades y estructura de la materia con la formación de iones y moléculas."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "descripcion": "Explicación de fenómenos",
+      "afirmaciones": [
+        {
+          "id": 1,
+          "descripcion": "Analiza el potencial del uso de recursos naturales o artefactos y sus efectos sobre el entorno y la salud.",
+          "evidencias": [
+            "1.1 Explica principios para mantener la salud individual y pública basado en principios biológicos, químicos y físicos.",
+            "1.2 Explica cómo la explotación de un recurso o el uso de una tecnología tiene efectos positivos o negativos.",
+            "1.3 Explica el uso correcto y seguro de una tecnología o artefacto en un contexto específico."
+          ]
+        },
+        {
+          "id": 2,
+          "descripcion": "Explica cómo ocurren algunos fenómenos de la naturaleza basado en observaciones, patrones y conceptos científicos.",
+          "evidencias": [
+            "2.1 Da razones sobre relaciones cuantitativas en reacciones (ley de conservación).",
+            "2.2 Reconoce razones por las cuales la materia se diferencia según estructura y propiedades.",
+            "2.3 Reconoce atributos de procesos fisicoquímicos (separación de mezclas, solubilidad, cambios de fase).",
+            "2.4 Elabora explicaciones al relacionar variables de estado en sistemas electrónicos.",
+            "2.5 Elabora explicaciones al relacionar variables de sistemas (cinemática y dinámica newtoniana).",
+            "2.6 Elabora explicaciones al relacionar variables de sistemas (termodinámica).",
+            "2.7 Elabora explicaciones al relacionar variables de sistemas (ondas).",
+            "2.8 Analiza aspectos de los ecosistemas y sus interrelaciones bióticas y abióticas.",
+            "2.9 Analiza la dinámica interna de los organismos."
+          ]
+        },
+        {
+          "id": 3,
+          "descripcion": "Modela fenómenos de la naturaleza basado en el análisis de variables y evidencia científica.",
+          "evidencias": [
+            "3.1 Usa modelos físicos basados en dinámica clásica.",
+            "3.2 Identifica y usa modelos químicos para comprender fenómenos particulares.",
+            "3.3 Analiza y usa modelos biológicos para comprender la dinámica de lo vivo y el entorno."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "descripcion": "Indagación",
+      "afirmaciones": [
+        {
+          "id": 6,
+          "descripcion": "Comprende que a partir de la investigación científica se construyen explicaciones sobre el mundo natural.",
+          "evidencias": [
+            "6.1 Analiza qué tipo de pregunta puede ser contestada a partir de una investigación.",
+            "6.2 Reconoce la importancia de la evidencia para comprender fenómenos naturales."
+          ]
+        },
+        {
+          "id": 7,
+          "descripcion": "Deriva conclusiones a partir de conocimientos científicos y evidencia de investigación propia o de otros.",
+          "evidencias": [
+            "7.1 Comunica de forma apropiada el proceso y resultados de investigación.",
+            "7.2 Determina si los resultados son suficientes y pertinentes para sacar conclusiones.",
+            "7.3 Elabora conclusiones respaldadas por evidencia.",
+            "7.4 Hace predicciones basado en información, patrones y regularidades."
+          ]
+        },
+        {
+          "id": 8,
+          "descripcion": "Observa y relaciona patrones en los datos para evaluar las predicciones.",
+          "evidencias": [
+            "8.1 Interpreta y analiza datos representados en texto, gráficas, dibujos o tablas.",
+            "8.2 Representa datos en gráficas y tablas."
+          ]
+        },
+        {
+          "id": 9,
+          "descripcion": "Utiliza habilidades de pensamiento y procedimiento para evaluar predicciones.",
+          "evidencias": [
+            "9.1 Da posibles explicaciones consistentes con conceptos de la ciencia.",
+            "9.2 Diseña experimentos para dar respuesta a sus preguntas.",
+            "9.3 Elige y utiliza instrumentos adecuados para reunir datos.",
+            "9.4 Reconoce la necesidad de registrar y clasificar información.",
+            "9.5 Usa información adicional para evaluar una predicción."
+          ]
+        }
+      ]
+    }
+  ],
+  "componentes_conceptuales": {
+    "biologico": "Homeostasis, herencia, reproducción, relaciones ecológicas, evolución, conservación de energía.",
+    "fisico": "Cinemática, dinámica, electromagnetismo, ondas, energía térmica, campo gravitacional.",
+    "quimico": "Cambios químicos, átomos, enlaces, propiedades de la materia, estequiometría, gases ideales.",
+    "CTS": "Temáticas interdisciplinares (deforestación, efecto invernadero, transgénicos, explotación de recursos, tratamiento de basuras)."
+  },
+  "matriz_distribucion_preguntas": {
+    "descripcion": "Porcentaje de preguntas por competencia y componente.",
+    "datos": [
+      { "competencia": "Uso comprensivo", "biologico": 9, "fisico": 9, "quimico": 9, "CTS": 3, "total": 30 },
+      { "competencia": "Explicación de fenómenos", "biologico": 9, "fisico": 9, "quimico": 9, "CTS": 3, "total": 30 },
+      { "competencia": "Indagación", "biologico": 12, "fisico": 12, "quimico": 12, "CTS": 4, "total": 40 }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "prueba": "Saber 11",
+  "area": "Ciencias Naturales",
+  "descripcion": "Niveles de desempeño",
+  "niveles": [
+    {
+      "nivel": 1,
+      "rango_puntaje": "0 a 40",
+      "habilidades": [
+        "Reconoce información explícita, presentada de manera ordenada en tablas o gráficas, con un lenguaje cotidiano y que implica la lectura de una sola variable independiente."
+      ]
+    },
+    {
+      "nivel": 2,
+      "rango_puntaje": "41 a 55",
+      "habilidades": [
+        "Incluye todas las habilidades del nivel 1.",
+        "Reconoce información suministrada en tablas, gráficas y esquemas de una sola variable independiente.",
+        "Asocia información con nociones de conceptos básicos (tiempo, posición, velocidad, imantación y filtración).",
+        "Identifica patrones y características a partir de información presentada en textos, gráficas y tablas.",
+        "Relaciona esquemas con nociones básicas del conocimiento científico.",
+        "Establece predicciones a partir de datos presentados con patrones claramente crecientes o decrecientes.",
+        "Ordena datos e información en gráficas y tablas."
+      ]
+    },
+    {
+      "nivel": 3,
+      "rango_puntaje": "56 a 70",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1 y 2.",
+        "Interrelaciona conceptos, leyes y teorías científicas con información presentada en diversos contextos (dos o más variables).",
+        "Realiza inferencias sobre una situación problema o un fenómeno natural.",
+        "Establece relaciones de causa-efecto usando conceptos, leyes y teorías científicas.",
+        "Interpreta gráficas, tablas y modelos para hacer predicciones.",
+        "Establece relaciones entre conceptos, leyes y teorías con diseños experimentales y resultados.",
+        "Diferencia entre evidencias y conclusiones.",
+        "Plantea hipótesis basadas en evidencias.",
+        "Relaciona variables para explicar fenómenos naturales."
+      ]
+    },
+    {
+      "nivel": 4,
+      "rango_puntaje": "71 a 100",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1, 2 y 3.",
+        "Usa conceptos, teorías o leyes en la solución de situaciones problema que involucran procedimientos, habilidades y lenguaje propio de las ciencias naturales.",
+        "Plantea preguntas de investigación desde las ciencias naturales a partir de un contexto determinado.",
+        "Establece conclusiones derivadas de una investigación.",
+        "Contrasta modelos de las ciencias naturales con fenómenos cotidianos.",
+        "Resuelve situaciones problema haciendo uso de conceptos, leyes y teorías.",
+        "Comunica resultados de procesos de investigación científica.",
+        "Analiza fenómenos naturales con base en los procedimientos propios de la investigación científica."
+      ]
+    }
+  ]
+}

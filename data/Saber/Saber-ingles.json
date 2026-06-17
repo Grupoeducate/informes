@@ -1,0 +1,50 @@
+{
+  "prueba": "Saber 11",
+  "area": "Inglés",
+  "descripcion": "Evaluación de competencias comunicativas en lengua inglesa alineada con el MCER.",
+  "niveles_desempeno": ["Pre A1", "A1", "A2", "B1"],
+  "partes": [
+    {
+      "parte": 1,
+      "porcentaje_preguntas": 11,
+      "evalua": "Conocimiento lexical",
+      "descripcion": "Relacionar cinco descripciones con una lista de siete palabras (opciones A a G)."
+    },
+    {
+      "parte": 2,
+      "porcentaje_preguntas": 11,
+      "evalua": "Conocimiento pragmático",
+      "descripcion": "Reconocer el propósito comunicativo de un aviso y el lugar donde este puede aparecer (opciones A, B o C)."
+    },
+    {
+      "parte": 3,
+      "porcentaje_preguntas": 11,
+      "evalua": "Conocimiento comunicativo",
+      "descripcion": "Elegir la intervención más adecuada para completar conversaciones cortas entre dos interlocutores (opciones A, B o C)."
+    },
+    {
+      "parte": 4,
+      "porcentaje_preguntas": 18,
+      "evalua": "Conocimiento gramatical",
+      "descripcion": "Elegir la palabra gramaticalmente correcta para completar un texto (opciones A, B o C)."
+    },
+    {
+      "parte": 5,
+      "porcentaje_preguntas": 16,
+      "evalua": "Comprensión de lectura literal",
+      "descripcion": "Seleccionar la paráfrasis correcta para responder preguntas sobre un texto (opciones A, B o C)."
+    },
+    {
+      "parte": 6,
+      "porcentaje_preguntas": 11,
+      "evalua": "Proceso de lectura inferencial",
+      "descripcion": "Responder sobre la intención del autor y aspectos generales/particulares del texto (opciones A, B, C o D)."
+    },
+    {
+      "parte": 7,
+      "porcentaje_preguntas": 22,
+      "evalua": "Conocimiento gramatical y lexical",
+      "descripcion": "Elegir la palabra adecuada para completar espacios en un texto (opciones A, B, C o D)."
+    }
+  ]
+}

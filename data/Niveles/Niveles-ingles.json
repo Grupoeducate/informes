@@ -1,0 +1,50 @@
+{
+  "prueba": "Saber 11",
+  "area": "Inglés",
+  "descripcion": "Niveles de desempeño (MCER)",
+  "niveles": [
+    {
+      "nivel": "Pre A1",
+      "rango_puntaje": "0 a 36",
+      "habilidades": [
+        "Reconoce y comprende información simple e identifica vocabulario básico de su entorno.",
+        "Comprende oraciones, preguntas, instrucciones o conversaciones cuando se utiliza vocabulario simple.",
+        "Identifica palabras simples en frases sencillas que incluyen personas o lugares familiares en su cotidianidad."
+      ]
+    },
+    {
+      "nivel": "A1",
+      "rango_puntaje": "37 a 57",
+      "habilidades": [
+        "Incluye todas las habilidades del nivel Pre A1.",
+        "Comprende enunciados simples relacionados con situaciones comunicativas sencillas y cotidianas.",
+        "Interpreta y describe su entorno.",
+        "Identifica el uso de lenguaje básico para proporcionar información personal, saludos, despedidas, indicaciones de lugares y acciones del presente.",
+        "Entiende información e indicaciones en avisos de acuerdo con el contexto."
+      ]
+    },
+    {
+      "nivel": "A2",
+      "rango_puntaje": "58 a 70",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles Pre A1 y A1.",
+        "Comprende información específica en textos informativos y descriptivos sencillos.",
+        "Comprende textos sobre temáticas de contextos inmediatos (ocupaciones, personas, objetos, lugares, situaciones familiares).",
+        "Identifica vocabulario simple en textos cortos que narran acciones o eventos presentes, pasados o futuros.",
+        "Interpreta enunciados que expresan puntos de vista particulares en una situación comunicativa simple.",
+        "Identifica y comprende información literal o parafraseada en textos cortos."
+      ]
+    },
+    {
+      "nivel": "B1",
+      "rango_puntaje": "71 a 100",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles Pre A1, A1 y A2.",
+        "Posee vocabulario y estructuras que permiten inferir y comprender un mayor rango de textos de diferentes campos.",
+        "Comprende textos sobre temas generales y específicos (ámbitos laboral, académico, cultural y personal).",
+        "Infiere el significado de palabras desconocidas a partir del contexto.",
+        "Identifica puntos de vista como sentimientos, deseos e intenciones en escritos determinados."
+      ]
+    }
+  ]
+}

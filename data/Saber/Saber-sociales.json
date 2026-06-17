@@ -1,0 +1,79 @@
+{
+  "prueba": "Saber 11",
+  "area": "Sociales y Ciudadanas",
+  "competencias": [
+    {
+      "id": "a",
+      "descripcion": "Pensamiento social",
+      "porcentaje_preguntas": 30,
+      "afirmaciones": [
+        {
+          "id": 1,
+          "descripcion": "Comprende modelos conceptuales, sus características y contextos de aplicación.",
+          "evidencias": [
+            "1.1 Identifica y usa conceptos sociales básicos (económicos, políticos, culturales y geográficos).",
+            "1.2 Conoce el modelo de Estado Social de Derecho y su aplicación en Colombia.",
+            "1.3 Conoce la organización del Estado: funciones y alcances de las ramas del poder y organismos de control.",
+            "1.4 Conoce los mecanismos de participación ciudadana para la democracia y el respeto de derechos."
+          ]
+        },
+        {
+          "id": 2,
+          "descripcion": "Comprende dimensiones espaciales y temporales de eventos, problemáticas y prácticas sociales.",
+          "evidencias": [
+            "2.1 Localiza en el tiempo y en el espacio eventos históricos y prácticas sociales.",
+            "2.2 Relaciona dimensiones históricas y geográficas de eventos y problemáticas sociales.",
+            "2.3 Relaciona problemáticas o prácticas sociales con características del espacio geográfico."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "descripcion": "Interpretación y análisis de perspectivas",
+      "porcentaje_preguntas": 40,
+      "afirmaciones": [
+        {
+          "id": 3,
+          "descripcion": "Contextualiza y evalúa usos de fuentes y argumentos.",
+          "evidencias": [
+            "3.1 Inscribe una fuente primaria dada en un contexto económico, político o cultural.",
+            "3.2 Evalúa posibilidades y limitaciones del uso de una fuente para apoyar argumentos o explicaciones.",
+            "3.3 Devela prejuicios e intenciones en enunciados o argumentos."
+          ]
+        },
+        {
+          "id": 4,
+          "descripcion": "Comprende perspectivas de distintos actores y grupos sociales.",
+          "evidencias": [
+            "4.1 Reconoce y compara perspectivas de actores y grupos sociales.",
+            "4.2 Reconoce que las cosmovisiones, ideologías y roles sociales influyen en argumentos y conductas.",
+            "4.3 Establece relaciones entre las perspectivas de los individuos en una situación conflictiva y sus propuestas de solución."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "descripcion": "Pensamiento reflexivo y sistémico",
+      "porcentaje_preguntas": 30,
+      "afirmaciones": [
+        {
+          "id": 5,
+          "descripcion": "Evalúa usos sociales de las ciencias sociales.",
+          "evidencias": [
+            "5.1 Analiza modelos conceptuales y sus usos en decisiones sociales."
+          ]
+        },
+        {
+          "id": 6,
+          "descripcion": "Comprende que los problemas y sus soluciones involucran distintas dimensiones y reconoce relaciones entre estas.",
+          "evidencias": [
+            "6.1 Establece relaciones entre dimensiones presentes en una situación problemática.",
+            "6.2 Analiza los efectos en distintas dimensiones que tendría una posible intervención."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "prueba": "Saber 11",
+  "area": "Matemáticas",
+  "descripcion": "Niveles de desempeño",
+  "niveles": [
+    {
+      "nivel": 1,
+      "rango_puntaje": "0 a 35",
+      "habilidades": [
+        "Lee información puntual (un dato, por ejemplo) relacionada con situaciones cotidianas y presentada en tablas o gráficas con escala explícita, cuadrícula o, por lo menos, líneas horizontales."
+      ]
+    },
+    {
+      "nivel": 2,
+      "rango_puntaje": "36 a 50",
+      "habilidades": [
+        "Incluye todas las habilidades del nivel 1.",
+        "Compara datos de dos variables presentadas en una misma gráfica sin necesidad de hacer operaciones aritméticas.",
+        "Identifica valores o puntos representativos en diferentes tipos de registro a partir del significado que tienen en la situación.",
+        "Compara la probabilidad de eventos simples (casos favorables/casos posibles) cuando los casos posibles son los mismos en ambos eventos y en contextos similares a los presentados en el aula.",
+        "Toma decisiones sobre la veracidad o falsedad de una afirmación cuando esta se puede explicar verbalizando la lectura directa que se hace de la información.",
+        "Cambia gráficas de barras a tablas de doble entrada.",
+        "Reconoce e interpreta, según el contexto, el significado de promedio simple, moda, mayor, menor, máximo y mínimo."
+      ]
+    },
+    {
+      "nivel": 3,
+      "rango_puntaje": "51 a 70",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1 y 2.",
+        "Selecciona la gráfica (que puede ser de doble entrada correspondiente a la información de una tabla, o a partir de verbalizaciones) teniendo en cuenta la escala, el tipo de variable y el tipo de gráfica.",
+        "Compara información gráfica que requiere algunas manipulaciones aritméticas.",
+        "Señala información representada en formatos no convencionales (mapas o infografías).",
+        "Reconoce errores ocurridos al realizar una trasformación entre diferentes tipos de registro.",
+        "Reconoce desarrollos planos de una forma tridimensional y viceversa.",
+        "Compara la probabilidad de eventos simples en diversos contextos, incluso cuando los casos posibles son diferentes.",
+        "Selecciona información necesaria para resolver problemas que involucran operaciones aritméticas o características medibles de figuras geométricas elementales (triángulos, cuadriláteros y circunferencias).",
+        "Cambia la escala cuando la trasformación no es convencional.",
+        "Justifica afirmaciones utilizando planteamientos y operaciones aritméticas o haciendo uso directo de un concepto (único argumento).",
+        "Identifica información relevante cuando el tipo de registro contiene más de tres categorías.",
+        "Hace manipulaciones algebraicas sencillas (aritmética de términos semejantes)."
+      ]
+    },
+    {
+      "nivel": 4,
+      "rango_puntaje": "71 a 100",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1, 2 y 3.",
+        "Resuelve problemas que requieren interpretar información de eventos dependientes.",
+        "Realiza transformaciones de subconjuntos de información (requiere operaciones complejas como cálculos de porcentajes).",
+        "Resuelve problemas que requieren construir una representación auxiliar (gráficas y fórmulas).",
+        "Modela usando lenguaje algebraico información dada en lenguaje natural, tablas o representaciones geométricas.",
+        "Manipula expresiones algebraicas o aritméticas haciendo uso de las propiedades de las operaciones.",
+        "Modela fenómenos variacionales no explícitos haciendo uso de lenguaje simbólico o gráficas.",
+        "Reconoce en diferentes formatos (árboles, listas o diagramas) el espacio muestral de un experimento aleatorio.",
+        "Resuelve problemas de conteo que requieren el uso de permutaciones.",
+        "Justifica si hay falta de información en una situación problema para tomar una decisión.",
+        "Toma decisiones sobre la veracidad o falsedad de una afirmación cuando requiere el uso de varias propiedades o conceptualizaciones formales."
+      ]
+    }
+  ]
+}

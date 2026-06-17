@@ -1,0 +1,62 @@
+{
+  "prueba": "Saber 11",
+  "area": "Sociales y Ciudadanas",
+  "descripcion": "Niveles de desempeño",
+  "niveles": [
+    {
+      "nivel": 1,
+      "rango_puntaje": "0 a 40",
+      "habilidades": [
+        "Reconoce algunos derechos ciudadanos en situaciones sencillas.",
+        "Reconoce factores que generan un conflicto.",
+        "Identifica creencias que explican algunos comportamientos."
+      ]
+    },
+    {
+      "nivel": 2,
+      "rango_puntaje": "41 a 55",
+      "habilidades": [
+        "Incluye todas las habilidades del nivel 1.",
+        "Reconoce deberes del Estado colombiano y situaciones de protección o vulneración de derechos en el marco del Estado social de derecho.",
+        "Identifica relaciones entre conductas de las personas y sus cosmovisiones.",
+        "Reconoce las dimensiones presentes en una situación, problema, decisión tomada o propuesta de solución.",
+        "Contextualiza fuentes y procesos sociales.",
+        "Identifica derechos ciudadanos y deberes del Estado establecidos en la Constitución Política de Colombia.",
+        "Relaciona la conducta de una persona con su cosmovisión o forma de entender el mundo.",
+        "Reconoce los efectos de una solución y las dimensiones que privilegia.",
+        "Identifica contextos o procesos en los que se inscribe una fuente o evento."
+      ]
+    },
+    {
+      "nivel": 3,
+      "rango_puntaje": "56 a 70",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1 y 2.",
+        "Identifica prejuicios o intenciones contenidos en una afirmación.",
+        "Reconoce las dimensiones e intereses involucrados en un problema o alternativa de solución.",
+        "Identifica conceptos básicos de las ciencias sociales y modelos conceptuales.",
+        "Valora y contextualiza la información presentada en una fuente.",
+        "Reconoce intenciones y prejuicios, así como argumentos similares o diferentes dados en un contexto específico.",
+        "Identifica dimensiones (económicas, políticas, culturales, ambientales) involucradas en situaciones o propuestas.",
+        "Identifica y compara opiniones e intereses de diferentes actores involucrados.",
+        "Establece relaciones entre posturas y posibles soluciones.",
+        "Identifica supuestos y usos de algunos modelos conceptuales.",
+        "Relaciona contextos históricos y/o geográficos con fuentes, situaciones y prácticas sociales.",
+        "Valora la información contenida en una fuente y reconoce sus alcances."
+      ]
+    },
+    {
+      "nivel": 4,
+      "rango_puntaje": "71 a 100",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1, 2 y 3.",
+        "Conoce los procedimientos de reforma a la Constitución Política de Colombia, mecanismos de participación ciudadana y funciones de organismos de control.",
+        "Compara enunciados o argumentos, así como intereses y posiciones de actores en contextos de discusión.",
+        "Relaciona propuestas de solución con su contexto de implementación e impactos (económicos, políticos, culturales, ambientales).",
+        "Entiende problemáticas, eventos o procesos sociales a partir de conceptos básicos o contextos históricos/geográficos.",
+        "Analiza fuentes (primarias y secundarias) para valorar inferencias o identificar intenciones y características de los actores involucrados.",
+        "Establece relaciones entre modelos conceptuales y fuentes que los abordan o decisiones sociales que los aplican."
+      ]
+    }
+  ]
+}

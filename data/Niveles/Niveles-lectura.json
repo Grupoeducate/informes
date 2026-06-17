@@ -1,0 +1,67 @@
+{
+  "prueba": "Saber 11",
+  "area": "Lectura Crítica",
+  "descripcion": "Niveles de desempeño",
+  "niveles": [
+    {
+      "nivel": 1,
+      "rango_puntaje": "0 a 35",
+      "habilidades": [
+        "Identifica elementos literales en textos continuos y discontinuos sin establecer relaciones de significado."
+      ]
+    },
+    {
+      "nivel": 2,
+      "rango_puntaje": "36 a 50",
+      "habilidades": [
+        "Incluye todas las habilidades del nivel 1.",
+        "Comprende textos continuos y discontinuos de manera literal.",
+        "Reconoce información explícita y la relaciona con el contexto.",
+        "Identifica información local del texto.",
+        "Identifica la estructura de textos continuos y discontinuos.",
+        "Identifica relaciones básicas entre componentes del texto.",
+        "Identifica fenómenos semánticos básicos (sinónimos y antónimos).",
+        "Reconoce en un texto la diferencia entre proposición y párrafo.",
+        "Reconoce el sentido local y global del texto.",
+        "Identifica intenciones comunicativas explícitas.",
+        "Identifica relaciones básicas (contraste, similitud y complementación) entre textos presentes."
+      ]
+    },
+    {
+      "nivel": 3,
+      "rango_puntaje": "51 a 65",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1 y 2.",
+        "Interpreta información al inferir contenidos implícitos y reconocer estructuras, estrategias discursivas y juicios valorativos.",
+        "Jerarquiza la información presente en un texto.",
+        "Infiere información implícita en textos continuos y discontinuos.",
+        "Establece relaciones intertextuales (definición, causa-efecto, oposición, antecedente-consecuente) entre textos presentes.",
+        "Relaciona marcadores textuales en la interpretación de textos.",
+        "Reconoce la intención comunicativa del texto.",
+        "Reconoce la función de figuras literarias.",
+        "Identifica el uso del lenguaje en contexto.",
+        "Analiza y sintetiza la información contenida en un texto.",
+        "Identifica la estructura sintáctica en textos discontinuos.",
+        "Establece la validez de argumentos en un texto."
+      ]
+    },
+    {
+      "nivel": 4,
+      "rango_puntaje": "66 a 100",
+      "habilidades": [
+        "Incluye todas las habilidades de los niveles 1, 2 y 3.",
+        "Reflexiona a partir de un texto sobre la visión de mundo del autor (costumbres, creencias, carácter ideológico, posturas éticas).",
+        "Da cuenta de elementos paratextuales significativos.",
+        "Valora y contrasta los elementos analizados.",
+        "Propone soluciones a problemas de interpretación que subyacen en un texto.",
+        "Evalúa contenidos, estrategias discursivas y argumentativas presentes en un texto.",
+        "Relaciona información de dos o más textos o fragmentos para llegar a una conclusión.",
+        "Aplica conceptos de análisis literario para caracterizar elementos.",
+        "Reconoce los contextos como elementos importantes en la valoración de un texto.",
+        "Selecciona elementos locales y construye argumentos que sustentan una tesis con base en textos relacionados.",
+        "Asume una postura crítica frente a los planteamientos de un texto.",
+        "Plantea hipótesis de lectura a partir de las ideas presentes en un texto."
+      ]
+    }
+  ]
+}
