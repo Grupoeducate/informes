@@ -204,12 +204,11 @@
  */
 const App = {
     config: null,
-    data: {},         // Memoria de CSVs y JSONs pedagógicos
-    niveles: {},      // Metadatos de niveles
-    marcos: {},       // Metadatos de competencias
-    charts: {},       // Instancias de Chart.js
+    data: {},         
+    niveles: {},      
+    marcos: {},       
+    charts: {},       
     
-    // --- Configuración Inicial ---
     async loadConfig() {
         try {
             const res = await fetch('config.json');
@@ -239,7 +238,6 @@ const App = {
         }
     },
 
-    // --- Motor de Carga Dinámica ---
     async init() {
         const dane = document.getElementById('selectDANE').value;
         const grupo = document.getElementById('selectGrupo').value;
@@ -248,14 +246,12 @@ const App = {
         this.showLoading(true);
         const col = this.config.find(c => c.dane === dane);
         
-        // Actualizar UI básica
         document.getElementById('view-nombre-ie').innerText = col.nombre;
         document.getElementById('view-dane').innerText = col.dane;
         document.getElementById('view-muni').innerText = col.municipio;
         document.getElementById('view-grupo').innerText = `Grupo ${grupo}`;
 
         try {
-            // Carga paralela de todas las pruebas definidas en config.json para ese grupo
             this.data[grupo] = {};
             for (const p of col.pruebas) {
                 const csvPath = `data/${dane}/${grupo}-${p}.csv`;
@@ -275,9 +271,7 @@ const App = {
                 }
             }
 
-            // Cargar Metadatos Pedagógicos (Saber y Niveles)
             await this.cargarMetadatosGlobales();
-
             this.renderizarTodo(col.pruebas, grupo);
             document.getElementById('selectArea').classList.remove('hidden');
             
@@ -288,7 +282,24 @@ const App = {
         }
     },
 
+    // ESTA ES LA FUNCIÓN QUE FALTABA
+    async cambiarArea() {
+        const area = document.getElementById('selectArea').value;
+        const grupo = document.getElementById('selectGrupo').value;
+        const dane = document.getElementById('selectDANE').value;
+        const col = this.config.find(c => c.dane === dane);
+        const p3 = col.pruebas[col.pruebas.length - 1];
+        const d3 = this.data[grupo][p3];
+
+        if (d3) {
+            document.getElementById('radar-area-label').innerText = area;
+            this.renderRadar(d3.ped, area);
+            this.renderInsights(d3, area);
+        }
+    },
+
     async cargarMetadatosGlobales() {
+        // Normalización de nombres para archivos
         const areas = ["lectura-critica", "matematicas", "ciencias-naturales", "ciencias-sociales", "ingles"];
         for (const a of areas) {
             try {
@@ -298,9 +309,42 @@ const App = {
                 ]);
                 if (n) this.niveles[a] = n;
                 if (s) this.marcos[a] = s;
-            } catch (e) { /* silent fail */ }
+            } catch (e) { }
         }
     },
+
+    renderizarTodo(pruebas, grupo) {
+        const p1 = pruebas[0];
+        const p2 = pruebas[1];
+        const p3 = pruebas[pruebas.length - 1]; 
+        const d1 = this.data[grupo][p1];
+        const d2 = this.data[grupo][p2];
+        const d3 = this.data[grupo][p3];
+
+        if (!d3) return;
+
+        const avg = this.calcPromedio(d3.est, 'PUNTAJE');
+        document.getElementById('kpi-promedio').innerText = avg.toFixed(1);
+        document.getElementById('kpi-total').innerText = d3.est.length;
+        document.getElementById('kpi-nivel').innerText = this.getNivelGlobal(avg);
+        
+        let saltos = 0;
+        d3.est.forEach(e => {
+            const ant = d1?.est.find(x => x.DOCUMENTO === e.DOCUMENTO);
+            if (ant && this.getNivelGlobal(e.PUNTAJE, true) > this.getNivelGlobal(ant.PUNTAJE, true)) saltos++;
+        });
+        document.getElementById('kpi-movilidad').innerText = Math.round((saltos/d3.est.length)*100) + '%';
+
+        this.renderTabla(d1, d2, d3);
+        this.renderEvolucion(pruebas, grupo);
+        
+        // Ejecutar por defecto con la primera opción del select
+        const areaInicial = document.getElementById('selectArea').value || "Matemáticas";
+        this.renderRadar(d3.ped, areaInicial);
+        this.renderInsights(d3, areaInicial);
+    },
+
+    // ... (Resto de funciones renderTabla, renderEvolucion, renderRadar, etc. se mantienen igual)
 
     // --- Renderizado de Componentes ---
     renderizarTodo(pruebas, grupo) {
